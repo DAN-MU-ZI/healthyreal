@@ -1,7 +1,7 @@
 import {BrowserRouter as Router, Route, Routes} from "react-router-dom";
-import Login from "./pages/Login.tsx";
-import Main from "./pages/Main.tsx";
-import Onboarding from "./pages/Onboarding.tsx";
+import Login from "./pages/Login.jsx";
+import Main from "./pages/Main.jsx";
+import Onboarding from "./pages/Onboarding.jsx";
 
 function App() {
   return (
