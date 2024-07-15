@@ -1,0 +1,11 @@
+.button {
+  width: 155px;
+  height: 50px;
+  align-self: stretch;
+
+  border: none;
+  border-radius: 6px;
+
+  color: white;
+  font-size: 14px;
+}
