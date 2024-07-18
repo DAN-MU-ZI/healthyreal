@@ -2,7 +2,13 @@ import * as React from "react";
 import {useEffect} from "react";
 import "./styles.css";
 
-export default function OnboardingLayout(props) {
+interface Props {
+  header: "back" | "settings" | "none";
+  contents: React.ReactNode;
+  bottoms?: React.ReactNode;
+}
+
+export default function OnboardingLayout(props: Props) {
   const {header, contents, bottoms} = props;
   useEffect(() => {}, []);
   return (
