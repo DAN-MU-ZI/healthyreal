@@ -1,8 +1,8 @@
 package com.healthyreal.be.service;
 
-import com.healthyreal.be.domain.GoogleOAuth2UserInfo;
-import com.healthyreal.be.domain.KakaoOAuth2UserInfo;
-import com.healthyreal.be.domain.OAuth2UserInfo;
+import com.healthyreal.be.domain.OAuth2UserInfo.GoogleOAuth2UserInfo;
+import com.healthyreal.be.domain.OAuth2UserInfo.KakaoOAuth2UserInfo;
+import com.healthyreal.be.domain.OAuth2UserInfo.OAuth2UserInfo;
 import com.healthyreal.be.domain.ProviderType;
 import java.util.Map;
 
