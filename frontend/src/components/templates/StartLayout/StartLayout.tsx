@@ -2,7 +2,13 @@ import * as React from "react";
 import {useEffect} from "react";
 import "./styles.css";
 
-export default function StartLayout(props) {
+interface Props {
+  header?: React.ReactNode;
+  contents: React.ReactNode;
+  bottoms?: React.ReactNode;
+}
+
+export default function StartLayout(props: Props) {
   const {header, contents, bottoms} = props;
   useEffect(() => {}, []);
   return (

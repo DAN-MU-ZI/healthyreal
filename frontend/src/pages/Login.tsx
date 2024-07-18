@@ -7,8 +7,8 @@ import googleLogo from "../assets/images/googleLogo.png";
 import kakaotalkLogo from "../assets/images/kakaotalkLogo.png";
 import styled from "@emotion/styled";
 
-import {defaultInstance} from "../apis/api.jsx";
-import request from "../apis/api/request.jsx";
+import {defaultInstance} from "../apis/api";
+import request from "../apis/api/request";
 
 export default function Login() {
   const TestCord = styled.div({
@@ -19,7 +19,7 @@ export default function Login() {
 
   const [memberType, setMemberType] = useState("");
 
-  const onClickTypeCard = (type) => {
+  const onClickTypeCard = (type: string) => {
     console.log(`memberType : ${type}`);
     setMemberType(type);
   };

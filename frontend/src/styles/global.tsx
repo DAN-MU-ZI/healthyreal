@@ -1,8 +1,8 @@
-import {css} from "@emotion/react";
+import {Theme, css} from "@emotion/react";
 import theme from "../assets/theme/theme";
 import "./reset.css";
 
-const globalStyle = (theme) => css`
+const globalStyle = (theme: Theme) => css`
   html {
     box-sizing: border-box;
     max-width: 375px;
