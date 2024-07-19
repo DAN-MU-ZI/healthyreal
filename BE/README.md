@@ -96,6 +96,14 @@ JWT를 사용하여 토큰 기반 인증 구현
 
 프로젝트 내에서 모든 기여자들이 동일한 코드 스타일을 사용할 수 있도록 코드 스타일 설정 파일을 프로젝트에 포함시킵니다.
 
+### Reformat Code 및 Optimize Imports 설정
+
+- IntelliJ를 열고, 상단 메뉴에서 File > Settings (또는 Preferences on macOS)를 클릭합니다.
+- Tools > Actions on Save로 이동합니다.
+- "Reformat code" 및 "Optimize imports" 옵션을 선택합니다.
+- OK 버튼을 클릭하여 설정을 저장합니다.
+
+이제 IntelliJ에서 파일을 저장할 때마다 자동으로 코드 포맷팅과 import 최적화가 수행됩니다.
 
 ## 기술 스택
 
