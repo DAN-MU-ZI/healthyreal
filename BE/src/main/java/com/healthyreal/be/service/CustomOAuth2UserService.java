@@ -1,7 +1,7 @@
 package com.healthyreal.be.service;
 
 import com.healthyreal.be.domain.Member;
-import com.healthyreal.be.domain.OAuth2UserInfo;
+import com.healthyreal.be.domain.OAuth2UserInfo.OAuth2UserInfo;
 import com.healthyreal.be.domain.ProviderType;
 import com.healthyreal.be.domain.RoleType;
 import com.healthyreal.be.domain.UserPrincipal;

@@ -1,4 +1,4 @@
-package com.healthyreal.be.domain;
+package com.healthyreal.be.domain.OAuth2UserInfo;
 
 import java.util.Map;
 
