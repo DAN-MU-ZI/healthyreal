@@ -8,12 +8,12 @@ interface Props {
   bottoms?: React.ReactNode;
 }
 
-export default function OnboardingLayout(props: Props) {
+export default function TutorialLayout(props: Props) {
   const {header, contents, bottoms} = props;
   useEffect(() => {}, []);
   return (
     <div>
-      <article className="onboarding-layout">
+      <article className="tutorial-layout">
         <section className="headers">
           {header === "back" ? <div>back</div> : null}
         </section>

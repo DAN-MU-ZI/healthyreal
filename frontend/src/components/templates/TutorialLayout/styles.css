@@ -1,19 +1,19 @@
-.onboarding-layout {
+.tutorial-layout {
   display: flex;
 }
 
-.onboarding-layout > .contents {
+.tutorial-layout > .contents {
   display: grid;
   row-gap: 11px;
   padding: 60px 20px 0px;
 }
 
-.onboarding-layout > .contents > img {
+.tutorial-layout > .contents > img {
   width: 260px;
   margin: 67px 0px;
   justify-self: center;
 }
 
-.onboarding-layout > .contents > Button {
+.tutorial-layout > .contents > Button {
   justify-self: center;
 }
