@@ -23,6 +23,12 @@ const globalStyle = (theme: Theme) => css`
     --btn-medium: 155px;
     --btn-large: 264px;
   }
+  body,
+  .divTag,
+  .App,
+  #root {
+    height: 100%;
+  }
 `;
 
 export default globalStyle;
