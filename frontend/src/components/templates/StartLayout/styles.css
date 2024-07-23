@@ -1,0 +1,26 @@
+.start-layout {
+  display: grid;
+  row-gap: 75px;
+  margin-top: 50px;
+}
+
+.start-layout > .contents {
+  height: 180px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.start-layout > .bottoms,
+.header {
+  display: grid;
+  row-gap: 11px;
+  justify-self: center;
+  text-align: center;
+}
+
+.start-layout > .bottoms > .button {
+  display: flex;
+  column-gap: 11px;
+  justify-content: center;
+  align-items: center;
+}
