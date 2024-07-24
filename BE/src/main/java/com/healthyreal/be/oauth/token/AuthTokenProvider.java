@@ -1,27 +1,25 @@
 package com.healthyreal.be.oauth.token;
 
+import com.healthyreal.be.oauth.entity.UserPrincipal;
 import com.healthyreal.be.oauth.exception.TokenValidFailedException;
+import com.healthyreal.be.oauth.service.CustomUserDetailsService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.security.Keys;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.Date;
-import java.util.stream.Collectors;
 import javax.crypto.SecretKey;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 
 @Slf4j
 public class AuthTokenProvider {
 	private final SecretKey key;
 	private static final String AUTHORITIES_KEY = "role";
+	private final CustomUserDetailsService userDetailsService;
 
-	public AuthTokenProvider(final String secret) {
+	public AuthTokenProvider(final String secret, final CustomUserDetailsService userDetailService) {
 		this.key = Keys.hmacShaKeyFor(secret.getBytes());
+		this.userDetailsService = userDetailService;
 	}
 
 	public AuthToken createAuthToken(final String id, final Date expiry) {
@@ -40,15 +38,13 @@ public class AuthTokenProvider {
 		if (authToken.validate()) {
 
 			Claims claims = authToken.getTokenClaims();
-			Collection<? extends GrantedAuthority> authorities =
-				Arrays.stream(new String[] {claims.get(AUTHORITIES_KEY).toString()})
-					.map(SimpleGrantedAuthority::new)
-					.collect(Collectors.toList());
+			String username = claims.getSubject();
+
+			UserPrincipal userPrincipal = userDetailsService.loadUserByUsername(username);
 
 			log.debug("claims subject := [{}]", claims.getSubject());
-			User principal = new User(claims.getSubject(), "", authorities);
 
-			return new UsernamePasswordAuthenticationToken(principal, authToken, authorities);
+			return new UsernamePasswordAuthenticationToken(userPrincipal, authToken, userPrincipal.getAuthorities());
 		} else {
 			throw new TokenValidFailedException();
 		}
