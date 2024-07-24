@@ -1,5 +1,5 @@
 import * as React from "react";
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 import StartLayout from "../components/templates/StartLayout";
 import Text from "../components/atoms/Text";
 import Button from "../components/atoms/Button";
@@ -7,7 +7,7 @@ import googleLogo from "../assets/images/googleLogo.png";
 import kakaotalkLogo from "../assets/images/kakaotalkLogo.png";
 import styled from "@emotion/styled";
 
-import {defaultInstance} from "../apis/api";
+import { defaultInstance } from "../apis/api";
 import request from "../apis/api/request";
 
 export default function Login() {
@@ -43,23 +43,21 @@ export default function Login() {
     }
   };
 
-  const clickGoogle = () => {
-    postData();
+  const handleLogin = (provider: string) => {
+    // const redirectUri = `http://localhost:8080/oauth2/authorization/${provider}?redirect_uri=http://localhost:3000/oauth/redirect`;
+    const redirectUri = `http://default-loadbalancer-ser-e983d-25608891-dc411cb92a75.kr.lb.naverncp.com:8080/oauth2/authorization/${provider}?redirect_uri=http://localhost:3000/oauth/redirect`;
+    console.log(redirectUri);
+    if (redirectUri) {
+      window.location.href = redirectUri;
+    }
   };
 
-  const postData = async () => {
-    const sendData = {
-      id: 88,
-      name: "joo",
-      age: 25,
-    };
-    try {
-      const res = await request("POST", "/source/1", sendData);
-      console.log(res);
-      return res.data;
-    } catch (error) {
-      console.log(error);
-    }
+  const clickGoogle = () => {
+    handleLogin('google');
+  };
+
+  const clickKakao = () => {
+    handleLogin('kakao');
   };
 
   return (
@@ -89,9 +87,9 @@ export default function Login() {
               backgroundColor="#FECA00"
               width="var(--btn-large)"
               color="var(--main-blue)"
-              onClick={clickLogin}
+              onClick={clickKakao}
             >
-              <img src={kakaotalkLogo} alt="googleIcon" width="25px" />
+              <img src={kakaotalkLogo} alt="kakaoIcon" width="25px" />
               카카오톡으로 시작하기
             </Button>
             <Button
