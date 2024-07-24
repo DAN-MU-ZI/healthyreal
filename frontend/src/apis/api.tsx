@@ -1,6 +1,7 @@
 import axios, {AxiosRequestConfig, AxiosInstance} from "axios";
 
-const BASE_URL = "https://824ed3db-aed5-41ab-809d-f74a20799b36.mock.pstmn.io";
+const BASE_URL =
+  "http://default-loadbalancer-ser-e983d-25608891-dc411cb92a75.kr.lb.naverncp.com:8080";
 
 // 인증값 필요 없는 경우
 const axiosApi = (url: string, options?: AxiosRequestConfig): AxiosInstance => {
