@@ -24,7 +24,12 @@ const GoalSelection: React.FC<GoalSelectionProp> = ({onDataChange}) => {
     <div className="checkbox-container">
       <div className="checkbox-group">
         {goals.map((goal) => (
-          <label key={goal.en} className="checkbox-btn">
+          <label
+            key={goal.en}
+            className={`checkbox-btn ${
+              selectedGoals.includes(goal.en) ? "checked" : ""
+            }`}
+          >
             <input
               type="checkbox"
               value={goal.en}

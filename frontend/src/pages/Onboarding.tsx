@@ -36,7 +36,7 @@ export default function Onboarding() {
   };
 
   const endOnboarding = () => {
-    navigate(`/intro/tutorial`);
+    navigate(`/main`);
   };
 
   const renderStep = () => {
