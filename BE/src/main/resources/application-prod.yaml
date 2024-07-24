@@ -1,9 +1,9 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: ${DATABASE-URL}
-    username: ${DATABASE-USERNAME}
-    password: ${DATABASE-PASSWORD}
+    url: ${DATABASE_URL}
+    username: ${DATABASE_USERNAME}
+    password: ${DATABASE_PASSWORD}
   jpa:
     hibernate:
       ddl-auto: update
@@ -51,4 +51,4 @@ app:
     tokenExpiry: 1800000
     refreshTokenExpiry: 604800000
   oauth2:
-    authorizedRedirectUris: ${AUTHORIZED-REDIRECT-URIS}
+    authorizedRedirectUris: ${AUTHORIZED_REDIRECT_URIS}
