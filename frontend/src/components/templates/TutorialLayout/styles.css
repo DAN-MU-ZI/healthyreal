@@ -1,0 +1,19 @@
+.tutorial-layout {
+  display: flex;
+}
+
+.tutorial-layout > .contents {
+  display: grid;
+  row-gap: 11px;
+  padding: 60px 20px 0px;
+}
+
+.tutorial-layout > .contents > img {
+  width: 260px;
+  margin: 67px 0px;
+  justify-self: center;
+}
+
+.tutorial-layout > .contents > Button {
+  justify-self: center;
+}
