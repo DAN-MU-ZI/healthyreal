@@ -44,8 +44,13 @@ export default function Login() {
   };
 
   const handleLogin = (provider: string) => {
+<<<<<<< Updated upstream
     // const redirectUri = `http://localhost:8080/oauth2/authorization/${provider}?redirect_uri=http://localhost:3000/oauth/redirect`;
     const redirectUri = `http://default-loadbalancer-ser-e983d-25608891-dc411cb92a75.kr.lb.naverncp.com:8080/oauth2/authorization/${provider}?redirect_uri=http://localhost:3000/oauth/redirect`;
+=======
+    const redirectUri = `http://localhost:8080/oauth2/authorization/${provider}?redirect_uri=http://localhost:3000/oauth/redirect`;
+    // const redirectUri = `http://default-loadbalancer-ser-e983d-25608891-dc411cb92a75.kr.lb.naverncp.com:8080/oauth2/authorization/${provider}?redirect_uri=http://localhost:3000/oauth/redirect`;
+>>>>>>> Stashed changes
     console.log(redirectUri);
     if (redirectUri) {
       window.location.href = redirectUri;
