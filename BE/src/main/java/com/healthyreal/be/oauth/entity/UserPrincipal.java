@@ -21,16 +21,14 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 @AllArgsConstructor
 @RequiredArgsConstructor
 public class UserPrincipal implements OAuth2User, UserDetails, OidcUser {
-	private final String userId;
-	private final String password;
-	private final ProviderType providerType;
-	private final RoleType roleType;
+	private final User user;
+	private final String password = null;
 	private final Collection<GrantedAuthority> authorities;
 	private Map<String, Object> attributes;
 
 	@Override
 	public String getUsername() {
-		return userId;
+		return user.getUserId();
 	}
 
 	@Override
@@ -80,16 +78,13 @@ public class UserPrincipal implements OAuth2User, UserDetails, OidcUser {
 
 	@Override
 	public String getName() {
-		return userId;
+		return user.getUserId();
 	}
 
 	public static UserPrincipal create(User user) {
 		return new UserPrincipal(
-			user.getUserId(),
-			user.getPassword(),
-			user.getProviderType(),
-			RoleType.USER,
-			Collections.singletonList(new SimpleGrantedAuthority(RoleType.USER.getCode()))
+			user,
+			Collections.singletonList(new SimpleGrantedAuthority(user.getRoleType().getCode()))
 		);
 	}
 
@@ -98,5 +93,9 @@ public class UserPrincipal implements OAuth2User, UserDetails, OidcUser {
 		userPrincipal.setAttributes(attributes);
 
 		return userPrincipal;
+	}
+
+	public RoleType getRoleType() {
+		return this.user.getRoleType();
 	}
 }

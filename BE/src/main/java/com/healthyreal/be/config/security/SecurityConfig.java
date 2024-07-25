@@ -11,7 +11,6 @@ import com.healthyreal.be.oauth.handler.OAuth2AuthenticationSuccessHandler;
 import com.healthyreal.be.oauth.handler.TokenAccessDeniedHandler;
 import com.healthyreal.be.oauth.repository.OAuth2AuthorizationRequestBasedOnCookieRepository;
 import com.healthyreal.be.oauth.service.CustomOAuth2UserService;
-import com.healthyreal.be.oauth.service.CustomUserDetailService;
 import com.healthyreal.be.oauth.token.AuthTokenProvider;
 import java.util.Arrays;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +25,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer.FrameOptionsConfig;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
@@ -41,7 +39,6 @@ public class SecurityConfig {
 	private final CorsProperties corsProperties;
 	private final AppProperties appProperties;
 	private final AuthTokenProvider tokenProvider;
-	private final CustomUserDetailService userDetailService;
 	private final CustomOAuth2UserService oAuth2UserService;
 	private final TokenAccessDeniedHandler tokenAccessDeniedHandler;
 	private final UserRefreshTokenRepository userRefreshTokenRepository;
@@ -57,8 +54,6 @@ public class SecurityConfig {
 		throws Exception {
 		AuthenticationManagerBuilder auth =
 			http.getSharedObject(AuthenticationManagerBuilder.class);
-		auth.userDetailsService(userDetailService)
-			.passwordEncoder(passwordEncoder());
 		return auth.build();
 	}
 
@@ -101,11 +96,6 @@ public class SecurityConfig {
 		http.addFilterAt(tokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 
 		return http.build();
-	}
-
-	@Bean
-	public BCryptPasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder();
 	}
 
 	@Bean

@@ -10,6 +10,23 @@ spring:
   jpa:
     hibernate:
       ddl-auto: create
+    properties:
+      hibernate:
+        format_sql: TRUE
+
+  logging:
+    level:
+      org:
+        springframework:
+          jdbc: DEBUG
+        hibernate:
+          SQL: DEBUG  # 로그를 통해 쿼리 출력
+          type:
+            descriptor:
+              sql: TRACE
+          orm:
+            jdbc:
+              bind: TRACE # 쿼리의 ? 에 실제 바인딩 되는 데이터 로그 출력
 
   security:
     oauth2:

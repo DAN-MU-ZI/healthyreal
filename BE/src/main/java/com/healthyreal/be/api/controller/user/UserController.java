@@ -1,8 +1,9 @@
 package com.healthyreal.be.api.controller.user;
 
+import com.healthyreal.be.api.entity.user.User;
 import com.healthyreal.be.api.entity.user.dto.MemberRegisterRequest;
 import com.healthyreal.be.api.service.UserService;
-import com.healthyreal.be.common.ApiResponse;
+import com.healthyreal.be.utils.CurrentUser;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -11,7 +12,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,12 +26,8 @@ public class UserController {
 	private final UserService userService;
 
 	@GetMapping
-	public ApiResponse getUser() {
-		org.springframework.security.core.userdetails.User principal = (org.springframework.security.core.userdetails.User)SecurityContextHolder.getContext()
-			.getAuthentication().getPrincipal();
-		com.healthyreal.be.api.entity.user.User user = userService.getUser(principal.getUsername());
-
-		return ApiResponse.success("user", user);
+	public ResponseEntity<UserResponse> getUser(@CurrentUser User user) {
+		return ResponseEntity.ok(new UserResponse(user));
 	}
 
 	@PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
