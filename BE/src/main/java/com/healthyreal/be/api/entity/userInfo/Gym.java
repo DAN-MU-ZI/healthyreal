@@ -11,6 +11,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
 @NoArgsConstructor
@@ -26,10 +27,12 @@ public class Gym {
 	@Column(nullable = false)
 	private String address;
 
+	@Setter
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_info_id")
 	private UserInfo userInfo;
 
+	@Setter
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "trainer_info_id")
 	private TrainerInfo trainerInfo;

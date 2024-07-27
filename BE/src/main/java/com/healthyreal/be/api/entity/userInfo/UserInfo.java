@@ -1,6 +1,7 @@
 package com.healthyreal.be.api.entity.userInfo;
 
 import com.healthyreal.be.api.entity.user.Member;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -27,20 +28,20 @@ public class UserInfo {
 	private Long id;
 
 	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "user_id")
+	@JoinColumn(name = "user_id", nullable = false)
 	private Member user;
 
-	@OneToMany(mappedBy = "userInfo", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "userInfo", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<Goal> goalList;
 
 	@Enumerated(EnumType.STRING)
 	@Column(nullable = false)
 	private Gender gender;
 
-	@OneToOne(mappedBy = "userInfo", fetch = FetchType.LAZY)
+	@OneToOne(mappedBy = "userInfo", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private BodyInfo bodyInfo;
 
-	@OneToOne(mappedBy = "userInfo", fetch = FetchType.LAZY)
+	@OneToOne(mappedBy = "userInfo", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Gym gym;
 
 	@Enumerated(EnumType.STRING)
@@ -60,5 +61,9 @@ public class UserInfo {
 		this.gym = gym;
 		this.exerciseLevel = exerciseLevel;
 		this.agreeToReceive = agreeToReceive;
+
+		goalList.forEach(goal -> goal.setUserInfo(this));
+		bodyInfo.setUserInfo(this);
+		gym.setUserInfo(this);
 	}
 }

@@ -35,6 +35,8 @@ class UserInfoRepositoryTest {
 	@Autowired
 	private UserInfoRepository userInfoRepository;
 	@Autowired
+	private GoalRepository goalRepository;
+	@Autowired
 	private GymRepository gymRepository;
 	@Autowired
 	private BodyInfoRepository bodyInfoRepository;
@@ -52,6 +54,7 @@ class UserInfoRepositoryTest {
 			LocalDateTime.now(),
 			LocalDateTime.now()
 		);
+		userRepository.saveAndFlush(user);
 
 		// BodyInfo 객체 생성
 		BodyInfoDto bodyInfoDto = new BodyInfoDto(LocalDate.of(1990, 1, 1), 180.0, 75.0);
@@ -72,10 +75,6 @@ class UserInfoRepositoryTest {
 		BodyInfo bodyInfo = request.bodyInfoDto().toEntity();
 		Gym gym = request.gymDto().toEntity();
 
-		userRepository.saveAndFlush(user);
-		gymRepository.saveAndFlush(gym);
-		bodyInfoRepository.saveAndFlush(bodyInfo);
-
 		UserInfo userInfo = new UserInfo(user,
 			goals,
 			request.gender(),
@@ -84,9 +83,10 @@ class UserInfoRepositoryTest {
 			request.exerciseLevel(),
 			request.agreeToReceive());
 
-		userInfoRepository.saveAndFlush(userInfo);
+		userInfoRepository.save(userInfo);
 
 		assertThat(userRepository.findAll().size()).isEqualTo(1);
+		assertThat(goalRepository.findAll().size()).isEqualTo(goals.size());
 		assertThat(gymRepository.findAll().size()).isEqualTo(1);
 		assertThat(bodyInfoRepository.findAll().size()).isEqualTo(1);
 		assertThat(userInfoRepository.findAll().size()).isEqualTo(1);

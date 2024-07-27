@@ -11,6 +11,7 @@ import jakarta.persistence.OneToOne;
 import java.time.LocalDate;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
 @NoArgsConstructor
@@ -30,6 +31,7 @@ public class BodyInfo {
 	@Column(nullable = false)
 	private Double weight;
 
+	@Setter
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_info_id")
 	private UserInfo userInfo;

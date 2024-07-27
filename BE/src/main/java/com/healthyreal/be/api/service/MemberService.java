@@ -6,8 +6,6 @@ import com.healthyreal.be.api.entity.userInfo.Goal;
 import com.healthyreal.be.api.entity.userInfo.Gym;
 import com.healthyreal.be.api.entity.userInfo.UserInfo;
 import com.healthyreal.be.api.entity.userInfo.dto.MemberRegisterRequest;
-import com.healthyreal.be.api.repository.userInfo.BodyInfoRepository;
-import com.healthyreal.be.api.repository.userInfo.GymRepository;
 import com.healthyreal.be.api.repository.userInfo.UserInfoRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -18,8 +16,6 @@ import org.springframework.stereotype.Service;
 public class MemberService {
 
 	private final UserInfoRepository userInfoRepository;
-	private final GymRepository gymRepository;
-	private final BodyInfoRepository bodyInfoRepository;
 
 	public void register(final Member user, final MemberRegisterRequest request) {
 		List<Goal> goals = request.goalTypesToEntity();
@@ -34,8 +30,6 @@ public class MemberService {
 			request.exerciseLevel(),
 			request.agreeToReceive());
 
-		gymRepository.save(gym);
-		bodyInfoRepository.save(bodyInfo);
 		userInfoRepository.save(userInfo);
 	}
 }

@@ -4,6 +4,7 @@ import com.healthyreal.be.api.entity.trainer.TrainerInfo;
 import com.healthyreal.be.api.entity.userInfo.UserInfo;
 import com.healthyreal.be.oauth.entity.ProviderType;
 import com.healthyreal.be.oauth.entity.RoleType;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -83,10 +84,10 @@ public class Member {
 	@NotNull
 	private LocalDateTime modifiedAt;
 
-	@OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
+	@OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private UserInfo userInfo;
 
-	@OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
+	@OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private TrainerInfo trainerInfo;
 
 	public Member(
