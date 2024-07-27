@@ -1,11 +1,11 @@
 package com.healthyreal.be.api.repository.user;
 
-import com.healthyreal.be.api.entity.user.User;
+import com.healthyreal.be.api.entity.user.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, Long> {
-	User findByUserId(String userId);
+public interface UserRepository extends JpaRepository<Member, Long> {
+	Member findByUserId(String userId);
 
 }

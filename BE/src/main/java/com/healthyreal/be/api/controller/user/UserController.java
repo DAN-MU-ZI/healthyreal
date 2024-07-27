@@ -1,6 +1,6 @@
 package com.healthyreal.be.api.controller.user;
 
-import com.healthyreal.be.api.entity.user.User;
+import com.healthyreal.be.api.entity.user.Member;
 import com.healthyreal.be.api.entity.userInfo.dto.MemberRegisterRequest;
 import com.healthyreal.be.api.service.MemberService;
 import com.healthyreal.be.utils.CurrentUser;
@@ -19,17 +19,18 @@ public class UserController {
 	private final MemberService memberService;
 
 	@GetMapping
-	public ResponseEntity<UserResponse> getUser(@CurrentUser User user) {
+	public ResponseEntity<UserResponse> getUser(@CurrentUser Member user) {
 		return ResponseEntity.ok(new UserResponse(user));
 	}
 
 	@PostMapping
 	public ResponseEntity<String> registerMember(
 		@RequestBody MemberRegisterRequest request,
-		@CurrentUser User user) {
+		@CurrentUser Member user) {
 
 		memberService.register(user, request);
 
 		return ResponseEntity.ok("ok");
 	}
+
 }

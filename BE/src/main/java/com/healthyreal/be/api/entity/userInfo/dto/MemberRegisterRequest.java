@@ -10,20 +10,16 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public record MemberRegisterRequest(Gender gender,
-									ExerciseLevel exerciseLevel,
-									GymDto gymDto,
-									BodyInfoDto bodyInfoDto,
-									List<GoalType> goalTypes) {
+public record MemberRegisterRequest(
+	List<GoalType> goalTypes,
+	Gender gender,
+	BodyInfoDto bodyInfoDto,
+	GymDto gymDto,
+	ExerciseLevel exerciseLevel,
+	Boolean agreeToReceive) {
 
-	/*
-	"name": "My Gym",
-	"address": "123 Fitness St."
-	 */
-	public record GymDto(String name, String address) {
-		public Gym toEntity() {
-			return new Gym(name, address);
-		}
+	public List<Goal> goalTypesToEntity() {
+		return goalTypes.stream().map(Goal::new).collect(Collectors.toList());
 	}
 
 	/*
@@ -39,7 +35,13 @@ public record MemberRegisterRequest(Gender gender,
 		}
 	}
 
-	public List<Goal> goalTypesToEntity() {
-		return goalTypes.stream().map(Goal::new).collect(Collectors.toList());
+	/*
+	"name": "My Gym",
+	"address": "123 Fitness St."
+	 */
+	public record GymDto(String name, String address) {
+		public Gym toEntity() {
+			return new Gym(name, address);
+		}
 	}
 }

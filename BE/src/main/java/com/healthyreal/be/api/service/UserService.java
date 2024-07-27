@@ -1,6 +1,6 @@
 package com.healthyreal.be.api.service;
 
-import com.healthyreal.be.api.entity.user.User;
+import com.healthyreal.be.api.entity.user.Member;
 import com.healthyreal.be.api.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 public class UserService {
 	private final UserRepository userRepository;
 
-	public User getUser(String userId) {
+	public Member getUser(String userId) {
 		return userRepository.findByUserId(userId);
 	}
 }

@@ -1,13 +1,12 @@
 package com.healthyreal.be.api.service;
 
-import com.healthyreal.be.api.entity.user.User;
+import com.healthyreal.be.api.entity.user.Member;
 import com.healthyreal.be.api.entity.userInfo.BodyInfo;
 import com.healthyreal.be.api.entity.userInfo.Goal;
 import com.healthyreal.be.api.entity.userInfo.Gym;
 import com.healthyreal.be.api.entity.userInfo.UserInfo;
 import com.healthyreal.be.api.entity.userInfo.dto.MemberRegisterRequest;
 import com.healthyreal.be.api.repository.userInfo.BodyInfoRepository;
-import com.healthyreal.be.api.repository.userInfo.GoalRepository;
 import com.healthyreal.be.api.repository.userInfo.GymRepository;
 import com.healthyreal.be.api.repository.userInfo.UserInfoRepository;
 import java.util.List;
@@ -17,20 +16,26 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class MemberService {
-	private final BodyInfoRepository bodyInfoRepository;
-	private final GymRepository gymRepository;
-	private final GoalRepository goalRepository;
+
 	private final UserInfoRepository userInfoRepository;
+	private final GymRepository gymRepository;
+	private final BodyInfoRepository bodyInfoRepository;
 
-	public void register(final User user, final MemberRegisterRequest request) {
-		BodyInfo bodyInfo = request.bodyInfoDto().toEntity();
-		bodyInfoRepository.save(bodyInfo);
-		Gym gym = request.gymDto().toEntity();
-		gymRepository.save(gym);
+	public void register(final Member user, final MemberRegisterRequest request) {
 		List<Goal> goals = request.goalTypesToEntity();
-		goalRepository.saveAll(goals);
+		BodyInfo bodyInfo = request.bodyInfoDto().toEntity();
+		Gym gym = request.gymDto().toEntity();
 
-		UserInfo userInfo = new UserInfo(user, request.gender(), request.exerciseLevel(), goals, bodyInfo, gym);
+		UserInfo userInfo = new UserInfo(user,
+			goals,
+			request.gender(),
+			bodyInfo,
+			gym,
+			request.exerciseLevel(),
+			request.agreeToReceive());
+
+		gymRepository.save(gym);
+		bodyInfoRepository.save(bodyInfo);
 		userInfoRepository.save(userInfo);
 	}
 }

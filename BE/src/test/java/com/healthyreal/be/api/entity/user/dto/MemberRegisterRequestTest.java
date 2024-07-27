@@ -28,8 +28,13 @@ class MemberRegisterRequestTest {
 		BodyInfoDto bodyInfo = new BodyInfoDto(LocalDate.of(1990, 1, 1), 180.0, 75.0);
 
 		// MemberRegisterRequest 객체 생성
-		MemberRegisterRequest request = new MemberRegisterRequest(Gender.MALE, ExerciseLevel.BEGINNER, gym, bodyInfo,
-			Arrays.asList(GoalType.WEIGHT_LOSS, GoalType.MUSCLE_GAIN));
+		MemberRegisterRequest request = new MemberRegisterRequest(
+			Arrays.asList(GoalType.WEIGHT_LOSS, GoalType.MUSCLE_GAIN),
+			Gender.MALE,
+			bodyInfo,
+			gym,
+			ExerciseLevel.BEGINNER,
+			true);
 
 		// JSON으로 직렬화
 		ObjectMapper objectMapper = new ObjectMapper();

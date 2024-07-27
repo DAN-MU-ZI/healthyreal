@@ -1,11 +1,17 @@
 package com.healthyreal.be.api.entity.userInfo;
 
+import com.healthyreal.be.api.entity.trainer.TrainerInfo;
+import com.healthyreal.be.api.entity.trainer.TrainingProgram;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import net.minidev.json.annotate.JsonIgnore;
@@ -20,7 +26,20 @@ public class Goal {
 	private Long id;
 
 	@Enumerated(EnumType.STRING)
+	@Column(nullable = false)
 	private GoalType goalType;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "user_info_id")
+	private UserInfo userInfo;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "training_program_id")
+	private TrainingProgram trainingProgram;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "trainer_info_id")
+	private TrainerInfo trainerInfo;
 
 	public Goal(final GoalType goalType) {
 		this.goalType = goalType;

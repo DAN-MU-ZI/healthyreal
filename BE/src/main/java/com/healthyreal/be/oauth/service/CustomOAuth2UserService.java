@@ -1,6 +1,6 @@
 package com.healthyreal.be.oauth.service;
 
-import com.healthyreal.be.api.entity.user.User;
+import com.healthyreal.be.api.entity.user.Member;
 import com.healthyreal.be.api.repository.user.UserRepository;
 import com.healthyreal.be.oauth.entity.ProviderType;
 import com.healthyreal.be.oauth.entity.RoleType;
@@ -39,7 +39,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 			userRequest.getClientRegistration().getRegistrationId().toUpperCase());
 
 		OAuth2UserInfo userInfo = OAuth2UserInfoFactory.getOAuth2UserInfo(providerType, user.getAttributes());
-		User savedUser = userRepository.findByUserId(userInfo.getId());
+		Member savedUser = userRepository.findByUserId(userInfo.getId());
 
 		if (savedUser != null) {
 			if (providerType != savedUser.getProviderType()) {
@@ -54,9 +54,9 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 		return UserPrincipal.create(savedUser, user.getAttributes());
 	}
 
-	private User createUser(final OAuth2UserInfo userInfo, final ProviderType providerType) {
+	private Member createUser(final OAuth2UserInfo userInfo, final ProviderType providerType) {
 		LocalDateTime now = LocalDateTime.now();
-		User user = new User(
+		Member user = new Member(
 			userInfo.getId(),
 			userInfo.getName(),
 			userInfo.getEmail(),
@@ -71,7 +71,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 		return userRepository.saveAndFlush(user);
 	}
 
-	private User updateUser(final User user, final OAuth2UserInfo userInfo) {
+	private Member updateUser(final Member user, final OAuth2UserInfo userInfo) {
 		if (userInfo.getName() != null && !user.getUsername().equals(userInfo.getName())) {
 			user.setUsername(userInfo.getName());
 		}

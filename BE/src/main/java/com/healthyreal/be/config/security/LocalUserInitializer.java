@@ -1,6 +1,6 @@
 package com.healthyreal.be.config.security;
 
-import com.healthyreal.be.api.entity.user.User;
+import com.healthyreal.be.api.entity.user.Member;
 import com.healthyreal.be.api.repository.user.UserRepository;
 import com.healthyreal.be.oauth.entity.ProviderType;
 import com.healthyreal.be.oauth.entity.RoleType;
@@ -27,7 +27,7 @@ public class LocalUserInitializer {
 	@PostConstruct
 	public void initLocalUsers() {
 		if (userRepository.findByUserId("localuser") == null) {
-			User user = new User(
+			Member user = new Member(
 				"localuser",
 				"Local User",
 				"localuser@example.com",
@@ -46,7 +46,7 @@ public class LocalUserInitializer {
 			log.info("Generated JWT token for {}: {}", user.getUserId(), token);
 		}
 		if (userRepository.findByUserId("localadmin") == null) {
-			User admin = new User(
+			Member admin = new Member(
 				"localadmin",
 				"Local Admin",
 				"localadmin@example.com",
