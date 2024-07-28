@@ -10,55 +10,83 @@ import com.healthyreal.be.api.entity.user.Member;
 import com.healthyreal.be.api.entity.userInfo.Goal;
 import com.healthyreal.be.api.entity.userInfo.Gym;
 import com.healthyreal.be.api.repository.trainer.TrainerInfoRepository;
-import java.time.LocalDateTime;
-import java.util.Arrays;
+import jakarta.transaction.Transactional;
+import java.util.Iterator;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.apache.http.entity.ContentType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class TrainerService {
 	private final TrainerInfoRepository trainerInfoRepository;
+	private final S3Service s3Service;
 
-	public void register(final Member user,
+	public void register(
+		final Member user,
 		final TrainerRequest request,
 		final List<MultipartFile> qualificationImages,
-		final List<MultipartFile> trainerService
+		final List<MultipartFile> trainingProgramImages
 	) {
 		Gym gym = request.gymDto().toEntity();
 		List<Goal> goals = request.goalTypesToEntity();
-		List<Qualification> qualificationList = request.qualificationDtoListToEntity();
+		List<Qualification> qualifications = request.qualificationDtoListToEntity();
 		TrainingProgram trainingProgram = request.trainingProgramDto().toEntity();
-		List<Schedule> scheduleList = request.scheduleDtoListToEntity();
+		List<Schedule> schedules = request.scheduleDtoListToEntity();
 		String profileDescription = request.profileDescription();
 
-		String imageDir = "/test";
+		validateImageCounts(qualifications, trainingProgram, qualificationImages, trainingProgramImages);
 
-		qualificationList.forEach(qualification -> {
-			S3Image s3Image = new S3Image(imageDir, qualification.getContent(), LocalDateTime.now(), 100L,
-				ContentType.IMAGE_PNG.getMimeType());
-			qualification.setImage(s3Image);
+		List<S3Image> s3Images = s3Service.saveImages(qualificationImages, "trainer/qualification");
+		Iterator<S3Image> imageIterator = s3Images.iterator();
+
+		qualifications.forEach(qualification -> {
+			if (imageIterator.hasNext()) {
+				qualification.setImage(imageIterator.next());
+			}
 		});
+		List<S3Image> trainingProgramImagesList = s3Service.saveImages(trainingProgramImages,
+			"trainer/trainingProgram");
+		trainingProgram.addAllImage(trainingProgramImagesList);
 
-		List<S3Image> imageList = Arrays.asList(
-			new S3Image(imageDir, "/file1", LocalDateTime.now(), 100L, ContentType.IMAGE_PNG.getMimeType()),
-			new S3Image(imageDir, "/file2", LocalDateTime.now(), 100L, ContentType.IMAGE_PNG.getMimeType()),
-			new S3Image(imageDir, "/file3", LocalDateTime.now(), 100L, ContentType.IMAGE_PNG.getMimeType()),
-			new S3Image(imageDir, "/file4", LocalDateTime.now(), 100L, ContentType.IMAGE_PNG.getMimeType())
-		);
-		trainingProgram.addAllImage(imageList);
-
-		TrainerInfo trainerInfo = new TrainerInfo(user,
-			gym,
-			goals,
-			qualificationList,
-			trainingProgram,
-			scheduleList,
+		TrainerInfo trainerInfo = createTrainerInfo(user, gym, goals, qualifications, trainingProgram, schedules,
 			profileDescription);
-
 		trainerInfoRepository.save(trainerInfo);
 	}
+
+	private void validateImageCounts(
+		final List<Qualification> qualifications,
+		final TrainingProgram trainingProgram,
+		final List<MultipartFile> qualificationImages,
+		final List<MultipartFile> trainingProgramImages
+	) {
+		if (qualifications.size() != qualificationImages.size()) {
+			throw new IllegalArgumentException(
+				"The number of qualifications must match the number of qualification images.");
+		}
+
+		if (qualificationImages.size() != trainingProgramImages.size()) {
+			throw new IllegalArgumentException(
+				"The number of qualification images must match the number of training program images.");
+		}
+
+		if (trainingProgramImages.isEmpty() && trainingProgram == null) {
+			throw new IllegalArgumentException("No training program images provided.");
+		}
+	}
+
+	private TrainerInfo createTrainerInfo(
+		final Member user,
+		final Gym gym,
+		final List<Goal> goals,
+		final List<Qualification> qualifications,
+		final TrainingProgram trainingProgram,
+		final List<Schedule> schedules,
+		final String profileDescription
+	) {
+		return new TrainerInfo(user, gym, goals, qualifications, trainingProgram, schedules, profileDescription);
+	}
+
 }

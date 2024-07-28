@@ -21,9 +21,9 @@ public class TrainerController {
 	@PostMapping("/register")
 	public ResponseEntity<String> registerTrainer(
 		@CurrentUser Member user,
-		@RequestPart("data") TrainerRequest request,
-		@RequestPart("qualificationImages") List<MultipartFile> qualificationImages,
-		@RequestPart("trainingProgramImages") List<MultipartFile> trainingProgramImages
+		@RequestPart(value = "data", required = true) TrainerRequest request,
+		@RequestPart(value = "qualificationImages", required = true) List<MultipartFile> qualificationImages,
+		@RequestPart(value = "trainingProgramImages", required = true) List<MultipartFile> trainingProgramImages
 	) {
 
 		trainerService.register(user, request, qualificationImages, trainingProgramImages);
