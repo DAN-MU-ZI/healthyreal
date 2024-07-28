@@ -1,6 +1,6 @@
 import * as React from "react";
-import {useState} from "react";
-import {useNavigate} from "react-router-dom";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import OnboardLayout from "../components/templates/OnboardLayout";
 import Text from "../components/atoms/Text";
 import Button from "../components/atoms/Button";
@@ -18,7 +18,7 @@ export default function Onboarding() {
   const [onboardingData, setOnboaringData] = useState<any>({
     goals: [],
     gender: "",
-    bodyInfo: {birthYear: "", height: "", weight: ""},
+    bodyInfo: { birthYear: "", height: "", weight: "" },
     level: "",
     place: "",
   });
@@ -27,12 +27,11 @@ export default function Onboarding() {
   const titles = dbData.titles;
 
   const handleDataChange = (key: string, data: any) => {
-    setOnboaringData({...onboardingData, [key]: data});
+    setOnboaringData({ ...onboardingData, [key]: data });
   };
 
   const handleNext = () => {
-    setStep(step + 1);
-    console.log(onboardingData);
+    setStep(prevStep => prevStep + 1);
   };
 
   const endOnboarding = () => {
@@ -44,18 +43,21 @@ export default function Onboarding() {
       case 1:
         return (
           <GoalSelection
+            onboardingGoals={onboardingData.goals}
             onDataChange={(data) => handleDataChange("goals", data)}
           />
         );
       case 2:
         return (
           <GenderSelection
+            onboardingGender={onboardingData.gender}
             onDataChange={(data) => handleDataChange("gender", data)}
           />
         );
       case 3:
         return (
           <BodyInfo
+            bodyInfo={onboardingData.bodyInfo}
             onDataChange={(data) => handleDataChange("bodyInfo", data)}
           />
         );
@@ -71,6 +73,7 @@ export default function Onboarding() {
       case 5:
         return (
           <LevelSelection
+            onboardingLevel={onboardingData.level}
             onDataChange={(data) => handleDataChange("level", data)}
           />
         );
@@ -81,6 +84,9 @@ export default function Onboarding() {
 
   return (
     <div className="divTag">
+      <div onClick={() => {
+        setStep(step - 1 > 0 ? step - 1 : 1)
+      }}>뒤로가기 버튼(이후 수정필요)</div>
       <OnboardLayout
         header="back"
         title={
@@ -96,7 +102,8 @@ export default function Onboarding() {
         contents={<>{renderStep()}</>}
         bottoms={
           step > 5 ? (
-            <Button onClick={endOnboarding} backgroundColor="var(--main-blue)">
+            <Button onClick={endOnboarding}
+              backgroundColor="var(--main-blue)">
               온보딩 완료
             </Button>
           ) : (

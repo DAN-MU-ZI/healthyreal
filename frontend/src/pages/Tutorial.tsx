@@ -1,5 +1,5 @@
 import * as React from "react";
-import {useState, useEffect} from "react";
+import { useState, useEffect } from "react";
 import Text from "../components/atoms/Text";
 import Button from "../components/atoms/Button";
 // import testPicture from "../assets/images/testPicture.png";

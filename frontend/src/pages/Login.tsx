@@ -44,25 +44,12 @@ export default function Login() {
   };
 
   const handleLogin = (provider: string) => {
-<<<<<<< Updated upstream
     // const redirectUri = `http://localhost:8080/oauth2/authorization/${provider}?redirect_uri=http://localhost:3000/oauth/redirect`;
     const redirectUri = `http://default-loadbalancer-ser-e983d-25608891-dc411cb92a75.kr.lb.naverncp.com:8080/oauth2/authorization/${provider}?redirect_uri=http://localhost:3000/oauth/redirect`;
-=======
-    const redirectUri = `http://localhost:8080/oauth2/authorization/${provider}?redirect_uri=http://localhost:3000/oauth/redirect`;
-    // const redirectUri = `http://default-loadbalancer-ser-e983d-25608891-dc411cb92a75.kr.lb.naverncp.com:8080/oauth2/authorization/${provider}?redirect_uri=http://localhost:3000/oauth/redirect`;
->>>>>>> Stashed changes
     console.log(redirectUri);
     if (redirectUri) {
       window.location.href = redirectUri;
     }
-  };
-
-  const clickGoogle = () => {
-    handleLogin('google');
-  };
-
-  const clickKakao = () => {
-    handleLogin('kakao');
   };
 
   return (
@@ -92,7 +79,7 @@ export default function Login() {
               backgroundColor="#FECA00"
               width="var(--btn-large)"
               color="var(--main-blue)"
-              onClick={clickKakao}
+              onClick={() => handleLogin("kakao")}
             >
               <img src={kakaotalkLogo} alt="kakaoIcon" width="25px" />
               카카오톡으로 시작하기
@@ -101,7 +88,7 @@ export default function Login() {
               backgroundColor="var(--main-purple)"
               width="var(--btn-large)"
               color="var(--main-blue)"
-              onClick={clickGoogle}
+              onClick={() => handleLogin("google")}
             >
               <img src={googleLogo} alt="googleIcon" width="25px" />
               구글로 시작하기
