@@ -398,3 +398,5 @@ gradle-app.setting
 /BE/build
 /frontend/node_modules
 /BE/.idea
+/BE/gradle
+BE/env.txt
