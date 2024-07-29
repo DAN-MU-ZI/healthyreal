@@ -25,9 +25,6 @@ const GenderSelection: React.FC<GenderProp> = ({ onboardingGender, onDataChange 
     onDataChange(gender);
   };
 
-  const getButtonColor = (gender: string) => (
-    selectedGender === gender ? "#28a745" : "var(--main-blue)"
-  );
 
   return (
     <div className="genderCardContainer">
