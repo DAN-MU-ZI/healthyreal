@@ -1,0 +1,8 @@
+.back {
+  border: 0;
+  background-color: transparent;
+}
+
+.back > img {
+  width: 19px;
+}

@@ -21,6 +21,7 @@ const CardContainer = styled.div<{selected: boolean}>`
   border-radius: 25px;
   background-color: ${({selected}) => (selected ? "#fca34d" : "white")};
   color: ${({selected}) => (selected ? "white" : "black")};
+  box-shadow: 0 0 5px 2px #f1f1f1;
 `;
 
 function Card(props: Props) {
