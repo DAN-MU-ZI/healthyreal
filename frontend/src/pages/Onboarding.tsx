@@ -1,6 +1,6 @@
 import * as React from "react";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import {useState} from "react";
+import {useNavigate} from "react-router-dom";
 import OnboardLayout from "../components/templates/OnboardLayout";
 import Text from "../components/atoms/Text";
 import Button from "../components/atoms/Button";
@@ -9,7 +9,9 @@ import dbData from "../db/data.json";
 import GoalSelection from "../components/molecules/GoalSelection";
 import GenderSelection from "../components/molecules/GenderSelection";
 import BodyInfo from "../components/molecules/BodyInfo";
+import GymSearch from "../components/molecules/GymSearch";
 import LevelSelection from "../components/molecules/LevelSelection";
+import Back from "../components/atoms/Back";
 
 export default function Onboarding() {
   let navigate = useNavigate();
@@ -18,24 +20,47 @@ export default function Onboarding() {
   const [onboardingData, setOnboaringData] = useState<any>({
     goals: [],
     gender: "",
-    bodyInfo: { birthYear: "", height: "", weight: "" },
+    bodyInfo: {birthYear: "", height: "", weight: ""},
     level: "",
-    place: "",
+    gym: "",
   });
   const [step, setStep] = useState<number>(1);
 
   const titles = dbData.titles;
 
   const handleDataChange = (key: string, data: any) => {
-    setOnboaringData({ ...onboardingData, [key]: data });
+    setOnboaringData({...onboardingData, [key]: data});
   };
 
   const handleNext = () => {
-    setStep(prevStep => prevStep + 1);
+    if (validateStep()) {
+      setStep(step + 1);
+    } else {
+      alert("모든 필드를 입력해주세요.");
+    }
+    console.log(onboardingData);
   };
 
   const endOnboarding = () => {
-    navigate(`/intro/tutorial`);
+    navigate(`/main`);
+  };
+
+  const validateStep = (): boolean => {
+    switch (step) {
+      case 1:
+        return onboardingData.goals.length > 0;
+      case 2:
+        return onboardingData.gender !== "";
+      case 3:
+        const {birthYear, height, weight} = onboardingData.bodyInfo;
+        return birthYear !== "" && height !== "" && weight !== "";
+      case 4:
+        return onboardingData.place !== "";
+      case 5:
+        return onboardingData.level !== "";
+      default:
+        return false;
+    }
   };
 
   const renderStep = () => {
@@ -43,37 +68,28 @@ export default function Onboarding() {
       case 1:
         return (
           <GoalSelection
-            onboardingGoals={onboardingData.goals}
             onDataChange={(data) => handleDataChange("goals", data)}
           />
         );
       case 2:
         return (
           <GenderSelection
-            onboardingGender={onboardingData.gender}
             onDataChange={(data) => handleDataChange("gender", data)}
           />
         );
       case 3:
         return (
           <BodyInfo
-            bodyInfo={onboardingData.bodyInfo}
             onDataChange={(data) => handleDataChange("bodyInfo", data)}
           />
         );
       case 4:
         return (
-          <Button
-            onClick={() => handleDataChange("place", "아무개")}
-            backgroundColor="var(--main-blue)"
-          >
-            헬스장
-          </Button>
+          <GymSearch onSelectGym={(gym) => handleDataChange("gym", gym)} />
         );
       case 5:
         return (
           <LevelSelection
-            onboardingLevel={onboardingData.level}
             onDataChange={(data) => handleDataChange("level", data)}
           />
         );
@@ -82,13 +98,14 @@ export default function Onboarding() {
     }
   };
 
+  const clickBack = () => {
+    setStep(step - 1);
+  };
+
   return (
     <div className="divTag">
-      <div onClick={() => {
-        setStep(step - 1 > 0 ? step - 1 : 1)
-      }}>뒤로가기 버튼(이후 수정필요)</div>
       <OnboardLayout
-        header="back"
+        header={step == 1 ? null : <Back onClick={clickBack} />}
         title={
           <>
             <Text color="var(--main-blue)" fontSize="30px" fontWeight="600">
@@ -102,8 +119,7 @@ export default function Onboarding() {
         contents={<>{renderStep()}</>}
         bottoms={
           step > 5 ? (
-            <Button onClick={endOnboarding}
-              backgroundColor="var(--main-blue)">
+            <Button onClick={endOnboarding} backgroundColor="var(--main-blue)">
               온보딩 완료
             </Button>
           ) : (

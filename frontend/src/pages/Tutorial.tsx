@@ -1,8 +1,8 @@
 import * as React from "react";
-import { useState, useEffect } from "react";
+import {useState, useEffect} from "react";
+import {useNavigate} from "react-router-dom";
 import Text from "../components/atoms/Text";
 import Button from "../components/atoms/Button";
-// import testPicture from "../assets/images/testPicture.png";
 import TutorialLayout from "../components/templates/TutorialLayout";
 import dbData from "../db/data.json";
 
@@ -11,6 +11,7 @@ export default function Tutorial() {
   const [detail, setDetail] = useState("null");
   const [img, setImg] = useState("null");
   const [page, setPage] = useState(0);
+  let navigate = useNavigate();
 
   const tutorials = dbData.tutorials;
 
@@ -21,6 +22,7 @@ export default function Tutorial() {
   const nextTutorial = (page: number) => {
     const contents = tutorials;
     if (page > tutorials.length - 1) {
+      navigate("/intro/onboarding");
       console.log("end!");
     } else {
       setPage((page) => page + 1);
