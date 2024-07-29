@@ -1,6 +1,6 @@
 import * as React from "react";
-import {useState} from "react";
-import {useNavigate} from "react-router-dom";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import OnboardLayout from "../components/templates/OnboardLayout";
 import Text from "../components/atoms/Text";
 import Button from "../components/atoms/Button";
@@ -8,10 +8,10 @@ import testPicture from "../assets/images/testPicture.png";
 import dbData from "../db/data.json";
 import GoalSelection from "../components/molecules/GoalSelection";
 import GenderSelection from "../components/molecules/GenderSelection";
-import BodyInfo from "../components/molecules/BodyInfo";
 import GymSearch from "../components/molecules/GymSearch";
 import LevelSelection from "../components/molecules/LevelSelection";
 import Back from "../components/atoms/Back";
+import BodyInfo from "../components/molecules/BodyInfo";
 
 export default function Onboarding() {
   let navigate = useNavigate();
@@ -20,7 +20,7 @@ export default function Onboarding() {
   const [onboardingData, setOnboaringData] = useState<any>({
     goals: [],
     gender: "",
-    bodyInfo: {birthYear: "", height: "", weight: ""},
+    bodyInfo: { birthYear: "", height: "", weight: "" },
     level: "",
     gym: "",
   });
@@ -29,7 +29,7 @@ export default function Onboarding() {
   const titles = dbData.titles;
 
   const handleDataChange = (key: string, data: any) => {
-    setOnboaringData({...onboardingData, [key]: data});
+    setOnboaringData({ ...onboardingData, [key]: data });
   };
 
   const handleNext = () => {
@@ -52,7 +52,7 @@ export default function Onboarding() {
       case 2:
         return onboardingData.gender !== "";
       case 3:
-        const {birthYear, height, weight} = onboardingData.bodyInfo;
+        const { birthYear, height, weight } = onboardingData.bodyInfo;
         return birthYear !== "" && height !== "" && weight !== "";
       case 4:
         return onboardingData.place !== "";

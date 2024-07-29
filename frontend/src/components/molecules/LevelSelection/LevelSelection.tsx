@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import "./styles.css";
 import Button from "../../atoms/Button";
 
@@ -8,14 +8,8 @@ interface LevelProp {
   onDataChange: (selectedGoals: string) => void;
 }
 
-const LevelSelection: React.FC<LevelProp> = ({ onboardingLevel, onDataChange }) => {
-  const [selectedLevel, setSelectedLevel] = useState<string>(onboardingLevel);
-
-  useEffect(() => {
-    if (selectedLevel !== onboardingLevel) {
-      onDataChange(selectedLevel);
-    }
-  }, [selectedLevel, onboardingLevel]);
+const LevelSelection: React.FC<LevelProp> = ({ onDataChange }) => {
+  const [selectedLevel, setSelectedLevel] = useState<string>("");
 
   const handleLevelSelect = (level: string) => {
     setSelectedLevel(level);

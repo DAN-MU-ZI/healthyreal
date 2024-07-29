@@ -1,5 +1,5 @@
 import * as React from "react";
-import {useState, useEffect} from "react";
+import { useState, useEffect } from "react";
 import "./styles.css";
 
 import Button from "../../atoms/Button";
@@ -13,13 +13,13 @@ interface BodyInfoProp {
   }) => void;
 }
 
-const BodyInfo: React.FC<BodyInfoProp> = ({onDataChange}) => {
+const BodyInfo: React.FC<BodyInfoProp> = ({ onDataChange }) => {
   const [birthYear, setBirthYear] = useState<string>("");
   const [height, setHeight] = useState<string>("");
   const [weight, setWeight] = useState<string>("");
 
   useEffect(() => {
-    onDataChange({birthYear, height, weight});
+    onDataChange({ birthYear, height, weight });
   }, [birthYear, height, weight]);
 
   return (
