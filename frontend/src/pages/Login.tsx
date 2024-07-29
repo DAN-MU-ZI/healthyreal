@@ -26,7 +26,7 @@ export default function Login() {
     console.log(memberType);
   }, [memberType]);
 
-  const clickLogin = () => {
+  const clickLogin = (provider: string) => {
     console.log(memberType);
     handleLogin(provider);
     getData();
