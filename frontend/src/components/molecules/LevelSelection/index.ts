@@ -1,1 +1,1 @@
-export {default} from "./LevelSelection";
+export { default } from "./LevelSelection";

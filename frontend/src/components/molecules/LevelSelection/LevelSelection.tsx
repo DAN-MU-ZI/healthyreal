@@ -8,8 +8,14 @@ interface LevelProp {
   onDataChange: (selectedGoals: string) => void;
 }
 
-const LevelSelection: React.FC<LevelProp> = ({ onDataChange }) => {
+const LevelSelection: React.FC<LevelProp> = ({ onboardingLevel, onDataChange }) => {
   const [selectedLevel, setSelectedLevel] = useState<string>("");
+
+  React.useEffect(() => {
+    if (onboardingLevel !== selectedLevel) {
+      setSelectedLevel(onboardingLevel || "");
+    }
+  }, [onboardingLevel, selectedLevel]);
 
   const handleLevelSelect = (level: string) => {
     setSelectedLevel(level);
