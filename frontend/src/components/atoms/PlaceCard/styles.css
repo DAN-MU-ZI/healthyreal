@@ -1,0 +1,40 @@
+/* styles.css */
+.gymItem {
+  border: 1px solid #dcdcdc;
+  border-radius: 10px;
+  padding: 16px;
+  margin: 10px 0;
+  display: flex;
+  flex-direction: column;
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.gymItem:hover {
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.gymItem .gymTitle {
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 8px;
+}
+
+.gymItem .gymAddress,
+.gymItem .gymPostalCode {
+  display: flex;
+  font-size: 14px;
+  color: #666;
+  margin: 2px 0;
+}
+
+.gymItem .label {
+  display: inline-block;
+  padding: 4px 8px;
+  background-color: #e0e0e0;
+  border-radius: 5px;
+  font-size: 12px;
+  color: #666;
+  margin-right: 10px;
+}

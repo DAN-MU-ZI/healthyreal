@@ -29,10 +29,10 @@ const BodyInfo: React.FC<BodyInfoProp> = ({onDataChange}) => {
           생년월일
         </Text>
         <input
-          type="text"
-          placeholder="0000.00.00"
+          type="date"
           value={birthYear}
           onChange={(e) => setBirthYear(e.target.value)}
+          pattern="\d{4}-\d{2}-\d{2}"
         />
       </div>
       <div className="inputItem">
