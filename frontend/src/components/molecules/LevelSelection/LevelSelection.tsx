@@ -1,5 +1,5 @@
 import * as React from "react";
-import {useState} from "react";
+import { useState } from "react";
 import "./styles.css";
 import Button from "../../atoms/Button";
 
@@ -7,7 +7,7 @@ interface LevelProp {
   onDataChange: (selectedGoals: string) => void;
 }
 
-const LevelSelection: React.FC<LevelProp> = ({onDataChange}) => {
+const LevelSelection: React.FC<LevelProp> = ({ onDataChange }) => {
   const [selectedLevel, setSelectedLevel] = useState<string>("");
 
   const handleLevelSelect = (level: string) => {
