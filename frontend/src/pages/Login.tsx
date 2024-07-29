@@ -6,7 +6,6 @@ import Button from "../components/atoms/Button";
 import naverLogo from "../assets/images/naverLogo.png";
 import trainerIcon from "../assets/images/trainerIcon.png";
 import memberIcon from "../assets/images/memberIcon.png";
-import styled from "@emotion/styled";
 import request from "../apis/api/request";
 import axios from "axios";
 import Card from "../components/atoms/Card";
@@ -14,8 +13,8 @@ import googleLogo from "../assets/images/googleLogo.png";
 import kakaotalkLogo from "../assets/images/kakaotalkLogo.png";
 
 export default function Login() {
-  const baceUrl = process.env.REACT_APP_BACE_URL;
-  const redirect_url = "http://localhost:3000/oauth/redirect";
+  const baseUrl = process.env.REACT_APP_BACE_URL;
+  const redirect_uri = "http://localhost:3000/oauth/redirect";
   const [memberType, setMemberType] = useState("");
 
   const onClickTypeCard = (type: string) => {
@@ -32,7 +31,6 @@ export default function Login() {
     getData();
   };
 
-  // 인증이 필요없는 데이터 요청
   const getData = async () => {
     try {
       const res = await request("GET", "/source/1");
@@ -43,10 +41,9 @@ export default function Login() {
   };
 
   const handleLogin = (provider: string) => {
-    const redirectUrl = `${baceUrl}/oauth2/authorization/${provider}?redirect_uri=${redirect_url}`;
-    console.log(redirectUrl);
-    if (redirectUrl) {
-      window.location.href = redirectUrl;
+    const redirectUri = `${baseUrl}/oauth2/authorization/${provider}?redirect_uri=${redirect_uri}`;
+    if (redirectUri) {
+      window.location.href = redirectUri;
     }
   };
 

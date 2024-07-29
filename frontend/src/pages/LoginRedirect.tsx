@@ -1,8 +1,9 @@
 import axios from "axios";
 import React, {useEffect} from "react";
 import {useNavigate} from "react-router-dom";
+import {defaultInstance} from "../apis/api";
 
-const LoginCallback: React.FC = () => {
+const LoginRedirect: React.FC = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -11,14 +12,19 @@ const LoginCallback: React.FC = () => {
 
     if (token) {
       localStorage.setItem("token", token);
+      console.log(token);
 
-      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+      defaultInstance.defaults.headers.common[
+        "Authorization"
+      ] = `Bearer ${token}`;
+
+      navigate("/intro/tutorial");
+    } else {
+      navigate("/login");
     }
-
-    navigate("/login/progress");
   }, [navigate]);
 
   return null;
 };
 
-export default LoginCallback;
+export default LoginRedirect;

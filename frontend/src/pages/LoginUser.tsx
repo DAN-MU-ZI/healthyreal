@@ -1,33 +1,34 @@
+// 요청하게 될 떄 필요한 코드
 import React, {useState, useEffect} from "react";
 import axios from "axios";
 import request from "../apis/api/request";
 import {useNavigate} from "react-router-dom";
 
 interface User {
-  id: number;
-  name: string;
+  userSeq: number;
+  userId: string;
+  username: string;
   email: string;
 }
 
-const LoginProgress: React.FC = () => {
+interface ApiResponse {
+  user: User;
+}
+
+const LoginUser: React.FC = () => {
   const navigate = useNavigate();
-  const [userData, setUserData] = useState<User[] | null>(null);
+  const [userData, setUserData] = useState<User | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   const getUserData = async () => {
     try {
       const token = localStorage.getItem("token");
+
       if (token) {
-        // const response = await axios.get<User[]>('http://localhost:8080/api/v1/users', {
-        //   headers: {
-        //     Authorization: `Bearer ${token}`,
-        //   },
-        // });
-        const response = await request("GET", "/api/v1/users");
-        setUserData(response.data as User[]);
-        console.log(response.data);
+        const response = await request<ApiResponse>("GET", "/api/v1/users");
+        console.log(response);
+        setUserData(response.data.user as User);
       }
-      setError(null);
     } catch (err) {
       console.error(error);
       if (axios.isAxiosError(err)) {
@@ -39,7 +40,6 @@ const LoginProgress: React.FC = () => {
           setError(`Login failed: ${err.message}`);
         }
       } else {
-        // 예상치 못한 오류 타입의 처리
         setError("An unexpected error occurred.");
       }
     }
@@ -48,23 +48,25 @@ const LoginProgress: React.FC = () => {
   useEffect(() => {
     getUserData();
   }, []);
+  useEffect(() => {
+    console.log("User data updated:", userData);
+  }, [userData]);
 
   const backToMain = () => {
-    navigate("/main");
+    navigate("/intro/tutorial");
   };
 
   return (
     <div>
       <div>로그인 결과</div>
       {userData ? (
-        userData.map((user) => (
-          <div key={user.id}>
-            <h2>{user.name}</h2>
-            <p>{user.email}</p>
-            <div>로그인이 정상적으로 처리되었습니다!</div>
-            <button onClick={backToMain}>메인화면으로 돌아가기</button>
-          </div>
-        ))
+        <div>
+          <h2>{userData.username}</h2>
+          <p>{userData.email}</p>
+          {/* <img src={userData.profileImageUrl} alt="Profile" /> */}
+          <div>로그인이 정상적으로 처리되었습니다!</div>
+          <button onClick={backToMain}>튜토리얼으로 돌아가기</button>
+        </div>
       ) : (
         <div>Loading...</div>
       )}
@@ -72,4 +74,4 @@ const LoginProgress: React.FC = () => {
   );
 };
 
-export default LoginProgress;
+export default LoginUser;
