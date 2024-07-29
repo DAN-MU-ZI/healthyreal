@@ -2,6 +2,8 @@ import * as React from "react";
 import {useState} from "react";
 import "./styles.css";
 import Button from "../../atoms/Button";
+import Card from "../../atoms/Card";
+import styled from "styled-components";
 
 interface GenderProp {
   onDataChange: (selectedGoals: string) => void;
@@ -16,22 +18,20 @@ const GenderSelection: React.FC<GenderProp> = ({onDataChange}) => {
   };
 
   return (
-    <>
-      <Button
-        backgroundColor="var(--main-blue)"
-        width="var(--btn-medium)"
+    <div className="genderCardContainer">
+      <Card
         onClick={() => handleGenderSelect("MALE")}
+        selected={selectedGender === "MALE"}
       >
         남성
-      </Button>
-      <Button
-        backgroundColor="var(--main-blue)"
-        width="var(--btn-medium)"
+      </Card>
+      <Card
         onClick={() => handleGenderSelect("FEMAlE")}
+        selected={selectedGender === "FEMAlE"}
       >
         여성
-      </Button>
-    </>
+      </Card>
+    </div>
   );
 };
 

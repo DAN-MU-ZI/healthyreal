@@ -9,7 +9,9 @@ import dbData from "../db/data.json";
 import GoalSelection from "../components/molecules/GoalSelection";
 import GenderSelection from "../components/molecules/GenderSelection";
 import BodyInfo from "../components/molecules/BodyInfo";
+import GymSearch from "../components/molecules/GymSearch";
 import LevelSelection from "../components/molecules/LevelSelection";
+import Back from "../components/atoms/Back";
 
 export default function Onboarding() {
   let navigate = useNavigate();
@@ -20,7 +22,7 @@ export default function Onboarding() {
     gender: "",
     bodyInfo: {birthYear: "", height: "", weight: ""},
     level: "",
-    place: "",
+    gym: "",
   });
   const [step, setStep] = useState<number>(1);
 
@@ -31,12 +33,34 @@ export default function Onboarding() {
   };
 
   const handleNext = () => {
-    setStep(step + 1);
+    if (validateStep()) {
+      setStep(step + 1);
+    } else {
+      alert("모든 필드를 입력해주세요.");
+    }
     console.log(onboardingData);
   };
 
   const endOnboarding = () => {
-    navigate(`/intro/tutorial`);
+    navigate(`/main`);
+  };
+
+  const validateStep = (): boolean => {
+    switch (step) {
+      case 1:
+        return onboardingData.goals.length > 0;
+      case 2:
+        return onboardingData.gender !== "";
+      case 3:
+        const {birthYear, height, weight} = onboardingData.bodyInfo;
+        return birthYear !== "" && height !== "" && weight !== "";
+      case 4:
+        return onboardingData.place !== "";
+      case 5:
+        return onboardingData.level !== "";
+      default:
+        return false;
+    }
   };
 
   const renderStep = () => {
@@ -61,12 +85,7 @@ export default function Onboarding() {
         );
       case 4:
         return (
-          <Button
-            onClick={() => handleDataChange("place", "아무개")}
-            backgroundColor="var(--main-blue)"
-          >
-            헬스장
-          </Button>
+          <GymSearch onSelectGym={(gym) => handleDataChange("gym", gym)} />
         );
       case 5:
         return (
@@ -79,10 +98,14 @@ export default function Onboarding() {
     }
   };
 
+  const clickBack = () => {
+    setStep(step - 1);
+  };
+
   return (
     <div className="divTag">
       <OnboardLayout
-        header="back"
+        header={step == 1 ? null : <Back onClick={clickBack} />}
         title={
           <>
             <Text color="var(--main-blue)" fontSize="30px" fontWeight="600">
