@@ -10,7 +10,7 @@ export default function Tutorial() {
   const [title, setTitle] = useState("null");
   const [detail, setDetail] = useState("null");
   const [img, setImg] = useState("null");
-  const [page, setPage] = useState(0);
+  const [page, setPage] = useState(1);
   let navigate = useNavigate();
 
   const tutorials = dbData.tutorials;
@@ -21,7 +21,7 @@ export default function Tutorial() {
 
   const nextTutorial = (page: number) => {
     const contents = tutorials;
-    if (page > tutorials.length - 1) {
+    if (page > tutorials.length - 2) {
       navigate("/intro/onboarding");
       console.log("end!");
     } else {

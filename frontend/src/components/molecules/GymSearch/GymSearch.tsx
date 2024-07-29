@@ -25,8 +25,6 @@ const GymSearch: React.FC<GymSearchProps> = ({onSelectGym}) => {
   const [filteredGyms, setFilteredGyms] = useState<Gym[]>([]);
 
   useEffect(() => {
-    // 헬스장 데이터를 가져오는 로직 (예: API 호출)
-    // 여기서는 예시로 하드코딩된 데이터를 사용합니다.
     const fetchGyms = async () => {
       const gymData: Gym[] = [
         {
