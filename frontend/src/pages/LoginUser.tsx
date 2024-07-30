@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import request from "../apis/api/request";
 import { useNavigate } from "react-router-dom";
+import { Configuration } from "../typescript-axios";
 
 interface User {
   userSeq: number;

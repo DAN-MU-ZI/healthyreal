@@ -1128,14 +1128,11 @@ export const UserControllerApiAxiosParamCreator = function (configuration?: Conf
         },
         /**
          * 
-         * @param {Member} user 
          * @param {MemberRegisterRequest} memberRegisterRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        registerMember: async (user: Member, memberRegisterRequest: MemberRegisterRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'user' is not null or undefined
-            assertParamExists('registerMember', 'user', user)
+        registerMember: async (memberRegisterRequest: MemberRegisterRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'memberRegisterRequest' is not null or undefined
             assertParamExists('registerMember', 'memberRegisterRequest', memberRegisterRequest)
             const localVarPath = `/api/v1/users`;
@@ -1153,12 +1150,6 @@ export const UserControllerApiAxiosParamCreator = function (configuration?: Conf
             // authentication bearerAuth required
             // http bearer authentication required
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-            if (user !== undefined) {
-                for (const [key, value] of Object.entries(user)) {
-                    localVarQueryParameter[key] = value;
-                }
-            }
 
 
     
@@ -1198,13 +1189,12 @@ export const UserControllerApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @param {Member} user 
          * @param {MemberRegisterRequest} memberRegisterRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async registerMember(user: Member, memberRegisterRequest: MemberRegisterRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.registerMember(user, memberRegisterRequest, options);
+        async registerMember(memberRegisterRequest: MemberRegisterRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.registerMember(memberRegisterRequest, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['UserControllerApi.registerMember']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -1230,13 +1220,12 @@ export const UserControllerApiFactory = function (configuration?: Configuration,
         },
         /**
          * 
-         * @param {Member} user 
          * @param {MemberRegisterRequest} memberRegisterRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        registerMember(user: Member, memberRegisterRequest: MemberRegisterRequest, options?: any): AxiosPromise<string> {
-            return localVarFp.registerMember(user, memberRegisterRequest, options).then((request) => request(axios, basePath));
+        registerMember(memberRegisterRequest: MemberRegisterRequest, options?: any): AxiosPromise<string> {
+            return localVarFp.registerMember(memberRegisterRequest, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -1261,14 +1250,13 @@ export class UserControllerApi extends BaseAPI {
 
     /**
      * 
-     * @param {Member} user 
      * @param {MemberRegisterRequest} memberRegisterRequest 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof UserControllerApi
      */
-    public registerMember(user: Member, memberRegisterRequest: MemberRegisterRequest, options?: RawAxiosRequestConfig) {
-        return UserControllerApiFp(this.configuration).registerMember(user, memberRegisterRequest, options).then((request) => request(this.axios, this.basePath));
+    public registerMember(memberRegisterRequest: MemberRegisterRequest, options?: RawAxiosRequestConfig) {
+        return UserControllerApiFp(this.configuration).registerMember(memberRegisterRequest, options).then((request) => request(this.axios, this.basePath));
     }
 }
 

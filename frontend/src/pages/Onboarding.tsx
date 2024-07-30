@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import OnboardLayout from "../components/templates/OnboardLayout";
 import Text from "../components/atoms/Text";
 import Button from "../components/atoms/Button";
-import testPicture from "../assets/images/testPicture.png";
 import dbData from "../db/data.json";
 import GoalSelection from "../components/molecules/GoalSelection";
 import GenderSelection from "../components/molecules/GenderSelection";
@@ -11,25 +10,44 @@ import GymSearch from "../components/molecules/GymSearch";
 import LevelSelection from "../components/molecules/LevelSelection";
 import Back from "../components/atoms/Back";
 import BodyInfo from "../components/molecules/BodyInfo";
+import { userApi } from "../apis/custom";
+import {
+  MemberRegisterRequest,
+  MemberRegisterRequestGoalTypesEnum,
+  MemberRegisterRequestGenderEnum,
+  BodyInfoDto,
+  GymDto,
+  MemberRegisterRequestExerciseLevelEnum,
+  UserInfoExerciseLevelEnum,
+} from "../typescript-axios";
 
+const initialOnboardingData: MemberRegisterRequest = {
+  goalTypes: [],
+  gender: undefined,
+  bodyInfoDto: {
+    birthDate: "",
+    height: 0,
+    weight: 0,
+  },
+  gymDto: {
+    name: "",
+    address: "",
+  },
+  exerciseLevel: undefined,
+  agreeToReceive: false,
+};
 
 export default function Onboarding() {
   let navigate = useNavigate();
-  const [title, setTitle] = useState("null");
-  const [detail, setDetail] = useState("null");
-  const [onboardingData, setOnboaringData] = useState<any>({
-    goals: [],
-    gender: "",
-    bodyInfo: { birthYear: "", height: 0, weight: 0 },
-    level: "",
-    gym: "",
-  });
+  const [onboardingData, setOnboardingData] = useState<MemberRegisterRequest>(
+    initialOnboardingData
+  );
   const [step, setStep] = useState<number>(1);
 
   const titles = dbData.titles;
 
-  const handleDataChange = (key: string, data: any) => {
-    setOnboaringData({ ...onboardingData, [key]: data });
+  const handleDataChange = (key: keyof MemberRegisterRequest, data: any) => {
+    setOnboardingData({ ...onboardingData, [key]: data });
   };
 
   const handleNext = () => {
@@ -41,35 +59,44 @@ export default function Onboarding() {
     console.log(onboardingData);
   };
 
-  const endOnboarding = () => {
-    navigate(`/main`);
+  const endOnboarding = async () => {
+    try {
+      console.log(onboardingData)
+      await userApi.registerMember(onboardingData);
+      navigate(`/main`);
+    } catch (error) {
+      console.error("온보딩 중 오류가 발생했습니다.", error);
+      alert("온보딩 중 오류가 발생했습니다. 다시 시도해주세요.");
+    }
   };
 
   const validateStep = (): boolean => {
     switch (step) {
       case 1:
-        return onboardingData.goals.length > 0;
+        return Array.isArray(onboardingData.goalTypes) && onboardingData.goalTypes.length > 0;
       case 2:
-        return onboardingData.gender !== "";
+        return onboardingData.gender !== undefined && onboardingData.gender !== null;
       case 3:
-        const { birthYear, height, weight } = onboardingData.bodyInfo;
-        return birthYear !== "" && height !== "" && weight !== "";
+        const { birthDate = "", height = 0, weight = 0 } = onboardingData.bodyInfoDto || {};
+        return birthDate !== "" && height > 0 && weight > 0;
       case 4:
-        return onboardingData.place !== "";
+        return onboardingData.gymDto?.name !== "";
       case 5:
-        return onboardingData.level !== "";
+        return onboardingData.exerciseLevel !== undefined && onboardingData.exerciseLevel !== null;
       default:
         return false;
     }
   };
+
+
 
   const renderStep = () => {
     switch (step) {
       case 1:
         return (
           <GoalSelection
-            onboardingGoals={onboardingData.goals}
-            onDataChange={(data) => handleDataChange("goals", data)}
+            onboardingGoals={onboardingData.goalTypes || []}
+            onDataChange={(data) => handleDataChange("goalTypes", data)}
           />
         );
       case 2:
@@ -82,19 +109,22 @@ export default function Onboarding() {
       case 3:
         return (
           <BodyInfo
-            onboardingBodyInfo={onboardingData.bodyInfo}
-            onDataChange={(data) => handleDataChange("bodyInfo", data)}
+            onboardingBodyInfo={onboardingData.bodyInfoDto as BodyInfoDto}
+            onDataChange={(data) => handleDataChange("bodyInfoDto", data)}
           />
         );
       case 4:
         return (
-          <GymSearch onSelectGym={(gym) => handleDataChange("gym", gym)} />
+          <GymSearch
+            onboardingGym={onboardingData.gymDto as GymDto}
+            onSelectGym={(data) => handleDataChange("gymDto", data)}
+          />
         );
       case 5:
         return (
           <LevelSelection
-            onboardingLevel={onboardingData.level}
-            onDataChange={(data) => handleDataChange("level", data)}
+            onboardingLevel={onboardingData.exerciseLevel as UserInfoExerciseLevelEnum}
+            onDataChange={(data) => handleDataChange("exerciseLevel", data)}
           />
         );
       default:
@@ -109,7 +139,7 @@ export default function Onboarding() {
   return (
     <div className="divTag">
       <OnboardLayout
-        header={step == 1 ? null : <Back onClick={clickBack} />}
+        header={step === 1 ? null : <Back onClick={clickBack} />}
         title={
           <>
             <Text color="var(--main-blue)" fontSize="30px" fontWeight="600">
@@ -127,15 +157,13 @@ export default function Onboarding() {
               온보딩 완료
             </Button>
           ) : (
-            <>
-              <Button
-                backgroundColor="var(--main-blue)"
-                width="var(--btn-medium)"
-                onClick={handleNext}
-              >
-                다음
-              </Button>
-            </>
+            <Button
+              backgroundColor="var(--main-blue)"
+              width="var(--btn-medium)"
+              onClick={handleNext}
+            >
+              다음
+            </Button>
           )
         }
       ></OnboardLayout>
