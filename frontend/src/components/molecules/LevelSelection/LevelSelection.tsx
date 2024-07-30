@@ -1,14 +1,17 @@
 import * as React from "react";
-import { useState } from "react";
+import {useState} from "react";
 import "./styles.css";
 import Button from "../../atoms/Button";
 
 interface LevelProp {
-  onboardingLevel: "beginner" | "intermediate" | "advanced";
+  onboardingLevel: "BEGINNER" | "INTERMEDIATE" | "ADVANCED";
   onDataChange: (selectedGoals: string) => void;
 }
 
-const LevelSelection: React.FC<LevelProp> = ({ onboardingLevel, onDataChange }) => {
+const LevelSelection: React.FC<LevelProp> = ({
+  onboardingLevel,
+  onDataChange,
+}) => {
   const [selectedLevel, setSelectedLevel] = useState<string>("");
 
   React.useEffect(() => {
@@ -22,30 +25,29 @@ const LevelSelection: React.FC<LevelProp> = ({ onboardingLevel, onDataChange }) 
     onDataChange(level);
   };
 
-  const getButtonColor = (level: string) => (
-    selectedLevel === level ? "#28a745" : "var(--main-blue)"
-  );
+  const getButtonColor = (level: string) =>
+    selectedLevel === level ? "#28a745" : "var(--main-blue)";
 
   return (
     <>
       <Button
-        backgroundColor={getButtonColor("beginner")}
+        backgroundColor={getButtonColor("BEGINNER")}
         width="var(--btn-medium)"
-        onClick={() => handleLevelSelect("beginner")}
+        onClick={() => handleLevelSelect("BEGINNER")}
       >
         초급자
       </Button>
       <Button
-        backgroundColor={getButtonColor("intermediate")}
+        backgroundColor={getButtonColor("INTERMEDIATE")}
         width="var(--btn-medium)"
-        onClick={() => handleLevelSelect("intermediate")}
+        onClick={() => handleLevelSelect("INTERMEDIATE")}
       >
         중급자
       </Button>
       <Button
-        backgroundColor={getButtonColor("advanced")}
+        backgroundColor={getButtonColor("ADVANCED")}
         width="var(--btn-medium)"
-        onClick={() => handleLevelSelect("advanced")}
+        onClick={() => handleLevelSelect("ADVANCED")}
       >
         고급자
       </Button>

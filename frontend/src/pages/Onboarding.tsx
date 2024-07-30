@@ -18,11 +18,11 @@ export default function Onboarding() {
   const {logout} = useAuth();
   let navigate = useNavigate();
   const [onboardingData, setOnboaringData] = useState<any>({
-    goals: [],
+    goalTypes: [],
     gender: "",
-    bodyInfo: {birthYear: "", height: 0, weight: 0},
-    level: "",
-    gym: "",
+    bodyInfoDto: {birthDate: "", height: 0, weight: 0},
+    exerciseLevel: "",
+    gymDto: {name: "", address: ""},
   });
   const [step, setStep] = useState<number>(1);
 
@@ -53,16 +53,16 @@ export default function Onboarding() {
   const validateStep = (): boolean => {
     switch (step) {
       case 1:
-        return onboardingData.goals.length > 0;
+        return onboardingData.goalTypes.length > 0;
       case 2:
         return onboardingData.gender !== "";
       case 3:
-        const {birthYear, height, weight} = onboardingData.bodyInfo;
+        const {birthYear, height, weight} = onboardingData.bodyInfoDto;
         return birthYear !== "" && height !== "" && weight !== "";
       case 4:
-        return onboardingData.place !== "";
+        return onboardingData.gymDto !== "";
       case 5:
-        return onboardingData.level !== "";
+        return onboardingData.exerciseLevel !== "";
       default:
         return false;
     }
@@ -73,8 +73,8 @@ export default function Onboarding() {
       case 1:
         return (
           <GoalSelection
-            onboardingGoals={onboardingData.goals}
-            onDataChange={(data) => handleDataChange("goals", data)}
+            onboardingGoals={onboardingData.goalTypes}
+            onDataChange={(data) => handleDataChange("goalTypes", data)}
           />
         );
       case 2:
@@ -87,19 +87,19 @@ export default function Onboarding() {
       case 3:
         return (
           <BodyInfo
-            onboardingBodyInfo={onboardingData.bodyInfo}
-            onDataChange={(data) => handleDataChange("bodyInfo", data)}
+            onboardingBodyInfo={onboardingData.bodyInfoDto}
+            onDataChange={(data) => handleDataChange("bodyInfoDto", data)}
           />
         );
       case 4:
         return (
-          <GymSearch onSelectGym={(gym) => handleDataChange("gym", gym)} />
+          <GymSearch onSelectGym={(data) => handleDataChange("gymDto", data)} />
         );
       case 5:
         return (
           <LevelSelection
-            onboardingLevel={onboardingData.level}
-            onDataChange={(data) => handleDataChange("level", data)}
+            onboardingLevel={onboardingData.exerciseLevel}
+            onDataChange={(data) => handleDataChange("exerciseLevel", data)}
           />
         );
       default:
@@ -152,9 +152,7 @@ export default function Onboarding() {
             </>
           }
           contents={
-            <div className="imgContainer">
-              <img src={startImg} alt="튜토리얼 사진" width="180px"></img>
-            </div>
+            <img src={startImg} alt="튜토리얼 사진" width="180px"></img>
           }
           bottoms={
             <>

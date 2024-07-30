@@ -1,27 +1,32 @@
 import * as React from "react";
-import { useState, useEffect } from "react";
+import {useState, useEffect} from "react";
 import "./styles.css";
 
 import Button from "../../atoms/Button";
 import Text from "../../atoms/Text";
 
 interface BodyInfoProp {
-  onboardingBodyInfo: { birthYear: string, height: number, weight: number };
-  onDataChange: (bodyInfo: {
-    birthYear: string;
+  onboardingBodyInfo: {birthDate: string; height: number; weight: number};
+  onDataChange: (bodyInfoDto: {
+    birthDate: string;
     height: number;
     weight: number;
   }) => void;
 }
 
-const BodyInfo: React.FC<BodyInfoProp> = ({ onboardingBodyInfo, onDataChange }) => {
-  const [birthYear, setBirthYear] = useState<string>(onboardingBodyInfo.birthYear);
+const BodyInfo: React.FC<BodyInfoProp> = ({
+  onboardingBodyInfo,
+  onDataChange,
+}) => {
+  const [birthDate, setBirthDate] = useState<string>(
+    onboardingBodyInfo.birthDate
+  );
   const [height, setHeight] = useState<number>(onboardingBodyInfo.height);
   const [weight, setWeight] = useState<number>(onboardingBodyInfo.weight);
 
   useEffect(() => {
-    onDataChange({ birthYear, height, weight });
-  }, [birthYear, height, weight]);
+    onDataChange({birthDate, height, weight});
+  }, [birthDate, height, weight]);
 
   const handleHeightChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -51,8 +56,8 @@ const BodyInfo: React.FC<BodyInfoProp> = ({ onboardingBodyInfo, onDataChange }) 
         </Text>
         <input
           type="date"
-          value={birthYear}
-          onChange={(e) => setBirthYear(e.target.value)}
+          value={birthDate}
+          onChange={(e) => setBirthDate(e.target.value)}
           pattern="\d{4}-\d{2}-\d{2}"
         />
       </div>
