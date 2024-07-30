@@ -10,7 +10,6 @@ import GenderSelection from "../components/molecules/GenderSelection";
 import GymSearch from "../components/molecules/GymSearch";
 import LevelSelection from "../components/molecules/LevelSelection";
 import Back from "../components/atoms/Back";
-import TutorialLayout from "../components/templates/TutorialLayout";
 import StartLayout from "../components/templates/StartLayout";
 import startImg from "../assets/images/testPicture.png";
 import BodyInfo from "../components/molecules/BodyInfo";
