@@ -27,7 +27,6 @@ export default function Onboarding() {
   const [step, setStep] = useState<number>(1);
 
   const onboarding = dbData.onboarding;
-  const tutorials = dbData.tutorials;
 
   const handleDataChange = (key: string, data: any) => {
     setOnboaringData({...onboardingData, [key]: data});
