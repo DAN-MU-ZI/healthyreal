@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
@@ -61,3 +62,6 @@ const styles = StyleSheet.create({
 });
 
 export default styles;
+=======
+export { default } from './PostFood';
+>>>>>>> Stashed changes

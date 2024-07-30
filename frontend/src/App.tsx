@@ -3,6 +3,9 @@ import Login from "./pages/Login";
 import Main from "./pages/Main";
 import Tutorial from "./pages/Tutorial";
 import Onboarding from "./pages/Onboarding";
+import Food from "./pages/Food";
+import MypageFood from "./components/molecules/MypageFood";
+import PostFood from "./components/molecules/PostFood";
 
 function App() {
   return (
@@ -13,6 +16,9 @@ function App() {
           <Route path="intro/login" element={<Login />} />
           <Route path="intro/tutorial" element={<Tutorial />} />
           <Route path="intro/onboarding" element={<Onboarding />} />
+          <Route path="food" element={<Food />} />
+          <Route path="mypage-food" element={<MypageFood />} />
+          <Route path="post-food" element={<PostFood />} />
         </Routes>
       </Router>
     </div>
