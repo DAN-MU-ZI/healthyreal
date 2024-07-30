@@ -7,9 +7,8 @@
 .start-layout > .contents {
   height: 180px;
   display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
+  justify-content: center;
+  gap: 15px;
 }
 
 .start-layout > .bottoms,
