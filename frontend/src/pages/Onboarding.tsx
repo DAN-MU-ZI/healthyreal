@@ -1,32 +1,33 @@
-import * as React from "react";
 import {useState} from "react";
 import {useNavigate} from "react-router-dom";
+import {useAuth} from "../providers/AuthContext";
 import OnboardLayout from "../components/templates/OnboardLayout";
 import Text from "../components/atoms/Text";
 import Button from "../components/atoms/Button";
-import testPicture from "../assets/images/testPicture.png";
 import dbData from "../db/data.json";
 import GoalSelection from "../components/molecules/GoalSelection";
 import GenderSelection from "../components/molecules/GenderSelection";
-import BodyInfo from "../components/molecules/BodyInfo";
 import GymSearch from "../components/molecules/GymSearch";
 import LevelSelection from "../components/molecules/LevelSelection";
 import Back from "../components/atoms/Back";
+import StartLayout from "../components/templates/StartLayout";
+import startImg from "../assets/images/testPicture.png";
+import BodyInfo from "../components/molecules/BodyInfo";
 
 export default function Onboarding() {
+  const {logout} = useAuth();
   let navigate = useNavigate();
-  const [title, setTitle] = useState("null");
-  const [detail, setDetail] = useState("null");
   const [onboardingData, setOnboaringData] = useState<any>({
     goals: [],
     gender: "",
-    bodyInfo: {birthYear: "", height: "", weight: ""},
+    bodyInfo: {birthYear: "", height: 0, weight: 0},
     level: "",
     gym: "",
   });
   const [step, setStep] = useState<number>(1);
 
-  const titles = dbData.titles;
+  const onboarding = dbData.onboarding;
+  const tutorials = dbData.tutorials;
 
   const handleDataChange = (key: string, data: any) => {
     setOnboaringData({...onboardingData, [key]: data});
@@ -43,6 +44,11 @@ export default function Onboarding() {
 
   const endOnboarding = () => {
     navigate(`/main`);
+  };
+
+  const clickLogout = () => {
+    logout();
+    navigate("/login");
   };
 
   const validateStep = (): boolean => {
@@ -68,18 +74,21 @@ export default function Onboarding() {
       case 1:
         return (
           <GoalSelection
+            onboardingGoals={onboardingData.goals}
             onDataChange={(data) => handleDataChange("goals", data)}
           />
         );
       case 2:
         return (
           <GenderSelection
+            onboardingGender={onboardingData.gender}
             onDataChange={(data) => handleDataChange("gender", data)}
           />
         );
       case 3:
         return (
           <BodyInfo
+            onboardingBodyInfo={onboardingData.bodyInfo}
             onDataChange={(data) => handleDataChange("bodyInfo", data)}
           />
         );
@@ -90,6 +99,7 @@ export default function Onboarding() {
       case 5:
         return (
           <LevelSelection
+            onboardingLevel={onboardingData.level}
             onDataChange={(data) => handleDataChange("level", data)}
           />
         );
@@ -104,25 +114,21 @@ export default function Onboarding() {
 
   return (
     <div className="divTag">
-      <OnboardLayout
-        header={step == 1 ? null : <Back onClick={clickBack} />}
-        title={
-          <>
-            <Text color="var(--main-blue)" fontSize="30px" fontWeight="600">
-              {titles[step - 1].title}
-            </Text>
-            <Text color="var(--sub-blue)" fontSize="12px" fontWeight="400">
-              {titles[step - 1].detail}
-            </Text>
-          </>
-        }
-        contents={<>{renderStep()}</>}
-        bottoms={
-          step > 5 ? (
-            <Button onClick={endOnboarding} backgroundColor="var(--main-blue)">
-              온보딩 완료
-            </Button>
-          ) : (
+      {step < 6 ? (
+        <OnboardLayout
+          header={step == 1 ? null : <Back onClick={clickBack} />}
+          title={
+            <>
+              <Text color="var(--main-blue)" fontSize="30px" fontWeight="600">
+                {onboarding[step - 1].title}
+              </Text>
+              <Text color="var(--sub-blue)" fontSize="12px" fontWeight="400">
+                {onboarding[step - 1].detail}
+              </Text>
+            </>
+          }
+          contents={<>{renderStep()}</>}
+          bottoms={
             <>
               <Button
                 backgroundColor="var(--main-blue)"
@@ -132,9 +138,45 @@ export default function Onboarding() {
                 다음
               </Button>
             </>
-          )
-        }
-      ></OnboardLayout>
+          }
+        />
+      ) : (
+        <StartLayout
+          header={
+            <>
+              <Text color="var(--main-blue)" fontSize="30px" fontWeight="600">
+                시작하기
+              </Text>
+              <Text color="var(--sub-blue)" fontSize="12px" fontWeight="400">
+                지금 바로 건강한 변화를 만들어보세요!
+              </Text>
+            </>
+          }
+          contents={
+            <div className="imgContainer">
+              <img src={startImg} alt="튜토리얼 사진" width="180px"></img>
+            </div>
+          }
+          bottoms={
+            <>
+              <Button
+                onClick={endOnboarding}
+                backgroundColor="var(--main-blue)"
+                width="var(--btn-large)"
+              >
+                홈 화면 가기
+              </Button>
+              <Button
+                onClick={clickLogout}
+                backgroundColor="var(--main-purple)"
+                width="var(--btn-large)"
+              >
+                다른 계정으로 로그인
+              </Button>
+            </>
+          }
+        />
+      )}
     </div>
   );
 }

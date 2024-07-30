@@ -1,5 +1,5 @@
 import * as React from "react";
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 import StartLayout from "../components/templates/StartLayout";
 import Text from "../components/atoms/Text";
 import Button from "../components/atoms/Button";
@@ -26,8 +26,9 @@ export default function Login() {
     console.log(memberType);
   }, [memberType]);
 
-  const clickLogin = () => {
+  const clickLogin = (provider: string) => {
     console.log(memberType);
+    handleLogin(provider);
     getData();
   };
 
@@ -45,14 +46,6 @@ export default function Login() {
     if (redirectUri) {
       window.location.href = redirectUri;
     }
-  };
-
-  const clickKakao = () => {
-    handleLogin("kakao");
-  };
-
-  const clickNaver = () => {
-    handleLogin("naver");
   };
 
   return (
@@ -92,7 +85,7 @@ export default function Login() {
               backgroundColor="#2cb24a"
               width="var(--btn-large)"
               color="white"
-              onClick={clickNaver}
+              onClick={() => clickLogin("naver")}
             >
               <img src={naverLogo} alt="naverIcon" width="25px" />
               네이버로 시작하기
@@ -101,7 +94,7 @@ export default function Login() {
               backgroundColor="#FECA00"
               width="var(--btn-large)"
               color="var(--main-blue)"
-              onClick={clickKakao}
+              onClick={() => clickLogin("kakao")}
             >
               <img src={kakaotalkLogo} alt="googleIcon" width="25px" />
               카카오톡으로 시작하기
