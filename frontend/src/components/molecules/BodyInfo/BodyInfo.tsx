@@ -1,26 +1,47 @@
 import * as React from "react";
-import {useState, useEffect} from "react";
+import { useState, useEffect } from "react";
 import "./styles.css";
 
 import Button from "../../atoms/Button";
 import Text from "../../atoms/Text";
 
 interface BodyInfoProp {
+  onboardingBodyInfo: { birthYear: string, height: number, weight: number };
   onDataChange: (bodyInfo: {
     birthYear: string;
-    height: string;
-    weight: string;
+    height: number;
+    weight: number;
   }) => void;
 }
 
-const BodyInfo: React.FC<BodyInfoProp> = ({onDataChange}) => {
-  const [birthYear, setBirthYear] = useState<string>("");
-  const [height, setHeight] = useState<string>("");
-  const [weight, setWeight] = useState<string>("");
+const BodyInfo: React.FC<BodyInfoProp> = ({ onboardingBodyInfo, onDataChange }) => {
+  const [birthYear, setBirthYear] = useState<string>(onboardingBodyInfo.birthYear);
+  const [height, setHeight] = useState<number>(onboardingBodyInfo.height);
+  const [weight, setWeight] = useState<number>(onboardingBodyInfo.weight);
 
   useEffect(() => {
-    onDataChange({birthYear, height, weight});
+    onDataChange({ birthYear, height, weight });
   }, [birthYear, height, weight]);
+
+  const handleHeightChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    const numericValue = parseFloat(value);
+    if (!isNaN(numericValue)) {
+      setHeight(numericValue);
+    } else {
+      setHeight(0); // Or some other fallback
+    }
+  };
+
+  const handleWeightChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    const numericValue = parseFloat(value);
+    if (!isNaN(numericValue)) {
+      setWeight(numericValue);
+    } else {
+      setWeight(0); // Or some other fallback
+    }
+  };
 
   return (
     <div className="inputContainer">
@@ -43,7 +64,7 @@ const BodyInfo: React.FC<BodyInfoProp> = ({onDataChange}) => {
           type="text"
           placeholder="cm"
           value={height}
-          onChange={(e) => setHeight(e.target.value)}
+          onChange={handleHeightChange}
         />
       </div>
       <div className="inputItem">
@@ -54,7 +75,7 @@ const BodyInfo: React.FC<BodyInfoProp> = ({onDataChange}) => {
           type="text"
           placeholder="kg"
           value={weight}
-          onChange={(e) => setWeight(e.target.value)}
+          onChange={handleWeightChange}
         />
       </div>
     </div>

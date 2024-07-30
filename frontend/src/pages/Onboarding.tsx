@@ -1,4 +1,3 @@
-import * as React from "react";
 import {useState} from "react";
 import {useNavigate} from "react-router-dom";
 import OnboardLayout from "../components/templates/OnboardLayout";
@@ -7,20 +6,21 @@ import Button from "../components/atoms/Button";
 import dbData from "../db/data.json";
 import GoalSelection from "../components/molecules/GoalSelection";
 import GenderSelection from "../components/molecules/GenderSelection";
-import BodyInfo from "../components/molecules/BodyInfo";
 import GymSearch from "../components/molecules/GymSearch";
 import LevelSelection from "../components/molecules/LevelSelection";
 import Back from "../components/atoms/Back";
+
 import TutorialLayout from "../components/templates/TutorialLayout";
 import StartLayout from "../components/templates/StartLayout";
 import startImg from "../assets/images/testPicture.png";
+import BodyInfo from "../components/molecules/BodyInfo";
 
 export default function Onboarding() {
   let navigate = useNavigate();
   const [onboardingData, setOnboaringData] = useState<any>({
     goals: [],
     gender: "",
-    bodyInfo: {birthYear: "", height: "", weight: ""},
+    bodyInfo: {birthYear: "", height: 0, weight: 0},
     level: "",
     gym: "",
   });
@@ -69,18 +69,21 @@ export default function Onboarding() {
       case 1:
         return (
           <GoalSelection
+            onboardingGoals={onboardingData.goals}
             onDataChange={(data) => handleDataChange("goals", data)}
           />
         );
       case 2:
         return (
           <GenderSelection
+            onboardingGender={onboardingData.gender}
             onDataChange={(data) => handleDataChange("gender", data)}
           />
         );
       case 3:
         return (
           <BodyInfo
+            onboardingBodyInfo={onboardingData.bodyInfo}
             onDataChange={(data) => handleDataChange("bodyInfo", data)}
           />
         );
@@ -91,6 +94,7 @@ export default function Onboarding() {
       case 5:
         return (
           <LevelSelection
+            onboardingLevel={onboardingData.level}
             onDataChange={(data) => handleDataChange("level", data)}
           />
         );

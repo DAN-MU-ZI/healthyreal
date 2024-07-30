@@ -1,5 +1,5 @@
 import * as React from "react";
-import {useEffect} from "react";
+import { useEffect } from "react";
 import "./styles.css";
 import Back from "../../atoms/Back";
 
@@ -10,8 +10,8 @@ interface Props {
   bottoms?: React.ReactNode;
 }
 export default function OnboardingLayout(props: Props) {
-  const {header, title, contents, bottoms} = props;
-  useEffect(() => {}, []);
+  const { header, title, contents, bottoms } = props;
+  useEffect(() => { }, []);
   return (
     <div className="divTag">
       <article className="onboarding-layout">
