@@ -1,5 +1,6 @@
 import {useState} from "react";
 import {useNavigate} from "react-router-dom";
+import {useAuth} from "../providers/AuthContext";
 import OnboardLayout from "../components/templates/OnboardLayout";
 import Text from "../components/atoms/Text";
 import Button from "../components/atoms/Button";
@@ -9,13 +10,13 @@ import GenderSelection from "../components/molecules/GenderSelection";
 import GymSearch from "../components/molecules/GymSearch";
 import LevelSelection from "../components/molecules/LevelSelection";
 import Back from "../components/atoms/Back";
-
 import TutorialLayout from "../components/templates/TutorialLayout";
 import StartLayout from "../components/templates/StartLayout";
 import startImg from "../assets/images/testPicture.png";
 import BodyInfo from "../components/molecules/BodyInfo";
 
 export default function Onboarding() {
+  const {logout} = useAuth();
   let navigate = useNavigate();
   const [onboardingData, setOnboaringData] = useState<any>({
     goals: [],
@@ -44,6 +45,11 @@ export default function Onboarding() {
 
   const endOnboarding = () => {
     navigate(`/main`);
+  };
+
+  const clickLogout = () => {
+    logout();
+    navigate("/login");
   };
 
   const validateStep = (): boolean => {
@@ -148,16 +154,27 @@ export default function Onboarding() {
             </>
           }
           contents={
-            <img src={startImg} alt="튜토리얼 사진" width="180px"></img>
+            <div className="imgContainer">
+              <img src={startImg} alt="튜토리얼 사진" width="180px"></img>
+            </div>
           }
           bottoms={
-            <Button
-              onClick={endOnboarding}
-              backgroundColor="var(--main-blue)"
-              width="var(--btn-large)"
-            >
-              시작하기
-            </Button>
+            <>
+              <Button
+                onClick={endOnboarding}
+                backgroundColor="var(--main-blue)"
+                width="var(--btn-large)"
+              >
+                홈 화면 가기
+              </Button>
+              <Button
+                onClick={clickLogout}
+                backgroundColor="var(--main-purple)"
+                width="var(--btn-large)"
+              >
+                다른 계정으로 로그인
+              </Button>
+            </>
           }
         />
       )}
