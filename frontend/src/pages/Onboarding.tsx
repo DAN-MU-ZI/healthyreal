@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../providers/AuthContext";
 import OnboardLayout from "../components/templates/OnboardLayout";
 import Text from "../components/atoms/Text";
 import Button from "../components/atoms/Button";
@@ -9,6 +10,8 @@ import GenderSelection from "../components/molecules/GenderSelection";
 import GymSearch from "../components/molecules/GymSearch";
 import LevelSelection from "../components/molecules/LevelSelection";
 import Back from "../components/atoms/Back";
+import StartLayout from "../components/templates/StartLayout";
+import startImg from "../assets/images/testPicture.png";
 import BodyInfo from "../components/molecules/BodyInfo";
 import { userApi } from "../apis/custom";
 import {
@@ -38,13 +41,15 @@ const initialOnboardingData: MemberRegisterRequest = {
 };
 
 export default function Onboarding() {
+  const { logout } = useAuth();
   let navigate = useNavigate();
   const [onboardingData, setOnboardingData] = useState<MemberRegisterRequest>(
     initialOnboardingData
   );
   const [step, setStep] = useState<number>(1);
 
-  const titles = dbData.titles;
+  const onboarding = dbData.onboarding;
+  const tutorials = dbData.tutorials;
 
   const handleDataChange = (key: keyof MemberRegisterRequest, data: any) => {
     setOnboardingData({ ...onboardingData, [key]: data });
@@ -68,6 +73,11 @@ export default function Onboarding() {
       console.error("온보딩 중 오류가 발생했습니다.", error);
       alert("온보딩 중 오류가 발생했습니다. 다시 시도해주세요.");
     }
+  };
+
+  const clickLogout = () => {
+    logout();
+    navigate("/login");
   };
 
   const validateStep = (): boolean => {
@@ -143,10 +153,10 @@ export default function Onboarding() {
         title={
           <>
             <Text color="var(--main-blue)" fontSize="30px" fontWeight="600">
-              {titles[step - 1].title}
+              {onboarding[step - 1].title}
             </Text>
             <Text color="var(--sub-blue)" fontSize="12px" fontWeight="400">
-              {titles[step - 1].detail}
+              {onboarding[step - 1].detail}
             </Text>
           </>
         }

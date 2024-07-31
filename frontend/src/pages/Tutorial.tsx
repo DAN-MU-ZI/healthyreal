@@ -15,10 +15,6 @@ export default function Tutorial() {
 
   const tutorials = dbData.tutorials;
 
-  useEffect(() => {
-    console.log(page);
-  }, [page]);
-
   const nextTutorial = (page: number) => {
     const contents = tutorials;
     if (page > tutorials.length - 1) {
