@@ -25,6 +25,9 @@ public class Routine {
 	private Long id;
 
 	@Column(nullable = false)
+	private String weightName;
+
+	@Column(nullable = false)
 	private Long weight;
 
 	@Column(nullable = false)
