@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
-import Text from "../../atoms/Text";
 import PlaceCard from "../../atoms/PlaceCard";
 import { GymDto } from "../../../typescript-axios"; // Import the type definition
 
