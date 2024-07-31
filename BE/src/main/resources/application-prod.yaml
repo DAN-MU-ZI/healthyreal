@@ -10,21 +10,6 @@ spring:
     properties:
       hibernate:
         format_sql: TRUE
-
-  logging:
-    level:
-      org:
-        springframework:
-          jdbc: DEBUG
-        hibernate:
-          SQL: DEBUG  # 로그를 통해 쿼리 출력
-          type:
-            descriptor:
-              sql: TRACE
-          orm:
-            jdbc:
-              bind: TRACE # 쿼리의 ? 에 실제 바인딩 되는 데이터 로그 출력
-
   security:
     oauth2:
       client:
@@ -52,6 +37,18 @@ spring:
             tokenUri: https://kauth.kakao.com/oauth/token
             userInfoUri: https://kapi.kakao.com/v2/user/me
             userNameAttribute: id
+  servlet:
+    multipart:
+      maxFileSize: 10MB # 파일 하나의 최대 크기
+      maxRequestSize: 30MB  # 한 번에 최대 업로드 가능 용량
+
+logging:
+  level:
+    org:
+      hibernate:
+        orm:
+          jdbc:
+            bind: TRACE # 쿼리의 ? 에 실제 바인딩 되는 데이터 로그 출력
 
 cors:
   allowed-origins: ${CORS_ALLOWED_ORIGINS}
@@ -68,3 +65,17 @@ app:
     refreshTokenExpiry: 604800000
   oauth2:
     authorizedRedirectUris: ${AUTHORIZED_REDIRECT_URIS}
+
+cloud:
+  aws:
+    credentials:
+      access-key: ${CLOUD_AWS_CREDENTIALS_ACCESS_KEY}
+      secret-key: ${CLOUD_AWS_CREDENTIALS_SECRET_KEY}
+      bucket: ${CLOUD_AWS_CREDENTIALS_BUCKET}
+      s3:
+        endpoint: https://kr.object.ncloudstorage.com
+    region:
+      static: kr-standard
+      auto: false
+    stack:
+      auto: false

@@ -1,0 +1,28 @@
+.alarmCard {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+  height: 56px;
+  width: 100%;
+  padding: 0 20px;
+  border-radius: 20px;
+  background-color: white;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+  gap: 10px;
+}
+
+.leftArea,
+.centerArea {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.centerArea {
+  width: 60%;
+}
+
+.leftArea {
+  align-items: center;
+}

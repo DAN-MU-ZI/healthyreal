@@ -1,6 +1,6 @@
 package com.healthyreal.be.oauth.service;
 
-import com.healthyreal.be.api.entity.user.User;
+import com.healthyreal.be.api.entity.user.Member;
 import com.healthyreal.be.api.repository.user.UserRepository;
 import com.healthyreal.be.oauth.entity.UserPrincipal;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +15,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
 	@Override
 	public UserPrincipal loadUserByUsername(final String username) throws UsernameNotFoundException {
-		User user = userRepository.findByUserId(username);
+		Member user = userRepository.findByUserId(username);
 		if (user == null) {
 			throw new UsernameNotFoundException("Can not find username.");
 		}

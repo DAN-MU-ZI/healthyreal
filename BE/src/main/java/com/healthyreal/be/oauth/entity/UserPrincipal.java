@@ -1,6 +1,6 @@
 package com.healthyreal.be.oauth.entity;
 
-import com.healthyreal.be.api.entity.user.User;
+import com.healthyreal.be.api.entity.user.Member;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
@@ -21,7 +21,7 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 @AllArgsConstructor
 @RequiredArgsConstructor
 public class UserPrincipal implements OAuth2User, UserDetails, OidcUser {
-	private final User user;
+	private final Member user;
 	private final String password = null;
 	private final Collection<GrantedAuthority> authorities;
 	private Map<String, Object> attributes;
@@ -81,14 +81,14 @@ public class UserPrincipal implements OAuth2User, UserDetails, OidcUser {
 		return user.getUserId();
 	}
 
-	public static UserPrincipal create(User user) {
+	public static UserPrincipal create(Member user) {
 		return new UserPrincipal(
 			user,
 			Collections.singletonList(new SimpleGrantedAuthority(user.getRoleType().getCode()))
 		);
 	}
 
-	public static UserPrincipal create(User user, Map<String, Object> attributes) {
+	public static UserPrincipal create(Member user, Map<String, Object> attributes) {
 		UserPrincipal userPrincipal = create(user);
 		userPrincipal.setAttributes(attributes);
 

@@ -1,6 +1,6 @@
 package com.healthyreal.be.utils;
 
-import com.healthyreal.be.api.entity.user.User;
+import com.healthyreal.be.api.entity.user.Member;
 import com.healthyreal.be.oauth.entity.UserPrincipal;
 import org.springframework.core.MethodParameter;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -14,7 +14,7 @@ public class CurrentUserHandlerMethodArgumentResolver implements HandlerMethodAr
 	@Override
 	public boolean supportsParameter(MethodParameter parameter) {
 		return parameter.hasParameterAnnotation(CurrentUser.class) &&
-			User.class.isAssignableFrom(parameter.getParameterType());
+			Member.class.isAssignableFrom(parameter.getParameterType());
 	}
 
 	@Override

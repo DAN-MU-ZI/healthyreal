@@ -1,15 +1,19 @@
 package com.healthyreal.be.api.entity.user;
 
+import com.healthyreal.be.api.entity.trainer.TrainerInfo;
+import com.healthyreal.be.api.entity.userInfo.UserInfo;
 import com.healthyreal.be.oauth.entity.ProviderType;
 import com.healthyreal.be.oauth.entity.RoleType;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.OneToOne;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import java.time.LocalDateTime;
@@ -24,8 +28,7 @@ import net.minidev.json.annotate.JsonIgnore;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "USER")
-public class User {
+public class Member {
 	@JsonIgnore
 	@Id
 	@Column(name = "USER_SEQ")
@@ -81,7 +84,13 @@ public class User {
 	@NotNull
 	private LocalDateTime modifiedAt;
 
-	public User(
+	@OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	private UserInfo userInfo;
+
+	@OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	private TrainerInfo trainerInfo;
+
+	public Member(
 		@NotNull @Size(max = 64) final String userId,
 		@NotNull @Size(max = 100) final String username,
 		@NotNull @Size(max = 512) final String email,
