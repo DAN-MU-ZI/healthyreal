@@ -1,21 +1,25 @@
 package com.healthyreal.be.api.service;
 
+import java.util.Iterator;
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
 import com.healthyreal.be.api.controller.trainer.TrainerRequest;
 import com.healthyreal.be.api.entity.cloud.S3Image;
 import com.healthyreal.be.api.entity.trainer.Qualification;
 import com.healthyreal.be.api.entity.trainer.Schedule;
 import com.healthyreal.be.api.entity.trainer.TrainerInfo;
 import com.healthyreal.be.api.entity.trainer.TrainingProgram;
+import com.healthyreal.be.api.entity.trainer.dto.TrainerMyPageResponse;
 import com.healthyreal.be.api.entity.user.Member;
 import com.healthyreal.be.api.entity.userInfo.Goal;
 import com.healthyreal.be.api.entity.userInfo.Gym;
 import com.healthyreal.be.api.repository.trainer.TrainerInfoRepository;
+
 import jakarta.transaction.Transactional;
-import java.util.Iterator;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @RequiredArgsConstructor
@@ -89,4 +93,16 @@ public class TrainerService {
 		return new TrainerInfo(user, gym, goals, qualifications, trainingProgram, schedules, profileDescription);
 	}
 
+	public TrainerMyPageResponse readTrainerMyPage(Member user) {
+
+		TrainerInfo trainerInfo = trainerInfoRepository.findByUser(user);
+
+		Gym gym = trainerInfo.getGym();
+
+		List<TrainingProgram> trainingPrograms = trainerInfo.getTrainingProgramList();
+
+		List<Qualification> qualifications = trainerInfo.getQualificationList();
+
+		return TrainerMyPageResponse.toResponse(user, trainerInfo, gym, trainingPrograms, qualifications);
+	}
 }
