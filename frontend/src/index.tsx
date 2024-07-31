@@ -1,9 +1,10 @@
 import ReactDOM from "react-dom/client";
 import App from "./App";
-import {Global, ThemeProvider} from "@emotion/react";
+import { Global, ThemeProvider } from "@emotion/react";
 import theme from "./assets/theme";
 import styles from "./styles/global";
-import {AuthProvider} from "./providers/AuthContext";
+import { AuthProvider } from "./providers/AuthContext";
+import { PostProvider } from './pages/PostContext';
 
 const rootElement = document.getElementById("root");
 
@@ -12,8 +13,10 @@ if (rootElement) {
   root.render(
     <ThemeProvider theme={theme}>
       <AuthProvider>
-        <Global styles={styles} />
-        <App />
+        <PostProvider>
+          <Global styles={styles} />
+          <App />
+        </PostProvider>
       </AuthProvider>
     </ThemeProvider>
   );
