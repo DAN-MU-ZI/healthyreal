@@ -10,17 +10,12 @@ import GenderSelection from "../components/molecules/GenderSelection";
 import GymSearch from "../components/molecules/GymSearch";
 import LevelSelection from "../components/molecules/LevelSelection";
 import Back from "../components/atoms/Back";
-import StartLayout from "../components/templates/StartLayout";
-import startImg from "../assets/images/testPicture.png";
 import BodyInfo from "../components/molecules/BodyInfo";
 import { userApi } from "../apis/custom";
 import {
   MemberRegisterRequest,
-  MemberRegisterRequestGoalTypesEnum,
-  MemberRegisterRequestGenderEnum,
   BodyInfoDto,
   GymDto,
-  MemberRegisterRequestExerciseLevelEnum,
   UserInfoExerciseLevelEnum,
 } from "../typescript-axios";
 

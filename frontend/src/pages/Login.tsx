@@ -1,4 +1,3 @@
-import * as React from "react";
 import { useEffect, useState } from "react";
 import StartLayout from "../components/templates/StartLayout";
 import Text from "../components/atoms/Text";
@@ -7,9 +6,7 @@ import naverLogo from "../assets/images/naverLogo.png";
 import trainerIcon from "../assets/images/trainerIcon.png";
 import memberIcon from "../assets/images/memberIcon.png";
 import request from "../apis/api/request";
-import axios from "axios";
 import Card from "../components/atoms/Card";
-import googleLogo from "../assets/images/googleLogo.png";
 import kakaotalkLogo from "../assets/images/kakaotalkLogo.png";
 
 export default function Login() {
