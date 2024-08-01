@@ -1,6 +1,7 @@
 package com.healthyreal.be.api.entity.trainer;
 
 import com.healthyreal.be.api.entity.user.Member;
+import com.healthyreal.be.api.entity.userInfo.Gender;
 import com.healthyreal.be.api.entity.userInfo.Goal;
 import com.healthyreal.be.api.entity.userInfo.Gym;
 import jakarta.persistence.CascadeType;
@@ -51,11 +52,13 @@ public class TrainerInfo {
 	private String profileDescription;
 
 	public TrainerInfo(final Member user, final Gym gym, final List<Goal> goals,
-		final List<Qualification> qualificationList, final TrainingProgram trainingProgram,
-		final List<Schedule> scheduleList, final String profileDescription) {
+					   final List<Qualification> qualificationList, final TrainingProgram trainingProgram,
+					   final List<Schedule> scheduleList, final String profileDescription,
+					   final Gender gender) {
 		this.user = user;
 		this.goalList.addAll(goals);
 		this.gym = gym;
+		this.user.setGender(gender);
 		this.qualificationList.addAll(qualificationList);
 		this.trainingProgramList.add(trainingProgram);
 		this.scheduleList.addAll(scheduleList);

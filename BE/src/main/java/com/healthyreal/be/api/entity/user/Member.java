@@ -1,6 +1,7 @@
 package com.healthyreal.be.api.entity.user;
 
 import com.healthyreal.be.api.entity.trainer.TrainerInfo;
+import com.healthyreal.be.api.entity.userInfo.Gender;
 import com.healthyreal.be.api.entity.userInfo.UserInfo;
 import com.healthyreal.be.oauth.entity.ProviderType;
 import com.healthyreal.be.oauth.entity.RoleType;
@@ -89,6 +90,9 @@ public class Member {
 
 	@OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private TrainerInfo trainerInfo;
+
+	@Enumerated(EnumType.STRING)
+	private Gender gender;
 
 	public Member(
 		@NotNull @Size(max = 64) final String userId,
