@@ -1,44 +1,55 @@
 import * as React from "react";
-import {useState} from "react";
+import { useState, useEffect } from "react";
 import "./styles.css";
 import Button from "../../atoms/Button";
+import { MemberRegisterRequestExerciseLevelEnum } from "../../../typescript-axios";
 
 interface LevelProp {
-  onDataChange: (selectedGoals: string) => void;
+  onboardingLevel: MemberRegisterRequestExerciseLevelEnum;
+  onDataChange: (selectedLevel: MemberRegisterRequestExerciseLevelEnum) => void;
 }
 
-const LevelSelection: React.FC<LevelProp> = ({onDataChange}) => {
-  const [selectedLevel, setSelectedLevel] = useState<string>("");
+const LevelSelection: React.FC<LevelProp> = ({ onboardingLevel, onDataChange }) => {
+  const [selectedLevel, setSelectedLevel] = useState<MemberRegisterRequestExerciseLevelEnum | "">("");
 
-  const handleLevelSelect = (level: string) => {
+  useEffect(() => {
+    if (onboardingLevel !== selectedLevel) {
+      setSelectedLevel(onboardingLevel || "");
+    }
+  }, [onboardingLevel, selectedLevel]);
+
+  const handleLevelSelect = (level: MemberRegisterRequestExerciseLevelEnum) => {
     setSelectedLevel(level);
     onDataChange(level);
   };
 
+  const getButtonColor = (level: MemberRegisterRequestExerciseLevelEnum) =>
+    selectedLevel === level ? "#28a745" : "var(--main-blue)";
+
   return (
-    <>
+    <div className="levelSelectionContainer">
       <Button
-        backgroundColor="var(--main-blue)"
+        backgroundColor={getButtonColor(MemberRegisterRequestExerciseLevelEnum.Beginner)}
         width="var(--btn-medium)"
-        onClick={() => handleLevelSelect("beginner")}
+        onClick={() => handleLevelSelect(MemberRegisterRequestExerciseLevelEnum.Beginner)}
       >
         초급자
       </Button>
       <Button
-        backgroundColor="var(--main-blue)"
+        backgroundColor={getButtonColor(MemberRegisterRequestExerciseLevelEnum.Intermediate)}
         width="var(--btn-medium)"
-        onClick={() => handleLevelSelect("intermediate")}
+        onClick={() => handleLevelSelect(MemberRegisterRequestExerciseLevelEnum.Intermediate)}
       >
         중급자
       </Button>
       <Button
-        backgroundColor="var(--main-blue)"
+        backgroundColor={getButtonColor(MemberRegisterRequestExerciseLevelEnum.Advanced)}
         width="var(--btn-medium)"
-        onClick={() => handleLevelSelect("advanced")}
+        onClick={() => handleLevelSelect(MemberRegisterRequestExerciseLevelEnum.Advanced)}
       >
         고급자
       </Button>
-    </>
+    </div>
   );
 };
 

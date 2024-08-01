@@ -14,6 +14,7 @@ import com.healthyreal.be.api.entity.trainer.TrainerInfo;
 import com.healthyreal.be.api.entity.trainer.TrainingProgram;
 import com.healthyreal.be.api.entity.trainer.dto.TrainerMyPageResponse;
 import com.healthyreal.be.api.entity.user.Member;
+import com.healthyreal.be.api.entity.userInfo.Gender;
 import com.healthyreal.be.api.entity.userInfo.Goal;
 import com.healthyreal.be.api.entity.userInfo.Gym;
 import com.healthyreal.be.api.repository.trainer.TrainerInfoRepository;
@@ -56,7 +57,7 @@ public class TrainerService {
 		trainingProgram.addAllImage(trainingProgramImagesList);
 
 		TrainerInfo trainerInfo = createTrainerInfo(user, gym, goals, qualifications, trainingProgram, schedules,
-			profileDescription);
+			profileDescription, null);
 		trainerInfoRepository.save(trainerInfo);
 	}
 
@@ -88,9 +89,10 @@ public class TrainerService {
 		final List<Qualification> qualifications,
 		final TrainingProgram trainingProgram,
 		final List<Schedule> schedules,
-		final String profileDescription
+		final String profileDescription,
+		final Gender gender
 	) {
-		return new TrainerInfo(user, gym, goals, qualifications, trainingProgram, schedules, profileDescription);
+		return new TrainerInfo(user, gym, goals, qualifications, trainingProgram, schedules, profileDescription, gender);
 	}
 
 	public TrainerMyPageResponse readTrainerMyPage(Member user) {

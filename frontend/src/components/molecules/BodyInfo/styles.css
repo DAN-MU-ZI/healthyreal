@@ -1,0 +1,23 @@
+.inputContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.inputItem {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+input {
+  box-sizing: border-box;
+  height: 40px;
+  width: 155px;
+  background-color: #eeeeee;
+  border: none;
+  border-radius: 10px;
+  text-align: right;
+  padding-right: 7px;
+}
