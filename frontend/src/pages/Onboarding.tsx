@@ -41,6 +41,7 @@ export default function Onboarding() {
   const [onboardingData, setOnboardingData] = useState<MemberRegisterRequest>(
     initialOnboardingData
   );
+
   const [step, setStep] = useState<number>(1);
 
   const onboarding = dbData.onboarding;

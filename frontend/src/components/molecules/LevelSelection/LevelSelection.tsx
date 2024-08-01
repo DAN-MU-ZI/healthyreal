@@ -12,6 +12,7 @@ interface LevelProp {
 const LevelSelection: React.FC<LevelProp> = ({ onboardingLevel, onDataChange }) => {
   const [selectedLevel, setSelectedLevel] = useState<MemberRegisterRequestExerciseLevelEnum | "">("");
 
+
   useEffect(() => {
     if (onboardingLevel !== selectedLevel) {
       setSelectedLevel(onboardingLevel || "");
@@ -24,6 +25,7 @@ const LevelSelection: React.FC<LevelProp> = ({ onboardingLevel, onDataChange }) 
   };
 
   const getButtonColor = (level: MemberRegisterRequestExerciseLevelEnum) =>
+
     selectedLevel === level ? "#28a745" : "var(--main-blue)";
 
   return (

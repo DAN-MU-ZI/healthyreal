@@ -50,43 +50,43 @@
   "goals": [
     {
       "ko": "체중 감량",
-      "en": "goal1"
+      "en": "WEIGHT_LOSS"
     },
     {
       "ko": "근력 강화",
-      "en": "goal2"
+      "en": "MUSCLE_GAIN"
     },
     {
       "ko": "체력 향상",
-      "en": "goal3"
+      "en": "STAMINA_IMPROVEMENT"
     },
     {
       "ko": "유연성 및 이동성 향상",
-      "en": "goal4"
+      "en": "FLEXIBILITY_IMPROVEMENT"
     },
     {
       "ko": "체형 개선",
-      "en": "goal5"
+      "en": "BODY_SHAPE_IMPROVEMENT"
     },
     {
       "ko": "생활 습관 개선",
-      "en": "goal6"
+      "en": "LIFESTYLE_IMPROVEMENT"
     },
     {
       "ko": "건강 개선",
-      "en": "goal7"
+      "en": "HEALTH_IMPROVEMENT"
     },
     {
       "ko": "바디 프로필",
-      "en": "goal8"
+      "en": "BODY_PROFILE"
     },
     {
       "ko": "신체 균형",
-      "en": "goal9"
+      "en": "BALANCE_IMPROVEMENT"
     },
     {
       "ko": "기타",
-      "en": "goal10"
+      "en": "OTHER"
     }
   ],
   "gymList": [
