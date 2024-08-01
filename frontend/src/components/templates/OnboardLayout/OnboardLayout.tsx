@@ -1,7 +1,6 @@
 import * as React from "react";
 import { useEffect } from "react";
 import "./styles.css";
-import Back from "../../atoms/Back";
 
 interface Props {
   header: React.ReactNode;

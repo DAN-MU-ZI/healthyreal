@@ -1,18 +1,30 @@
 import * as React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./styles.css";
-import dbData from "../../../db/data.json";
+import { GoalGoalTypeEnum, GoalGoalTypeEnum as GoalEnum } from "../../../typescript-axios";
 
 interface GoalSelectionProp {
-  onboardingGoals: string[];
-  onDataChange: (selectedGoals: string[]) => void;
+  onboardingGoals: GoalGoalTypeEnum[];
+  onDataChange: (selectedGoals: GoalGoalTypeEnum[]) => void;
 }
 
 const GoalSelection: React.FC<GoalSelectionProp> = ({ onboardingGoals, onDataChange }) => {
-  const [selectedGoals, setSelectedGoals] = useState<string[]>(onboardingGoals);
-  const goals = dbData.goals;
+  const [selectedGoals, setSelectedGoals] = useState<GoalGoalTypeEnum[]>(onboardingGoals);
 
-  const handleGoalChange = (goal: string) => {
+  const goalLabels: { [key in GoalGoalTypeEnum]: string } = {
+    [GoalEnum.WeightLoss]: '체중 감량',
+    [GoalEnum.MuscleGain]: '근육 증가',
+    [GoalEnum.StaminaImprovement]: '지구력 향상',
+    [GoalEnum.FlexibilityImprovement]: '유연성 향상',
+    [GoalEnum.BodyShapeImprovement]: '체형 개선',
+    [GoalEnum.BalanceImprovement]: '균형 개선',
+    [GoalEnum.LifestyleImprovement]: '생활습관 개선',
+    [GoalEnum.HealthImprovement]: '건강 증진',
+    [GoalEnum.BodyProfile]: '바디 프로필',
+    [GoalEnum.Other]: '기타',
+  };
+
+  const handleGoalChange = (goal: GoalGoalTypeEnum) => {
     const newSelection = selectedGoals.includes(goal)
       ? selectedGoals.filter((g) => g !== goal)
       : [...selectedGoals, goal];
@@ -21,29 +33,27 @@ const GoalSelection: React.FC<GoalSelectionProp> = ({ onboardingGoals, onDataCha
     onDataChange(newSelection);
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (JSON.stringify(onboardingGoals) !== JSON.stringify(selectedGoals)) {
-      setSelectedGoals(onboardingGoals)
+      setSelectedGoals(onboardingGoals);
     }
   }, [onboardingGoals]);
 
   return (
     <div className="checkbox-container">
       <div className="checkbox-group">
-        {goals.map((goal) => (
+        {Object.values(GoalGoalTypeEnum).map((goal) => (
           <label
-            key={goal.en}
-            className={`checkbox-btn ${
-              selectedGoals.includes(goal.en) ? "checked" : ""
-            }`}
+            key={goal}
+            className={`checkbox-btn ${selectedGoals.includes(goal) ? "checked" : ""}`}
           >
             <input
               type="checkbox"
-              value={goal.en}
-              checked={selectedGoals.includes(goal.en)}
-              onChange={() => handleGoalChange(goal.en)}
+              value={goal}
+              checked={selectedGoals.includes(goal)}
+              onChange={() => handleGoalChange(goal)}
             />
-            <span>{goal.ko}</span>
+            <span>{goalLabels[goal]}</span>
           </label>
         ))}
       </div>

@@ -2,49 +2,44 @@ import * as React from "react";
 import {useState, useEffect} from "react";
 import "./styles.css";
 
-import Button from "../../atoms/Button";
 import Text from "../../atoms/Text";
+import { BodyInfoDto } from "../../../typescript-axios";
 
 interface BodyInfoProp {
-  onboardingBodyInfo: {birthDate: string; height: number; weight: number};
-  onDataChange: (bodyInfoDto: {
-    birthDate: string;
-    height: number;
-    weight: number;
-  }) => void;
+  onboardingBodyInfo: BodyInfoDto;
+  onDataChange: (bodyInfo: BodyInfoDto) => void;
 }
 
-const BodyInfo: React.FC<BodyInfoProp> = ({
-  onboardingBodyInfo,
-  onDataChange,
-}) => {
-  const [birthDate, setBirthDate] = useState<string>(
-    onboardingBodyInfo.birthDate
-  );
-  const [height, setHeight] = useState<number>(onboardingBodyInfo.height);
-  const [weight, setWeight] = useState<number>(onboardingBodyInfo.weight);
+const BodyInfo: React.FC<BodyInfoProp> = ({ onboardingBodyInfo, onDataChange }) => {
+  const [birthDate, setBirthDate] = useState<string>(onboardingBodyInfo.birthDate || "");
+  const [height, setHeight] = useState<number>(onboardingBodyInfo.height || 0);
+  const [weight, setWeight] = useState<number>(onboardingBodyInfo.weight || 0);
+  const [heightError, setHeightError] = useState<string>("");
+  const [weightError, setWeightError] = useState<string>("");
 
   useEffect(() => {
-    onDataChange({birthDate, height, weight});
+    onDataChange({ birthDate, height, weight });
   }, [birthDate, height, weight]);
 
   const handleHeightChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     const numericValue = parseFloat(value);
-    if (!isNaN(numericValue)) {
+    if (!isNaN(numericValue) && numericValue > 0) {
       setHeight(numericValue);
+      setHeightError("");
     } else {
-      setHeight(0); // Or some other fallback
+      setHeightError("유효한 키를 입력하세요.");
     }
   };
 
   const handleWeightChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     const numericValue = parseFloat(value);
-    if (!isNaN(numericValue)) {
+    if (!isNaN(numericValue) && numericValue > 0) {
       setWeight(numericValue);
+      setWeightError("");
     } else {
-      setWeight(0); // Or some other fallback
+      setWeightError("유효한 몸무게를 입력하세요.");
     }
   };
 
@@ -71,6 +66,7 @@ const BodyInfo: React.FC<BodyInfoProp> = ({
           value={height}
           onChange={handleHeightChange}
         />
+        {heightError && <span className="error">{heightError}</span>}
       </div>
       <div className="inputItem">
         <Text color="var(--main-blue)" fontSize="16px" fontWeight="500">
@@ -82,6 +78,7 @@ const BodyInfo: React.FC<BodyInfoProp> = ({
           value={weight}
           onChange={handleWeightChange}
         />
+        {weightError && <span className="error">{weightError}</span>}
       </div>
     </div>
   );

@@ -1,49 +1,44 @@
-import React, {useState, useEffect, useRef} from "react";
-import dbData from "../../../db/data.json";
-import Text from "../../atoms/Text";
+import React, { useState, useEffect } from "react";
 import PlaceCard from "../../atoms/PlaceCard";
-
-interface Gym {
-  name: string;
-  address: string;
-  postalCode: string;
-}
+import { GymDto } from "../../../typescript-axios"; // Import the type definition
 
 interface GymSearchProps {
-  onSelectGym: (gym: Gym) => void;
+  onboardingGym: GymDto;
+  onSelectGym: (gym: GymDto) => void;
 }
 
-declare global {
-  interface Window {
-    kakao: any;
-  }
-}
-
-const GymSearch: React.FC<GymSearchProps> = ({onSelectGym}) => {
+const GymSearch: React.FC<GymSearchProps> = ({ onboardingGym, onSelectGym }) => {
   const [searchTerm, setSearchTerm] = useState<string>("");
-  const [gyms, setGyms] = useState<Gym[]>([]);
-  const [filteredGyms, setFilteredGyms] = useState<Gym[]>([]);
+  const [gyms, setGyms] = useState<GymDto[]>([]);
+  const [filteredGyms, setFilteredGyms] = useState<GymDto[]>([]);
 
   useEffect(() => {
+    // Fetch gym data from the API (here replaced with dummy data)
     const fetchGyms = async () => {
-      const gymData: Gym[] = [
-        {
-          name: "피트니스앤스타&PT",
-          address: "부산 동구 초량동 중앙대로 75 5층 피트니스앤스타",
-          postalCode: "47712",
-        },
-        {
-          name: "달라스짐 부산대점",
-          address: "부산 금정구 금강로 209 만산시티타워 지하1층",
-          postalCode: "46294",
-        },
-        {
-          name: "옐로우피티",
-          address: "부산 금정구 금강로 246 1층 옐로우피티",
-          postalCode: "46293",
-        },
-      ];
-      setGyms(gymData);
+      try {
+        // Dummy data to simulate API response
+        const dummyGyms: GymDto[] = [
+          {
+            name: "Fitness First",
+            address: "123 Main St, Anytown",
+          },
+          {
+            name: "Gold's Gym",
+            address: "456 Elm St, Othertown",
+          },
+          {
+            name: "Planet Fitness",
+            address: "789 Oak St, Sometown",
+          },
+        ];
+        setGyms(dummyGyms);
+
+        // Uncomment below if fetching from a real API
+        // const response = await axios.get<GymDto[]>('API_ENDPOINT'); // Replace 'API_ENDPOINT' with the actual API endpoint
+        // setGyms(response.data);
+      } catch (error) {
+        console.error("Failed to fetch gyms", error);
+      }
     };
 
     fetchGyms();
@@ -53,10 +48,17 @@ const GymSearch: React.FC<GymSearchProps> = ({onSelectGym}) => {
     setFilteredGyms(
       gyms.filter(
         (gym) =>
-          gym.name.includes(searchTerm) || gym.address.includes(searchTerm)
+          (gym.name ?? "").includes(searchTerm) || (gym.address ?? "").includes(searchTerm)
       )
     );
   }, [searchTerm, gyms]);
+
+  useEffect(() => {
+    if (onboardingGym && onboardingGym.name) {
+      setSearchTerm(onboardingGym.name);
+    }
+  }, [onboardingGym]);
+
   return (
     <>
       <div className="gymSearchBar">
@@ -69,12 +71,11 @@ const GymSearch: React.FC<GymSearchProps> = ({onSelectGym}) => {
         <button id="search-btn">검색</button>
       </div>
       <div className="gymList">
-        {gyms.map((gym, index) => (
+        {filteredGyms.map((gym, index) => (
           <div key={index}>
             <PlaceCard
-              name={gym.name}
-              address={gym.address}
-              postalCode={gym.postalCode}
+              name={gym.name ?? "No Name"}
+              address={gym.address ?? "No Address"}
               onClick={() => onSelectGym(gym)}
             />
           </div>
