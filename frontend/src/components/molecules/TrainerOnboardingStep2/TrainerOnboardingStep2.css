@@ -1,0 +1,67 @@
+.onboarding-container {
+    width: 100%;
+    max-width: 375px;
+    margin: 0 auto;
+    padding: 20px;
+    box-sizing: border-box;
+  }
+  
+  .header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .back-button {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    margin-right: 10px;
+  }
+  
+  .header h1 {
+    flex-grow: 1;
+    text-align: center;
+  }
+  
+  .form-container {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .video-upload {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 200px;
+    border: 1px dashed #ccc;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    cursor: pointer;
+    text-align: center;
+  }
+  
+  .upload-label {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+  }
+  
+  .upload-label span {
+    font-size: 48px;
+    color: #4a90e2;
+  }
+  
+  .next-button {
+    padding: 15px;
+    background-color: #4a90e2;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    text-align: center;
+  }
+  

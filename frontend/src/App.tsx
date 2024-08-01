@@ -10,6 +10,10 @@ import Onboarding from "./pages/Onboarding";
 import Food from "./pages/Food";
 import MypageFood from "./components/molecules/MypageFood";
 import PostFood from "./components/molecules/PostFood";
+import { TrainerOnboardingStep1 } from "./components/molecules/TrainerOnboardingStep1";
+import { TrainerOnboardingStep2 } from "./components/molecules/TrainerOnboardingStep2";
+import { TrainerOnboardingStep3 } from "./components/molecules/TrainerOnboardingStep3";
+import TrainerOnboardingStep4 from './components/molecules/TrainerOnboardingStep4/TrainerOnboardingStep4';
 
 function App() {
   const { isAuthenticated } = useAuth();
@@ -33,6 +37,10 @@ function App() {
               <Route path="intro/login" element={<Login />} />
               <Route path="intro/tutorial" element={<Tutorial />} />
               <Route path="intro/onboarding" element={<Onboarding />} />
+              <Route path="TrainerOn1" element={<TrainerOnboardingStep1 />} />
+              <Route path="TrainerOn2" element={<TrainerOnboardingStep2 />} />
+              <Route path="TrainerOn2/TrainerOn3" element={<TrainerOnboardingStep3 />} />
+              <Route path="TrainerOn2/TrainerOn3/TrainerOn4" element={<TrainerOnboardingStep4 />} />
             </>
           )}
         </Routes>
