@@ -34,10 +34,6 @@ public class UserInfo {
 	@OneToMany(mappedBy = "userInfo", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<Goal> goalList;
 
-	@Enumerated(EnumType.STRING)
-	@Column(nullable = false)
-	private Gender gender;
-
 	@OneToOne(mappedBy = "userInfo", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private BodyInfo bodyInfo;
 
@@ -56,7 +52,7 @@ public class UserInfo {
 		final Boolean agreeToReceive) {
 		this.user = user;
 		this.goalList = goalList;
-		this.gender = gender;
+		this.user.setGender(gender);
 		this.bodyInfo = bodyInfo;
 		this.gym = gym;
 		this.exerciseLevel = exerciseLevel;
