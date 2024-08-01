@@ -13,10 +13,13 @@ import com.healthyreal.be.api.entity.userInfo.Gym;
 public record TrainerMyPageResponse(
 	String trainerName,
 	String trainerDescription,
+	String trainerPhone,
 	String gymName,
 	String gymAddress,
+	String gymPhone,
 	List<TrainerProgram> trainingPrograms,
-	List<TrainerQualification> trainerQualifications
+	List<TrainerQualification> trainerQualifications,
+	String profileImageUrl
 ) {
 
 	public static TrainerMyPageResponse toResponse(Member user, TrainerInfo trainerInfo, Gym gym,
@@ -35,8 +38,9 @@ public record TrainerMyPageResponse(
 				qualification.getStartDate()
 			)).collect(Collectors.toList());
 
-		return new TrainerMyPageResponse(user.getUsername(), trainerInfo.getProfileDescription(), gym.getName(),
-			gym.getAddress(), trainerPrograms, trainerQualifications);
+		return new TrainerMyPageResponse(user.getUsername(), trainerInfo.getProfileDescription(), user.getPhone(),
+			gym.getName(), gym.getAddress(), gym.getGymPhone(), trainerPrograms, trainerQualifications,
+			user.getProfileImageUrl());
 	}
 }
 
