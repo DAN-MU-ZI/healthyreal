@@ -5,7 +5,6 @@ import java.time.LocalDateTime;
 import net.minidev.json.annotate.JsonIgnore;
 
 import com.healthyreal.be.api.entity.trainer.TrainerInfo;
-import com.healthyreal.be.api.entity.userInfo.Gender;
 import com.healthyreal.be.api.entity.userInfo.UserInfo;
 import com.healthyreal.be.oauth.entity.ProviderType;
 import com.healthyreal.be.oauth.entity.RoleType;
@@ -80,6 +79,10 @@ public class Member {
 	@NotNull
 	private RoleType roleType;
 
+	@Column(name = "GENDER", length = 10)
+	@Enumerated(EnumType.STRING)
+	private Gender gender;
+
 	@Column(name = "CREATED_AT")
 	@NotNull
 	private LocalDateTime createdAt;
@@ -98,8 +101,6 @@ public class Member {
 	@OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private TrainerInfo trainerInfo;
 
-	@Enumerated(EnumType.STRING)
-	private Gender gender;
 
 	public Member(
 		@NotNull @Size(max = 64) final String userId,
@@ -124,3 +125,4 @@ public class Member {
 		this.modifiedAt = modifiedAt;
 	}
 }
+

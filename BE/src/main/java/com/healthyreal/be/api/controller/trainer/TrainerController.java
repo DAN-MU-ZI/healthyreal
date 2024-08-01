@@ -1,5 +1,6 @@
 package com.healthyreal.be.api.controller.trainer;
 
+import com.healthyreal.be.api.entity.trainer.TrainerMainPageResponse;
 import com.healthyreal.be.api.entity.user.Member;
 import com.healthyreal.be.api.service.TrainerService;
 import com.healthyreal.be.utils.CurrentUser;
@@ -29,13 +30,22 @@ import lombok.RequiredArgsConstructor;
 public class TrainerController {
     private final TrainerService trainerService;
 
-    @PostMapping("/register")
-    public ResponseEntity<String> registerTrainer(
-            @Parameter(hidden = true) @CurrentUser Member user,
-            @RequestPart(value = "data", required = true) TrainerRequest request,
-            @RequestPart(value = "qualificationImages", required = true) List<MultipartFile> qualificationImages,
-            @RequestPart(value = "trainingProgramImages", required = true) List<MultipartFile> trainingProgramImages
-    ) {
+
+	@GetMapping
+	public ResponseEntity<TrainerMainPageResponse> mainTrainer(
+		@CurrentUser Member user
+	) {
+		TrainerMainPageResponse mainPageByTrainer = trainerService.getMainPageByTrainer(user);
+		return ResponseEntity.ok(mainPageByTrainer);
+	}
+
+	@PostMapping("/register")
+	public ResponseEntity<String> registerTrainer(
+		@CurrentUser Member user,
+		@RequestPart(value = "data", required = true) TrainerRequest request,
+		@RequestPart(value = "qualificationImages", required = true) List<MultipartFile> qualificationImages,
+		@RequestPart(value = "trainingProgramImages", required = true) List<MultipartFile> trainingProgramImages
+	) {
 
         trainerService.register(user, request, qualificationImages, trainingProgramImages);
 
