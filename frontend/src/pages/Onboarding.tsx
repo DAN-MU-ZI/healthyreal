@@ -1,6 +1,6 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useAuth } from "../providers/AuthContext";
+import {useState} from "react";
+import {useNavigate} from "react-router-dom";
+import {useAuth} from "../providers/AuthContext";
 import OnboardLayout from "../components/templates/OnboardLayout";
 import Text from "../components/atoms/Text";
 import Button from "../components/atoms/Button";
@@ -11,7 +11,7 @@ import GymSearch from "../components/molecules/GymSearch";
 import LevelSelection from "../components/molecules/LevelSelection";
 import Back from "../components/atoms/Back";
 import BodyInfo from "../components/molecules/BodyInfo";
-import { userApi } from "../apis/custom";
+import {userApi} from "../apis/custom";
 import {
   MemberRegisterRequest,
   BodyInfoDto,
@@ -36,7 +36,7 @@ const initialOnboardingData: MemberRegisterRequest = {
 };
 
 export default function Onboarding() {
-  const { logout } = useAuth();
+  const {logout} = useAuth();
   let navigate = useNavigate();
   const [onboardingData, setOnboardingData] = useState<MemberRegisterRequest>(
     initialOnboardingData
@@ -47,7 +47,7 @@ export default function Onboarding() {
   const onboarding = dbData.onboarding;
 
   const handleDataChange = (key: keyof MemberRegisterRequest, data: any) => {
-    setOnboardingData({ ...onboardingData, [key]: data });
+    setOnboardingData({...onboardingData, [key]: data});
   };
 
   const handleNext = () => {
@@ -61,7 +61,7 @@ export default function Onboarding() {
 
   const endOnboarding = async () => {
     try {
-      console.log(onboardingData)
+      console.log(onboardingData);
       await userApi.registerMember(onboardingData);
       navigate(`/main`);
     } catch (error) {
@@ -78,22 +78,32 @@ export default function Onboarding() {
   const validateStep = (): boolean => {
     switch (step) {
       case 1:
-        return Array.isArray(onboardingData.goalTypes) && onboardingData.goalTypes.length > 0;
+        return (
+          Array.isArray(onboardingData.goalTypes) &&
+          onboardingData.goalTypes.length > 0
+        );
       case 2:
-        return onboardingData.gender !== undefined && onboardingData.gender !== null;
+        return (
+          onboardingData.gender !== undefined && onboardingData.gender !== null
+        );
       case 3:
-        const { birthDate = "", height = 0, weight = 0 } = onboardingData.bodyInfoDto || {};
+        const {
+          birthDate = "",
+          height = 0,
+          weight = 0,
+        } = onboardingData.bodyInfoDto || {};
         return birthDate !== "" && height > 0 && weight > 0;
       case 4:
         return onboardingData.gymDto?.name !== "";
       case 5:
-        return onboardingData.exerciseLevel !== undefined && onboardingData.exerciseLevel !== null;
+        return (
+          onboardingData.exerciseLevel !== undefined &&
+          onboardingData.exerciseLevel !== null
+        );
       default:
         return false;
     }
   };
-
-
 
   const renderStep = () => {
     switch (step) {
@@ -128,7 +138,9 @@ export default function Onboarding() {
       case 5:
         return (
           <LevelSelection
-            onboardingLevel={onboardingData.exerciseLevel as UserInfoExerciseLevelEnum}
+            onboardingLevel={
+              onboardingData.exerciseLevel as UserInfoExerciseLevelEnum
+            }
             onDataChange={(data) => handleDataChange("exerciseLevel", data)}
           />
         );

@@ -8,6 +8,7 @@
   flex-direction: column;
   background-color: #fff;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
 }
 
 .gymItem:hover {
@@ -21,8 +22,7 @@
   margin-bottom: 8px;
 }
 
-.gymItem .gymAddress,
-.gymItem .gymPostalCode {
+.gymItem .gymAddress {
   display: flex;
   font-size: 14px;
   color: #666;

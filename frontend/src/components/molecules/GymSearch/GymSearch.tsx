@@ -1,57 +1,19 @@
-import React, { useState, useEffect } from "react";
+import React, {useState, useEffect, useRef} from "react";
+import axios from "axios";
 import PlaceCard from "../../atoms/PlaceCard";
-import { GymDto } from "../../../typescript-axios"; // Import the type definition
+import "./styles.css";
+import {GymDto} from "../../../typescript-axios";
 
 interface GymSearchProps {
   onboardingGym: GymDto;
   onSelectGym: (gym: GymDto) => void;
 }
 
-const GymSearch: React.FC<GymSearchProps> = ({ onboardingGym, onSelectGym }) => {
-  const [searchTerm, setSearchTerm] = useState<string>("");
+const GymSearch: React.FC<GymSearchProps> = ({onboardingGym, onSelectGym}) => {
+  const apiKey = process.env.REACT_APP_KAKAO_API_KEY;
+  const [searchTerm, setSearchTerm] = useState<string>("헬스장");
   const [gyms, setGyms] = useState<GymDto[]>([]);
   const [filteredGyms, setFilteredGyms] = useState<GymDto[]>([]);
-
-  useEffect(() => {
-    // Fetch gym data from the API (here replaced with dummy data)
-    const fetchGyms = async () => {
-      try {
-        // Dummy data to simulate API response
-        const dummyGyms: GymDto[] = [
-          {
-            name: "Fitness First",
-            address: "123 Main St, Anytown",
-          },
-          {
-            name: "Gold's Gym",
-            address: "456 Elm St, Othertown",
-          },
-          {
-            name: "Planet Fitness",
-            address: "789 Oak St, Sometown",
-          },
-        ];
-        setGyms(dummyGyms);
-
-        // Uncomment below if fetching from a real API
-        // const response = await axios.get<GymDto[]>('API_ENDPOINT'); // Replace 'API_ENDPOINT' with the actual API endpoint
-        // setGyms(response.data);
-      } catch (error) {
-        console.error("Failed to fetch gyms", error);
-      }
-    };
-
-    fetchGyms();
-  }, []);
-
-  useEffect(() => {
-    setFilteredGyms(
-      gyms.filter(
-        (gym) =>
-          (gym.name ?? "").includes(searchTerm) || (gym.address ?? "").includes(searchTerm)
-      )
-    );
-  }, [searchTerm, gyms]);
 
   useEffect(() => {
     if (onboardingGym && onboardingGym.name) {
@@ -59,19 +21,60 @@ const GymSearch: React.FC<GymSearchProps> = ({ onboardingGym, onSelectGym }) => 
     }
   }, [onboardingGym]);
 
+  useEffect(() => {
+    fetchGyms();
+  }, []);
+
+  const fetchGyms = async () => {
+    console.log(searchTerm);
+    try {
+      const response = await axios.get(
+        `https://dapi.kakao.com/v2/local/search/keyword.json`,
+        {
+          params: {
+            query: searchTerm,
+          },
+          headers: {
+            Authorization: `KakaoAK ${apiKey}`,
+          },
+        }
+      );
+
+      if (response.data.documents) {
+        const gymsData = response.data.documents.map((gym: any) => ({
+          name: gym.place_name,
+          address: gym.road_address_name || gym.address_name,
+        }));
+        setGyms(gymsData);
+      }
+    } catch (error) {
+      console.error("헬스장 검색에 실패했습니다.", error);
+    }
+  };
+
+  useEffect(() => {
+    setFilteredGyms(
+      gyms.filter(
+        (gym) =>
+          (gym.name ?? "").includes(searchTerm) ||
+          (gym.address ?? "").includes(searchTerm)
+      )
+    );
+  }, [searchTerm, gyms]);
+
   return (
     <>
       <div className="gymSearchBar">
         <input
           type="text"
-          placeholder="주소를 입력해주세요."
+          placeholder="헬스장을 검색해주세요"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
-        <button id="search-btn">검색</button>
+        <button onClick={fetchGyms}>검색</button>
       </div>
       <div className="gymList">
-        {filteredGyms.map((gym, index) => (
+        {gyms.map((gym, index) => (
           <div key={index}>
             <PlaceCard
               name={gym.name ?? "No Name"}
