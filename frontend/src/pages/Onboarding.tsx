@@ -11,6 +11,9 @@ import GymSearch from "../components/molecules/GymSearch";
 import LevelSelection from "../components/molecules/LevelSelection";
 import Back from "../components/atoms/Back";
 import BodyInfo from "../components/molecules/BodyInfo";
+import Receive from "../components/molecules/Receive/Receive";
+import StartLayout from "../components/templates/StartLayout";
+import startImg from "../assets/images/testPicture.png";
 import {userApi} from "../apis/custom";
 import {
   MemberRegisterRequest,
@@ -32,7 +35,7 @@ const initialOnboardingData: MemberRegisterRequest = {
     address: "",
   },
   exerciseLevel: undefined,
-  agreeToReceive: false,
+  agreeToReceive: true,
 };
 
 export default function Onboarding() {
@@ -100,6 +103,11 @@ export default function Onboarding() {
           onboardingData.exerciseLevel !== undefined &&
           onboardingData.exerciseLevel !== null
         );
+      case 6:
+        return (
+          onboardingData.agreeToReceive !== undefined &&
+          onboardingData.agreeToReceive !== null
+        );
       default:
         return false;
     }
@@ -144,6 +152,12 @@ export default function Onboarding() {
             onDataChange={(data) => handleDataChange("exerciseLevel", data)}
           />
         );
+      case 6:
+        return (
+          <Receive
+            onDataChange={(data) => handleDataChange("agreeToReceive", data)}
+          />
+        );
       default:
         return console.log("end onboarding!");
     }
@@ -155,35 +169,69 @@ export default function Onboarding() {
 
   return (
     <div className="divTag">
-      <OnboardLayout
-        header={step === 1 ? null : <Back onClick={clickBack} />}
-        title={
-          <>
-            <Text color="var(--main-blue)" fontSize="30px" fontWeight="600">
-              {onboarding[step - 1].title}
-            </Text>
-            <Text color="var(--sub-blue)" fontSize="12px" fontWeight="400">
-              {onboarding[step - 1].detail}
-            </Text>
-          </>
-        }
-        contents={<>{renderStep()}</>}
-        bottoms={
-          step > 5 ? (
-            <Button onClick={endOnboarding} backgroundColor="var(--main-blue)">
-              온보딩 완료
-            </Button>
-          ) : (
-            <Button
-              backgroundColor="var(--main-blue)"
-              width="var(--btn-medium)"
-              onClick={handleNext}
-            >
-              다음
-            </Button>
-          )
-        }
-      ></OnboardLayout>
+      {step < 6 ? (
+        <OnboardLayout
+          header={step == 1 ? null : <Back onClick={clickBack} />}
+          title={
+            <>
+              <Text color="var(--main-blue)" fontSize="30px" fontWeight="600">
+                {onboarding[step - 1].title}
+              </Text>
+              <Text color="var(--sub-blue)" fontSize="12px" fontWeight="400">
+                {onboarding[step - 1].detail}
+              </Text>
+            </>
+          }
+          contents={<>{renderStep()}</>}
+          bottoms={
+            <>
+              <Button
+                backgroundColor="var(--main-blue)"
+                width="var(--btn-medium)"
+                onClick={handleNext}
+              >
+                다음
+              </Button>
+            </>
+          }
+        />
+      ) : (
+        <StartLayout
+          header={
+            <>
+              <Text color="var(--main-blue)" fontSize="30px" fontWeight="600">
+                시작하기
+              </Text>
+              <Text color="var(--sub-blue)" fontSize="12px" fontWeight="400">
+                지금 바로 건강한 변화를 만들어보세요!
+              </Text>
+            </>
+          }
+          contents={
+            <div className="imgContainer">
+              <img src={startImg} alt="튜토리얼 사진" width="180px"></img>
+            </div>
+          }
+          bottoms={
+            <>
+              <Button
+                onClick={endOnboarding}
+                backgroundColor="var(--main-blue)"
+                width="var(--btn-large)"
+              >
+                홈 화면 가기
+              </Button>
+              <Button
+                onClick={clickLogout}
+                backgroundColor="var(--main-purple)"
+                width="var(--btn-large)"
+              >
+                다른 계정으로 로그인
+              </Button>
+            </>
+          }
+        />
+      )}
     </div>
   );
 }
