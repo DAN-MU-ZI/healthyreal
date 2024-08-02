@@ -3,6 +3,7 @@ import axios from "axios";
 import PlaceCard from "../../atoms/PlaceCard";
 import "./styles.css";
 import {GymDto} from "../../../typescript-axios";
+import searchIcon from "../../../assets/images/searchIcon.png";
 
 interface GymSearchProps {
   onboardingGym: GymDto;
@@ -14,6 +15,7 @@ const GymSearch: React.FC<GymSearchProps> = ({onboardingGym, onSelectGym}) => {
   const [searchTerm, setSearchTerm] = useState<string>("헬스장");
   const [gyms, setGyms] = useState<GymDto[]>([]);
   const [filteredGyms, setFilteredGyms] = useState<GymDto[]>([]);
+  const [selectedGym, setSelectedGym] = useState<GymDto | null>(null);
 
   useEffect(() => {
     if (onboardingGym && onboardingGym.name) {
@@ -62,6 +64,11 @@ const GymSearch: React.FC<GymSearchProps> = ({onboardingGym, onSelectGym}) => {
     );
   }, [searchTerm, gyms]);
 
+  const handleSelectGym = (gym: GymDto) => {
+    setSelectedGym(gym);
+    onSelectGym(gym);
+  };
+
   return (
     <>
       <div className="gymSearchBar">
@@ -71,15 +78,23 @@ const GymSearch: React.FC<GymSearchProps> = ({onboardingGym, onSelectGym}) => {
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
-        <button onClick={fetchGyms}>검색</button>
+        <img
+          src={searchIcon}
+          alt="검색"
+          className="searchIcon"
+          onClick={fetchGyms}
+        />
       </div>
       <div className="gymList">
-        {gyms.map((gym, index) => (
+        {filteredGyms.map((gym, index) => (
           <div key={index}>
             <PlaceCard
               name={gym.name ?? "No Name"}
               address={gym.address ?? "No Address"}
-              onClick={() => onSelectGym(gym)}
+              onClick={() => handleSelectGym(gym)}
+              border={
+                selectedGym === gym ? "2px solid #ccccdc" : "1px solid #dcdcdc"
+              }
             />
           </div>
         ))}
