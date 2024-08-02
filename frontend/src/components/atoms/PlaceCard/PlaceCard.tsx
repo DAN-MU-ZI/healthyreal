@@ -5,13 +5,14 @@ interface Props {
   name: string;
   address: string;
   onClick?: () => void;
+  border?: string;
 }
 
 export default function PlaceCard(props: Props) {
-  const {name, address, onClick} = props;
+  const {name, address, onClick, border} = props;
 
   return (
-    <div className="gymItem" onClick={onClick}>
+    <div className="gymItem" onClick={onClick} style={{border}}>
       <div className="gymTitle">
         <Text color="var(--main-blue)" fontSize="16px" fontWeight="400">
           {name}
