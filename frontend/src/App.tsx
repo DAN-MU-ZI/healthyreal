@@ -16,12 +16,12 @@ import { TrainerOnboardingStep2 } from "./components/molecules/TrainerOnboarding
 import { TrainerOnboardingStep3 } from "./components/molecules/TrainerOnboardingStep3";
 import TrainerOnboardingStep4 from './components/molecules/TrainerOnboardingStep4/TrainerOnboardingStep4';
 import TrainerOnboardingStep5 from "./components/molecules/TrainerOnboardingStep5/TrainerOnboardingStep5";
-import { UserInfoGenderEnum } from './typescript-axios';
+import { MemberGenderEnum } from './typescript-axios';
 
 const App: React.FC = () => {
-  const [onboardingGender, setOnboardingGender] = useState<UserInfoGenderEnum | undefined>(undefined);
+  const [onboardingGender, setOnboardingGender] = useState<MemberGenderEnum | undefined>(undefined);
 
-  const handleGenderChange = (selectedGender: UserInfoGenderEnum) => {
+  const handleGenderChange = (selectedGender: MemberGenderEnum) => {
     setOnboardingGender(selectedGender);
   };
 
