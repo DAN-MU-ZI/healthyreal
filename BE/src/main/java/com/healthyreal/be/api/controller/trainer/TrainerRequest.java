@@ -2,7 +2,7 @@ package com.healthyreal.be.api.controller.trainer;
 
 import com.healthyreal.be.api.entity.trainer.Qualification;
 import com.healthyreal.be.api.entity.trainer.QualificationCategory;
-import com.healthyreal.be.api.entity.trainer.Schedule;
+import com.healthyreal.be.api.entity.trainer.TrainerSchedule;
 import com.healthyreal.be.api.entity.trainer.TrainingProgram;
 import com.healthyreal.be.api.entity.userInfo.Goal;
 import com.healthyreal.be.api.entity.userInfo.GoalType;
@@ -51,12 +51,12 @@ public record TrainerRequest(
 	}
 
 	public record ScheduleDto(DayOfWeek dayOfWeek, LocalTime startTime, LocalTime endTime) {
-		public Schedule toEntity() {
-			return new Schedule(dayOfWeek, startTime, endTime);
+		public TrainerSchedule toEntity() {
+			return new TrainerSchedule(dayOfWeek, startTime, endTime);
 		}
 	}
 
-	public List<Schedule> scheduleDtoListToEntity() {
+	public List<TrainerSchedule> scheduleDtoListToEntity() {
 		return scheduleDtoList.stream().map(ScheduleDto::toEntity).collect(Collectors.toList());
 	}
 }

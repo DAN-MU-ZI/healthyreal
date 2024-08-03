@@ -1,7 +1,6 @@
 package com.healthyreal.be.config.security;
 
 import com.healthyreal.be.api.entity.user.Member;
-import com.healthyreal.be.api.entity.userInfo.Gender;
 import com.healthyreal.be.api.repository.user.UserRepository;
 import com.healthyreal.be.oauth.entity.ProviderType;
 import com.healthyreal.be.oauth.entity.RoleType;
