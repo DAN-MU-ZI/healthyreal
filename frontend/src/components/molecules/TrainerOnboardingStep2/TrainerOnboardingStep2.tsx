@@ -4,36 +4,32 @@ import './TrainerOnboardingStep2.css';
 
 const TrainerOnboardingStep2: React.FC = () => {
   const navigate = useNavigate();
-  const [videoFile, setVideoFile] = useState<File | null>(null);
+  const [video, setVideo] = useState<File | null>(null);
 
-  const handleVideoUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files && event.target.files[0]) {
-      setVideoFile(event.target.files[0]);
+  const handleVideoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setVideo(e.target.files[0]);
     }
   };
 
+  const handleNext = () => {
+    navigate('/trainer-onboarding-step3');
+  };
+
   return (
-    <div className="onboarding-container">
+    <div className="container">
       <div className="header">
         <button onClick={() => window.history.back()} className="back-button">←</button>
         <h1>대표 프로그램을 등록해주세요</h1>
-        <p>회원들에게 자신을 소개할 수 있는 대표 강의 한 가지를 등록해주세요.</p>
       </div>
-      <div className="form-container">
-        <div className="video-upload">
-          <label htmlFor="video-upload-input" className="upload-label">
-            {videoFile ? videoFile.name : <span>+</span>}
-          </label>
-          <input
-            type="file"
-            id="video-upload-input"
-            accept="video/*"
-            onChange={handleVideoUpload}
-            style={{ display: 'none' }}
-          />
-        </div>
-        <button onClick={() => navigate('TrainerOn3')} className="next-button">다음</button>
+      <p>회원들에게 자신을 소개할 수 있는 대표 강의 한 가지를 등록해주세요.</p>
+      <div className="video-upload">
+        <input type="file" accept="video/*" onChange={handleVideoChange} id="video-upload-input" />
+        <label htmlFor="video-upload-input" className="video-upload-label">
+          {video ? video.name : <span>+</span>}
+        </label>
       </div>
+      <button onClick={() => navigate('/TrainerOn3')} className="next-button">다음</button>
     </div>
   );
 };

@@ -1,83 +1,90 @@
-.onboarding-container {
-  width: 100%;
-  max-width: 375px;
-  margin: 0 auto;
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   padding: 20px;
-  box-sizing: border-box;
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
 }
 
 .header {
   display: flex;
   align-items: center;
-  margin-bottom: 20px;
-}
-
-.back-button {
-  background: none;
-  border: none;
-  font-size: 24px;
-  cursor: pointer;
-  margin-right: 10px;
+  width: 100%;
+  justify-content: space-between;
 }
 
 .header h1 {
   flex-grow: 1;
   text-align: center;
+  font-size: 24px;
+  margin: 0;
 }
 
-.form-container {
-  display: flex;
-  flex-direction: column;
+.header .back-button {
+  background: none;
+  border: none;
+  font-size: 24px;
 }
 
-.fields {
+.specializations {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
-  margin-bottom: 20px;
+  justify-content: center;
+  margin: 20px 0;
 }
 
-.field-button {
-  padding: 10px 20px;
-  border: 1px solid #ccc;
-  border-radius: 20px;
+.specialization-button {
+  background-color: #f0f0f0;
+  border: none;
+  border-radius: 4px;
+  padding: 10px;
+  margin: 5px;
+  font-size: 16px;
   cursor: pointer;
 }
 
-.field-button.selected {
-  background-color: #4a90e2;
+.specialization-button.selected {
+  background-color: #6200ee;
   color: white;
 }
 
-.custom-field-container {
+.custom-specialization {
   display: flex;
-  align-items: center;
   margin-top: 10px;
 }
 
-.custom-field-container input {
-  flex-grow: 1;
+.custom-specialization input {
   padding: 10px;
+  font-size: 16px;
+  margin-right: 5px;
   border: 1px solid #ccc;
-  border-radius: 20px;
-  margin-right: 10px;
+  border-radius: 4px;
 }
 
-.add-button {
-  background-color: #4a90e2;
-  color: white;
-  border: none;
+.custom-specialization button {
   padding: 10px;
-  border-radius: 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 4px;
+  background-color: #6200ee;
+  color: white;
   cursor: pointer;
 }
 
 .next-button {
-  padding: 15px;
-  background-color: #4a90e2;
+  margin-top: 20px;
+  padding: 10px;
+  width: 100%;
+  background-color: #6200ee;
   color: white;
   border: none;
-  border-radius: 10px;
-  cursor: pointer;
-  text-align: center;
+  border-radius: 4px;
+  font-size: 18px;
+  transition: background-color 0.3s;
+}
+
+.next-button:hover {
+  background-color: #3700b3;
 }

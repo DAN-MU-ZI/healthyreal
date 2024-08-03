@@ -2,57 +2,61 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './TrainerOnboardingStep1.css';
 
+const specializations = ['바디 프로필', '근력 증가', '선수 트레이닝', '재활 트레이닝', '통증 케어', '식단 관리', '다이어트 및 체중 관리', '벌크업', '자세 교정'];
+
 const TrainerOnboardingStep1: React.FC = () => {
   const navigate = useNavigate();
-  const [selectedFields, setSelectedFields] = useState<string[]>([]);
-  const [customField, setCustomField] = useState('');
+  const [selectedSpecializations, setSelectedSpecializations] = useState<string[]>([]);
+  const [customSpecialization, setCustomSpecialization] = useState('');
 
-  const toggleField = (field: string) => {
-    if (selectedFields.includes(field)) {
-      setSelectedFields(selectedFields.filter((item) => item !== field));
-    } else if (selectedFields.length < 3) {
-      setSelectedFields([...selectedFields, field]);
+  const handleSpecializationClick = (specialization: string) => {
+    if (selectedSpecializations.includes(specialization)) {
+      setSelectedSpecializations(selectedSpecializations.filter(item => item !== specialization));
+    } else if (selectedSpecializations.length < 3) {
+      setSelectedSpecializations([...selectedSpecializations, specialization]);
     }
   };
 
-  const addCustomField = () => {
-    if (customField && !selectedFields.includes(customField) && selectedFields.length < 3) {
-      setSelectedFields([...selectedFields, customField]);
-      setCustomField('');
+  const handleCustomSpecializationAdd = () => {
+    if (customSpecialization && selectedSpecializations.length < 3) {
+      setSelectedSpecializations([...selectedSpecializations, customSpecialization]);
+      setCustomSpecialization('');
     }
+  };
+
+  const handleNext = () => {
+    navigate('/trainer-onboarding-step2');
   };
 
   return (
-    <div className="onboarding-container">
+    <div className="container">
       <div className="header">
         <button onClick={() => window.history.back()} className="back-button">←</button>
         <h1>전문 분야</h1>
-        <p>본인이 자신 있는 분야를 선택해 주세요.</p>
       </div>
-      <div className="form-container">
-        <p>*최대 3개 선택 가능</p>
-        <div className="fields">
-          {['바디 프로필', '근력 증가', '선수 트레이닝', '재활 트레이닝', '통증 케어', '식단 관리', '다이어트 및 체중 관리', '벌크업', '자세 교정'].map((field) => (
-            <button
-              key={field}
-              onClick={() => toggleField(field)}
-              className={`field-button ${selectedFields.includes(field) ? 'selected' : ''}`}
-            >
-              {field}
-            </button>
-          ))}
-          <div className="custom-field-container">
-            <input
-              type="text"
-              value={customField}
-              onChange={(e) => setCustomField(e.target.value)}
-              placeholder="직접 입력"
-            />
-            <button onClick={addCustomField} className="add-button">+</button>
-          </div>
+      <p>본인이 자신 있는 분야를 선택해 주세요.</p>
+      <p>*최대 3개 선택 가능</p>
+      <div className="specializations">
+        {specializations.map((specialization) => (
+          <button
+            key={specialization}
+            className={`specialization-button ${selectedSpecializations.includes(specialization) ? 'selected' : ''}`}
+            onClick={() => handleSpecializationClick(specialization)}
+          >
+            {specialization}
+          </button>
+        ))}
+        <div className="custom-specialization">
+          <input
+            type="text"
+            placeholder="직접 입력"
+            value={customSpecialization}
+            onChange={(e) => setCustomSpecialization(e.target.value)}
+          />
+          <button onClick={handleCustomSpecializationAdd}>+</button>
         </div>
-        <button onClick={() => navigate('/TrainerOn2')} className="next-button">다음</button>
       </div>
+      <button onClick={() => navigate('/TrainerOn2')} className="next-button">다음</button>
     </div>
   );
 };
