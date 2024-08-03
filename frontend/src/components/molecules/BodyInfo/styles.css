@@ -11,7 +11,7 @@
   justify-content: space-between;
 }
 
-input {
+.inputItem > input {
   box-sizing: border-box;
   height: 40px;
   width: 155px;
