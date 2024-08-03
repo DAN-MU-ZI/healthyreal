@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useState, useEffect } from "react";
+import {useState, useEffect} from "react";
 import "./styles.css";
 
 import Text from "../../atoms/Text";

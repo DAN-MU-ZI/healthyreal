@@ -1,20 +1,13 @@
 package com.healthyreal.be.api.entity.userInfo;
 
 import com.healthyreal.be.api.entity.trainer.TrainerInfo;
-
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
+@Setter
 @NoArgsConstructor
 @Entity
 public class Gym {
@@ -38,7 +31,6 @@ public class Gym {
 	@JoinColumn(name = "trainer_info_id")
 	private TrainerInfo trainerInfo;
 
-	@Column(nullable = false)
 	private String gymPhone;
 
 	public Gym(final String name, final String address) {

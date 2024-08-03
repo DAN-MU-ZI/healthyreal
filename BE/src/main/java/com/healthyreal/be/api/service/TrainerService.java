@@ -1,37 +1,36 @@
 package com.healthyreal.be.api.service;
 
-import java.time.LocalDate;
-import java.util.Iterator;
-import java.util.List;
-
-import com.healthyreal.be.api.entity.user.Gender;
-import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
-
+import com.healthyreal.be.api.controller.trainer.SearchTrainerResponse;
 import com.healthyreal.be.api.controller.trainer.TrainerRequest;
 import com.healthyreal.be.api.entity.Meal;
 import com.healthyreal.be.api.entity.Ticket;
 import com.healthyreal.be.api.entity.cloud.S3Image;
 import com.healthyreal.be.api.entity.schedule.Schedule;
-import com.healthyreal.be.api.entity.trainer.Qualification;
-import com.healthyreal.be.api.entity.trainer.TrainerInfo;
-import com.healthyreal.be.api.entity.trainer.TrainerMainPageResponse;
-import com.healthyreal.be.api.entity.trainer.TrainerSchedule;
-import com.healthyreal.be.api.entity.trainer.TrainingProgram;
+import com.healthyreal.be.api.entity.trainer.*;
 import com.healthyreal.be.api.entity.trainer.dto.TrainerMyPageResponse;
+import com.healthyreal.be.api.entity.user.Gender;
 import com.healthyreal.be.api.entity.user.Member;
 import com.healthyreal.be.api.entity.userInfo.Goal;
+import com.healthyreal.be.api.entity.userInfo.GoalType;
 import com.healthyreal.be.api.entity.userInfo.Gym;
 import com.healthyreal.be.api.repository.MealRepository;
 import com.healthyreal.be.api.repository.TicketRepository;
 import com.healthyreal.be.api.repository.schedule.ScheduleRepository;
 import com.healthyreal.be.api.repository.trainer.TrainerInfoRepository;
-
-
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.time.LocalDate;
+import java.util.Iterator;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -73,7 +72,6 @@ public class TrainerService {
 			"trainer/trainingProgram");
 		trainingProgram.addAllImage(trainingProgramImagesList);
 
-
 		TrainerInfo trainerInfo = createTrainerInfo(user, gym, goals, qualifications, trainingProgram, trainerSchedules,
 			profileDescription, null);
 		trainerInfoRepository.save(trainerInfo);
@@ -101,16 +99,17 @@ public class TrainerService {
 	}
 
 	private TrainerInfo createTrainerInfo(
-			final Member user,
-			final Gym gym,
-			final List<Goal> goals,
-			final List<Qualification> qualifications,
-			final TrainingProgram trainingProgram,
-			final List<TrainerSchedule> trainerSchedules,
-			final String profileDescription,
-			final Gender gender
-			) {
-		return new TrainerInfo(user, gym, goals, qualifications, trainingProgram, trainerSchedules, profileDescription, gender);
+		final Member user,
+		final Gym gym,
+		final List<Goal> goals,
+		final List<Qualification> qualifications,
+		final TrainingProgram trainingProgram,
+		final List<TrainerSchedule> trainerSchedules,
+		final String profileDescription,
+		final Gender gender
+	) {
+		return new TrainerInfo(user, gym, goals, qualifications, trainingProgram, trainerSchedules, profileDescription,
+			gender);
 	}
 
 	public TrainerMainPageResponse getMainPageByTrainer(Member user) {
@@ -138,35 +137,6 @@ public class TrainerService {
 
 		return TrainerMainPageResponse.toResponse(schedules, meals, tickets);
 	}
-/*
-	private List<Meal> getMeals(Member user) {
-		String jpql = "SELECT m "
-			+ "FROM Meal m "
-			+ "JOIN Ticket t ON m.member = t.member "
-			+ "WHERE t.trainer = :trainer AND t.endPoint > :date AND m.comment IS NULL";
-
-		TypedQuery<Meal> query = entityManager.createQuery(jpql, Meal.class);
-
-		query.setParameter("trainer", user);
-		query.setParameter("date", LocalDate.now());
-		query.setMaxResults(3);
-
-		return query.getResultList();
-	}
-*/
-/*
-	private List<Schedule> getTodaySchedule3(Member user) {
-		String jpql = "select s "
-			+ "from Schedule s "
-			+ "where s.trainer = :trainer and s.scheduleDate = :date and s.lessonYn = 'Y'";
-		TypedQuery<Schedule> query = entityManager.createQuery(jpql, Schedule.class);
-
-		query.setParameter("trainer", user);
-		query.setParameter("date", LocalDate.now());
-		query.setMaxResults(3);
-		return query.getResultList();
-	}
-*/
 
 	public TrainerMyPageResponse readTrainerMyPage(Member user) {
 
@@ -179,5 +149,25 @@ public class TrainerService {
 		List<Qualification> qualifications = trainerInfo.getQualificationList();
 
 		return TrainerMyPageResponse.toResponse(user, trainerInfo, gym, trainingPrograms, qualifications);
+	}
+
+	public SearchTrainerResponse searchTrainers(String keyWord, GoalType category, String location, Integer minPrice,
+		Integer maxPrice) {
+		Pageable pageable = PageRequest.of(0, 10); // 페이지 번호와 크기를 설정할 수 있습니다.
+		Page<TrainerInfo> trainerPage = trainerInfoRepository.findAllByFilters(keyWord, category, location, pageable);
+
+		List<SearchTrainerResponse.FoundTrainer> foundTrainers = trainerPage.getContent().stream()
+			.map(trainer -> new SearchTrainerResponse.FoundTrainer(
+				trainer.getUser().getProfileImageUrl(),
+				trainer.getId(),
+				trainer.getUser().getUsername(),
+				trainer.getGym().getAddress(),
+				trainer.getUser().getPhone(),
+				trainer.getProfileDescription(),
+				trainer.getGoalList().stream().map(Goal::getGoalType).collect(Collectors.toList())))
+			.collect(Collectors.toList());
+
+		return new SearchTrainerResponse(foundTrainers, trainerPage.getTotalPages(), trainerPage.getTotalElements(),
+			trainerPage.getNumber(), trainerPage.getSize());
 	}
 }
