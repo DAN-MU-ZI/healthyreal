@@ -1,16 +1,19 @@
 package com.healthyreal.be.api.entity.community;
 
+import com.healthyreal.be.api.entity.cloud.S3Image;
 import com.healthyreal.be.api.entity.user.Member;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import java.time.LocalDateTime;
-import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import net.minidev.json.annotate.JsonIgnore;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -47,6 +50,9 @@ public class Post {
 
 	@OneToMany(mappedBy = "post", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<Comment> comments;
+
+	@OneToMany(mappedBy = "post", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	private List<S3Image> images = new ArrayList<>();
 
 	public Post(
 		@NotNull @Size(max = 100) String title,

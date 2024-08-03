@@ -1,13 +1,14 @@
 package com.healthyreal.be.api.controller.community;
 
-import com.healthyreal.be.api.entity.community.Post;
 import com.healthyreal.be.api.entity.community.Comment;
+import com.healthyreal.be.api.entity.community.Post;
 import com.healthyreal.be.api.entity.user.Member;
 import com.healthyreal.be.api.service.CommunityService;
 import com.healthyreal.be.utils.CurrentUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -18,13 +19,13 @@ public class CommunityController {
 	private final CommunityService communityService;
 
 	@PostMapping("/posts")
-	public ResponseEntity<Post> createPost(
+	public ResponseEntity<String> createPost(
 		@CurrentUser Member user,
-		@RequestParam String title,
-		@RequestParam String content
+		@RequestPart(value = "data") PostCreateRequest request,
+		@RequestPart(value = "images", required = false) List<MultipartFile> images
 	) {
-		Post post = communityService.createPost(user, title, content);
-		return ResponseEntity.ok(post);
+		communityService.createPost(user, request, images);
+		return ResponseEntity.ok("ok");
 	}
 
 	@PostMapping("/posts/{postId}/comments")
