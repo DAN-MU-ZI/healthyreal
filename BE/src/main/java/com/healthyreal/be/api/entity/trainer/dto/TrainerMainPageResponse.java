@@ -1,4 +1,4 @@
-package com.healthyreal.be.api.entity.trainer;
+package com.healthyreal.be.api.entity.trainer.dto;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
