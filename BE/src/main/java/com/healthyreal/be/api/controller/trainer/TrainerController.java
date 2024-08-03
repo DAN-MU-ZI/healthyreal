@@ -1,6 +1,7 @@
 package com.healthyreal.be.api.controller.trainer;
 
-import com.healthyreal.be.api.entity.trainer.TrainerMainPageResponse;
+import com.healthyreal.be.api.entity.trainer.dto.TrainerMainPageResponse;
+import com.healthyreal.be.api.entity.trainer.dto.TrainerMemberManagementResponse;
 import com.healthyreal.be.api.entity.user.Member;
 import com.healthyreal.be.api.entity.userInfo.GoalType;
 import com.healthyreal.be.api.service.TrainerService;
@@ -8,7 +9,6 @@ import com.healthyreal.be.utils.CurrentUser;
 
 import java.util.List;
 
-import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,10 +20,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.healthyreal.be.api.entity.trainer.dto.TrainerMyPageResponse;
-import com.healthyreal.be.api.entity.user.Member;
-import com.healthyreal.be.utils.CurrentUser;
-
-import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/api/v1/trainer")
@@ -69,4 +65,11 @@ public class TrainerController {
         SearchTrainerResponse response = trainerService.searchTrainers(keyWord, category, location, null, null);
         return ResponseEntity.ok().body(response);
     }
+	@GetMapping("/members")
+	public ResponseEntity<TrainerMemberManagementResponse> memberManagementTrainer(
+		@CurrentUser Member user
+	){
+		TrainerMemberManagementResponse trainerMemberManagementResponse = trainerService.readTrainerMembers(user);
+		return ResponseEntity.ok(trainerMemberManagementResponse);
+	}
 }
