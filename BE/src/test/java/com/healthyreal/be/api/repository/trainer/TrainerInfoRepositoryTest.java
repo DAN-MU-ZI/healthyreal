@@ -1,17 +1,11 @@
 package com.healthyreal.be.api.repository.trainer;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import com.healthyreal.be.api.controller.trainer.TrainerRequest;
 import com.healthyreal.be.api.controller.trainer.TrainerRequest.GymDto;
 import com.healthyreal.be.api.entity.cloud.S3Image;
-import com.healthyreal.be.api.entity.trainer.Qualification;
-import com.healthyreal.be.api.entity.trainer.QualificationCategory;
-import com.healthyreal.be.api.entity.trainer.Schedule;
-import com.healthyreal.be.api.entity.trainer.TrainerInfo;
-import com.healthyreal.be.api.entity.trainer.TrainingProgram;
+import com.healthyreal.be.api.entity.trainer.*;
+import com.healthyreal.be.api.entity.user.Gender;
 import com.healthyreal.be.api.entity.user.Member;
-import com.healthyreal.be.api.entity.userInfo.Gender;
 import com.healthyreal.be.api.entity.userInfo.Goal;
 import com.healthyreal.be.api.entity.userInfo.GoalType;
 import com.healthyreal.be.api.entity.userInfo.Gym;
@@ -21,6 +15,16 @@ import com.healthyreal.be.api.repository.userInfo.GoalRepository;
 import com.healthyreal.be.api.repository.userInfo.GymRepository;
 import com.healthyreal.be.oauth.entity.ProviderType;
 import com.healthyreal.be.oauth.entity.RoleType;
+import org.apache.http.entity.ContentType;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -28,12 +32,12 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import org.apache.http.entity.ContentType;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @ExtendWith(SpringExtension.class)
 @DataJpaTest
@@ -52,6 +56,8 @@ class TrainerInfoRepositoryTest {
 	private TrainingProgramRepository trainingProgramRepository;
 	@Autowired
 	private S3ImageRepository s3ImageRepository;
+	@Autowired
+	private TrainerScheduleRepository trainerScheduleRepository;
 
 	@Test
 	void saveTrainerInfo() {
@@ -119,7 +125,7 @@ class TrainerInfoRepositoryTest {
 		List<Goal> goals = request.goalTypesToEntity();
 		List<Qualification> qualificationList = request.qualificationDtoListToEntity();
 		TrainingProgram trainingProgram = request.trainingProgramDto().toEntity();
-		List<Schedule> scheduleList = request.scheduleDtoListToEntity();
+		List<TrainerSchedule> scheduleList = request.scheduleDtoListToEntity();
 		String profileDescription = request.profileDescription();
 
 		qualificationList.forEach(qualification -> {
@@ -157,5 +163,80 @@ class TrainerInfoRepositoryTest {
 		assertThat(s3ImageRepository.findAll().size()).isEqualTo(
 			trainerInfo.getQualificationList().size() + imageList.size());
 
+	}
+
+	@Test
+	void findAllByFilters() {
+		// Create and save Member
+		Member user = new Member(
+			"username",
+			"Test User",
+			"testuser@example.com",
+			"Y",
+			"",
+			ProviderType.KAKAO,
+			RoleType.USER,
+			LocalDateTime.now(),
+			LocalDateTime.now()
+		);
+		userRepository.saveAndFlush(user);
+
+		// Create and save Gym
+		Gym gym = new Gym("Fitness Center", "test location");
+		gymRepository.saveAndFlush(gym);
+
+		// Create and save Goals
+		List<Goal> goals = List.of(new Goal(GoalType.WEIGHT_LOSS), new Goal(GoalType.MUSCLE_GAIN));
+		goalRepository.saveAll(goals);
+
+		// Create and save Qualifications
+		List<Qualification> qualifications = List.of(
+			new Qualification("Certified Personal Trainer", QualificationCategory.CERTIFICATION,
+				LocalDate.of(2023, 1, 1), LocalDate.of(2024, 1, 1), "Nationally recognized certification."),
+			new Qualification("Nutrition Specialist", QualificationCategory.CERTIFICATION, LocalDate.of(2022, 5, 1),
+				LocalDate.of(2023, 5, 1), "Specialized in sports nutrition.")
+		);
+		qualificationRepository.saveAll(qualifications);
+
+		// Create and save Training Program
+		TrainingProgram trainingProgram = new TrainingProgram(
+			"Beginner Training Program",
+			"A program designed for beginners.",
+			Stream.of(GoalType.WEIGHT_LOSS, GoalType.BODY_PROFILE).map(Goal::new)
+				.collect(Collectors.toList())
+		);
+		trainingProgramRepository.saveAndFlush(trainingProgram);
+
+		// Create and save Schedules
+		List<TrainerSchedule> schedules = List.of(
+			new TrainerSchedule(DayOfWeek.MONDAY, LocalTime.of(9, 0), LocalTime.of(10, 0)),
+			new TrainerSchedule(DayOfWeek.WEDNESDAY, LocalTime.of(9, 0), LocalTime.of(10, 0)),
+			new TrainerSchedule(DayOfWeek.FRIDAY, LocalTime.of(9, 0), LocalTime.of(10, 0))
+		);
+		trainerScheduleRepository.saveAll(schedules);
+
+		// Create and save TrainerInfo
+		TrainerInfo trainerInfo = new TrainerInfo(
+			user,
+			gym,
+			goals,
+			qualifications,
+			trainingProgram,
+			schedules,
+			"Passionate trainer with 5 years of experience.",
+			Gender.MALE
+		);
+		trainerInfoRepository.saveAndFlush(trainerInfo);
+
+		// Test the repository method
+		Pageable pageable = PageRequest.of(0, 10);
+		//		Page<TrainerInfo> result = trainerInfoRepository.findAllByFilters("username", GoalType.WEIGHT_LOSS,
+		//			"test location", pageable);
+		Page<TrainerInfo> result = trainerInfoRepository.findAllByFilters("trainer", null,
+			null, pageable);
+
+		assertNotNull(result);
+		assertEquals(1, result.getTotalElements());
+		assertThat(result.getContent()).extracting("user.username").containsExactly("Test User");
 	}
 }

@@ -2,6 +2,7 @@ package com.healthyreal.be.api.controller.trainer;
 
 import com.healthyreal.be.api.entity.trainer.TrainerMainPageResponse;
 import com.healthyreal.be.api.entity.user.Member;
+import com.healthyreal.be.api.entity.userInfo.GoalType;
 import com.healthyreal.be.api.service.TrainerService;
 import com.healthyreal.be.utils.CurrentUser;
 
@@ -15,11 +16,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.healthyreal.be.api.entity.trainer.dto.TrainerMyPageResponse;
 import com.healthyreal.be.api.entity.user.Member;
-import com.healthyreal.be.api.service.TrainerService;
 import com.healthyreal.be.utils.CurrentUser;
 
 import lombok.RequiredArgsConstructor;
@@ -59,4 +60,13 @@ public class TrainerController {
 		TrainerMyPageResponse trainerMyPageResponse = trainerService.readTrainerMyPage(user);
 		return ResponseEntity.ok(trainerMyPageResponse);
 	}
+
+
+    @GetMapping("/search")
+    public ResponseEntity<SearchTrainerResponse> searchTrainers(@RequestParam(required = false) String keyWord,
+        @RequestParam(required = false) GoalType category,
+        @RequestParam(required = false) String location) {
+        SearchTrainerResponse response = trainerService.searchTrainers(keyWord, category, location, null, null);
+        return ResponseEntity.ok().body(response);
+    }
 }
