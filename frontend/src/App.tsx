@@ -14,6 +14,7 @@ import { TrainerOnboardingStep1 } from "./components/molecules/TrainerOnboarding
 import { TrainerOnboardingStep2 } from "./components/molecules/TrainerOnboardingStep2";
 import { TrainerOnboardingStep3 } from "./components/molecules/TrainerOnboardingStep3";
 import TrainerOnboardingStep4 from './components/molecules/TrainerOnboardingStep4/TrainerOnboardingStep4';
+import TrainerOnboardingStep5 from "./components/molecules/TrainerOnboardingStep5/TrainerOnboardingStep5";
 
 function App() {
   const { isAuthenticated } = useAuth();
@@ -39,8 +40,9 @@ function App() {
               <Route path="intro/onboarding" element={<Onboarding />} />
               <Route path="TrainerOn1" element={<TrainerOnboardingStep1 />} />
               <Route path="TrainerOn2" element={<TrainerOnboardingStep2 />} />
-              <Route path="TrainerOn2/TrainerOn3" element={<TrainerOnboardingStep3 />} />
-              <Route path="TrainerOn2/TrainerOn3/TrainerOn4" element={<TrainerOnboardingStep4 />} />
+              <Route path="TrainerOn3" element={<TrainerOnboardingStep3 />} />
+              <Route path="TrainerOn4" element={<TrainerOnboardingStep4 />} />
+              <Route path="TrainerOn4/TrainerOn5" element={<TrainerOnboardingStep5 />} />
             </>
           )}
         </Routes>

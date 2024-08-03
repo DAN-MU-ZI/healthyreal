@@ -42,7 +42,7 @@ const TrainerOnboardingStep4: React.FC = () => {
           <span>여자</span>
         </div>
       </div>
-      <button onClick={handleNext} className="next-button">다음</button>
+      <button onClick={() => navigate('TrainerOn5')} className="next-button">다음</button>
     </div>
   );
 };
