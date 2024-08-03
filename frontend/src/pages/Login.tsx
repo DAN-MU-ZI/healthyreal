@@ -1,22 +1,17 @@
-import * as React from "react";
 import { useEffect, useState } from "react";
 import StartLayout from "../components/templates/StartLayout";
 import Text from "../components/atoms/Text";
 import Button from "../components/atoms/Button";
-import googleLogo from "../assets/images/googleLogo.png";
-import kakaotalkLogo from "../assets/images/kakaotalkLogo.png";
-import styled from "@emotion/styled";
-
-import { defaultInstance } from "../apis/api";
+import naverLogo from "../assets/images/naverLogo.png";
+import trainerIcon from "../assets/images/trainerIcon.png";
+import memberIcon from "../assets/images/memberIcon.png";
 import request from "../apis/api/request";
+import Card from "../components/atoms/Card";
+import kakaotalkLogo from "../assets/images/kakaotalkLogo.png";
 
 export default function Login() {
-  const TestCord = styled.div({
-    width: "160px",
-    height: "180px",
-    backgroundColor: "lightYellow",
-  });
-
+  const baseUrl = process.env.REACT_APP_BASE_URL;
+  const redirect_uri = `${process.env.REACT_APP_CURRENT_URL}/oauth/redirect`;
   const [memberType, setMemberType] = useState("");
 
   const onClickTypeCard = (type: string) => {
@@ -28,12 +23,12 @@ export default function Login() {
     console.log(memberType);
   }, [memberType]);
 
-  const clickLogin = () => {
+  const clickLogin = (provider: string) => {
     console.log(memberType);
+    handleLogin(provider);
     getData();
   };
 
-  // 인증이 필요없는 데이터 요청
   const getData = async () => {
     try {
       const res = await request("GET", "/source/1");
@@ -44,25 +39,10 @@ export default function Login() {
   };
 
   const handleLogin = (provider: string) => {
-<<<<<<< Updated upstream
-    // const redirectUri = `http://localhost:8080/oauth2/authorization/${provider}?redirect_uri=http://localhost:3000/oauth/redirect`;
-    const redirectUri = `http://default-loadbalancer-ser-e983d-25608891-dc411cb92a75.kr.lb.naverncp.com:8080/oauth2/authorization/${provider}?redirect_uri=http://localhost:3000/oauth/redirect`;
-=======
-    const redirectUri = `http://localhost:8080/oauth2/authorization/${provider}?redirect_uri=http://localhost:3000/oauth/redirect`;
-    // const redirectUri = `http://default-loadbalancer-ser-e983d-25608891-dc411cb92a75.kr.lb.naverncp.com:8080/oauth2/authorization/${provider}?redirect_uri=http://localhost:3000/oauth/redirect`;
->>>>>>> Stashed changes
-    console.log(redirectUri);
+    const redirectUri = `${baseUrl}/oauth2/authorization/${provider}?redirect_uri=${redirect_uri}`;
     if (redirectUri) {
       window.location.href = redirectUri;
     }
-  };
-
-  const clickGoogle = () => {
-    handleLogin('google');
-  };
-
-  const clickKakao = () => {
-    handleLogin('kakao');
   };
 
   return (
@@ -80,31 +60,41 @@ export default function Login() {
         }
         contents={
           <>
-            <TestCord onClick={() => onClickTypeCard("member")}>회원</TestCord>
-            <TestCord onClick={() => onClickTypeCard("trainer")}>
+            <Card
+              onClick={() => onClickTypeCard("member")}
+              src={memberIcon}
+              selected={memberType === "member"}
+            >
+              일반 회원
+            </Card>
+            <Card
+              onClick={() => onClickTypeCard("trainer")}
+              src={trainerIcon}
+              selected={memberType === "trainer"}
+            >
               트레이너
-            </TestCord>
+            </Card>
           </>
         }
         bottoms={
           <>
             <Button
+              backgroundColor="#2cb24a"
+              width="var(--btn-large)"
+              color="white"
+              onClick={() => clickLogin("naver")}
+            >
+              <img src={naverLogo} alt="naverIcon" width="25px" />
+              네이버로 시작하기
+            </Button>
+            <Button
               backgroundColor="#FECA00"
               width="var(--btn-large)"
               color="var(--main-blue)"
-              onClick={clickKakao}
+              onClick={() => clickLogin("kakao")}
             >
-              <img src={kakaotalkLogo} alt="kakaoIcon" width="25px" />
+              <img src={kakaotalkLogo} alt="googleIcon" width="25px" />
               카카오톡으로 시작하기
-            </Button>
-            <Button
-              backgroundColor="var(--main-purple)"
-              width="var(--btn-large)"
-              color="var(--main-blue)"
-              onClick={clickGoogle}
-            >
-              <img src={googleLogo} alt="googleIcon" width="25px" />
-              구글로 시작하기
             </Button>
           </>
         }

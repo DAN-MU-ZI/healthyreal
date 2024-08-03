@@ -1,0 +1,28 @@
+.gymSearchBar > img {
+  width: 24px;
+  cursor: pointer;
+}
+
+.gymSearchBar {
+  background-color: #eeeeee;
+  border-radius: 10px;
+  padding: 10px 15px;
+  display: flex;
+  align-items: center;
+  max-width: 100%;
+}
+
+.gymSearchBar > input {
+  text-align: left;
+  width: 100%;
+  border: none;
+  background-color: transparent;
+  outline: none;
+}
+
+.gymList {
+  box-sizing: border-box;
+  height: 360px;
+  overflow-y: auto;
+  margin-top: 20px;
+}

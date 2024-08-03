@@ -1,14 +1,15 @@
 package com.healthyreal.be.api.entity.userInfo.dto;
 
-import com.healthyreal.be.api.entity.userInfo.BodyInfo;
-import com.healthyreal.be.api.entity.userInfo.ExerciseLevel;
-import com.healthyreal.be.api.entity.userInfo.Gender;
-import com.healthyreal.be.api.entity.userInfo.Goal;
-import com.healthyreal.be.api.entity.userInfo.GoalType;
-import com.healthyreal.be.api.entity.userInfo.Gym;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import com.healthyreal.be.api.entity.user.Gender;
+import com.healthyreal.be.api.entity.userInfo.BodyInfo;
+import com.healthyreal.be.api.entity.userInfo.ExerciseLevel;
+import com.healthyreal.be.api.entity.userInfo.Goal;
+import com.healthyreal.be.api.entity.userInfo.GoalType;
+import com.healthyreal.be.api.entity.userInfo.Gym;
 
 public record MemberRegisterRequest(
 	List<GoalType> goalTypes,

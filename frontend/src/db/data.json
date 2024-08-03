@@ -21,7 +21,7 @@
       "imgSrc": "../assets/images/testPicture.png"
     }
   ],
-  "titles": [
+  "onboarding": [
     {
       "title": "목표는 무엇인가요?",
       "detail": "자신의 목표를 명확히 하고, 성공적인 운동 계획을 세워보세요"
@@ -50,43 +50,60 @@
   "goals": [
     {
       "ko": "체중 감량",
-      "en": "goal1"
+      "en": "WEIGHT_LOSS"
     },
     {
       "ko": "근력 강화",
-      "en": "goal2"
+      "en": "MUSCLE_GAIN"
     },
     {
       "ko": "체력 향상",
-      "en": "goal3"
+      "en": "STAMINA_IMPROVEMENT"
     },
     {
       "ko": "유연성 및 이동성 향상",
-      "en": "goal4"
+      "en": "FLEXIBILITY_IMPROVEMENT"
     },
     {
       "ko": "체형 개선",
-      "en": "goal5"
+      "en": "BODY_SHAPE_IMPROVEMENT"
     },
     {
       "ko": "생활 습관 개선",
-      "en": "goal6"
+      "en": "LIFESTYLE_IMPROVEMENT"
     },
     {
       "ko": "건강 개선",
-      "en": "goal7"
+      "en": "HEALTH_IMPROVEMENT"
     },
     {
       "ko": "바디 프로필",
-      "en": "goal8"
+      "en": "BODY_PROFILE"
     },
     {
       "ko": "신체 균형",
-      "en": "goal9"
+      "en": "BALANCE_IMPROVEMENT"
     },
     {
       "ko": "기타",
-      "en": "goal10"
+      "en": "OTHER"
+    }
+  ],
+  "gymList": [
+    {
+      "name": "피트니스앤스타&PT",
+      "address": "부산 동구 초량동 중앙대로 75 5층 피트니스앤스타",
+      "postalCode": "47712"
+    },
+    {
+      "name": "달라스짐 부산대점",
+      "address": "부산 금정구 금강로 209 만산시티타워 지하1층",
+      "postalCode": "46294"
+    },
+    {
+      "name": "옐로우피티",
+      "address": "부산 금정구 금강로 246 1층 옐로우피티",
+      "postalCode": "46293"
     }
   ]
 }

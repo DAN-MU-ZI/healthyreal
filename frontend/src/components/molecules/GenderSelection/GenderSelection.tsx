@@ -1,37 +1,43 @@
 import * as React from "react";
-import {useState} from "react";
+import { useState, useEffect } from "react";
 import "./styles.css";
-import Button from "../../atoms/Button";
+import Card from "../../atoms/Card";
+import { MemberGenderEnum } from "../../../typescript-axios";
 
 interface GenderProp {
-  onDataChange: (selectedGoals: string) => void;
+  onboardingGender: MemberGenderEnum | undefined;
+  onDataChange: (selectedGender: MemberGenderEnum) => void;
 }
 
-const GenderSelection: React.FC<GenderProp> = ({onDataChange}) => {
-  const [selectedGender, setSelectedGender] = useState<string>("");
+const GenderSelection: React.FC<GenderProp> = ({ onboardingGender, onDataChange }) => {
+  const [selectedGender, setSelectedGender] = useState<MemberGenderEnum | undefined>(onboardingGender);
 
-  const handleGenderSelect = (gender: string) => {
+  useEffect(() => {
+    if (onboardingGender !== selectedGender) {
+      setSelectedGender(onboardingGender || MemberGenderEnum.Male);
+    }
+  }, [onboardingGender, selectedGender]);
+
+  const handleGenderSelect = (gender: MemberGenderEnum) => {
     setSelectedGender(gender);
     onDataChange(gender);
   };
 
   return (
-    <>
-      <Button
-        backgroundColor="var(--main-blue)"
-        width="var(--btn-medium)"
-        onClick={() => handleGenderSelect("MALE")}
+    <div className="genderCardContainer">
+      <Card
+        onClick={() => handleGenderSelect(MemberGenderEnum.Male)}
+        selected={selectedGender === MemberGenderEnum.Male}
       >
         남성
-      </Button>
-      <Button
-        backgroundColor="var(--main-blue)"
-        width="var(--btn-medium)"
-        onClick={() => handleGenderSelect("FEMAlE")}
+      </Card>
+      <Card
+        onClick={() => handleGenderSelect(MemberGenderEnum.Female)}
+        selected={selectedGender === MemberGenderEnum.Female}
       >
         여성
-      </Button>
-    </>
+      </Card>
+    </div>
   );
 };
 

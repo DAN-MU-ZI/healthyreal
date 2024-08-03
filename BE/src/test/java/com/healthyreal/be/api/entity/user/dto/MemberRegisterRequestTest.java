@@ -1,20 +1,21 @@
 package com.healthyreal.be.api.entity.user.dto;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.healthyreal.be.api.entity.user.Gender;
 import com.healthyreal.be.api.entity.userInfo.ExerciseLevel;
-import com.healthyreal.be.api.entity.userInfo.Gender;
 import com.healthyreal.be.api.entity.userInfo.GoalType;
 import com.healthyreal.be.api.entity.userInfo.dto.MemberRegisterRequest;
 import com.healthyreal.be.api.entity.userInfo.dto.MemberRegisterRequest.BodyInfoDto;
 import com.healthyreal.be.api.entity.userInfo.dto.MemberRegisterRequest.GymDto;
-import java.time.LocalDate;
-import java.util.Arrays;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
+import java.time.LocalDate;
+import java.util.Arrays;
+
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class MemberRegisterRequestTest {
 
