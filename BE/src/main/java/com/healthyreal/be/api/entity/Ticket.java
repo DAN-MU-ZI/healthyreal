@@ -2,6 +2,8 @@ package com.healthyreal.be.api.entity;
 
 import java.time.LocalDate;
 
+import org.hibernate.mapping.ToOne;
+
 import com.healthyreal.be.api.entity.trainer.TrainingProgram;
 import com.healthyreal.be.api.entity.user.Member;
 
@@ -38,7 +40,7 @@ public class Ticket {
 	@JoinColumn(name = "trainer_seq", nullable = false)
 	private Member trainer;
 
-	@OneToOne
+	@ManyToOne
 	@JoinColumn(name = "trainingProgram_id")
 	private TrainingProgram trainingProgram;
 
@@ -50,4 +52,7 @@ public class Ticket {
 
 	@Column(nullable = false)
 	private LocalDate endPoint;
+
+	@Column(nullable = false)
+	private String memo;
 }

@@ -1,6 +1,6 @@
 package com.healthyreal.be.api.controller.trainer;
 
-import com.healthyreal.be.api.entity.trainer.TrainerMainPageResponse;
+import com.healthyreal.be.api.entity.trainer.dto.TrainerMainPageResponse;
 import com.healthyreal.be.api.entity.trainer.dto.TrainerMyPageResponse;
 import com.healthyreal.be.api.entity.user.Member;
 import com.healthyreal.be.api.entity.userInfo.GoalType;

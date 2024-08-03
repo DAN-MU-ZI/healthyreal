@@ -5,7 +5,12 @@ import com.healthyreal.be.api.controller.trainer.TrainerRequest;
 import com.healthyreal.be.api.entity.Meal;
 import com.healthyreal.be.api.entity.Ticket;
 import com.healthyreal.be.api.entity.schedule.Schedule;
-import com.healthyreal.be.api.entity.trainer.*;
+import com.healthyreal.be.api.entity.trainer.Qualification;
+import com.healthyreal.be.api.entity.trainer.TrainerInfo;
+import com.healthyreal.be.api.entity.trainer.TrainerSchedule;
+import com.healthyreal.be.api.entity.trainer.TrainingProgram;
+import com.healthyreal.be.api.entity.trainer.dto.TrainerMainPageResponse;
+import com.healthyreal.be.api.entity.trainer.dto.TrainerMemberManagementResponse;
 import com.healthyreal.be.api.entity.trainer.dto.TrainerMyPageResponse;
 import com.healthyreal.be.api.entity.user.Gender;
 import com.healthyreal.be.api.entity.user.Member;
@@ -16,8 +21,10 @@ import com.healthyreal.be.api.repository.MealRepository;
 import com.healthyreal.be.api.repository.TicketRepository;
 import com.healthyreal.be.api.repository.schedule.ScheduleRepository;
 import com.healthyreal.be.api.repository.trainer.TrainerInfoRepository;
+import com.healthyreal.be.api.repository.trainer.TrainingProgramRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -31,12 +38,14 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 @Transactional
+@Slf4j
 public class TrainerService {
 	private final TrainerInfoRepository trainerInfoRepository;
 	private final S3Service s3Service;
 	private final ScheduleRepository scheduleRepository;
 	private final MealRepository mealRepository;
 	private final TicketRepository ticketRepository;
+	private final TrainingProgramRepository trainingProgramRepository;
 
 	public void register(
 		final Member user,
@@ -127,6 +136,13 @@ public class TrainerService {
 		//회원 3개
 		List<Ticket> tickets = ticketRepository.findAllByTrainer(user).stream().limit(3).toList();
 
+		log.info("tickets.size() = " + tickets.size());
+
+		for (Ticket ticket : tickets) {
+			log.info("ticket.getTrainer().getUsername() = " + ticket.getTrainer().getUsername());
+			log.info("ticket.getTrainingProgram().getTitle() = " + ticket.getTrainingProgram().getTitle());
+		}
+
 		return TrainerMainPageResponse.toResponse(schedules, meals, tickets);
 	}
 
@@ -157,5 +173,12 @@ public class TrainerService {
 
 		return new SearchTrainerResponse(foundTrainers, trainerPage.getTotalPages(), trainerPage.getTotalElements(),
 			trainerPage.getNumber(), trainerPage.getSize());
+	}
+
+	public TrainerMemberManagementResponse readTrainerMembers(Member user) {
+
+		List<Ticket> tickets = ticketRepository.findAllByTrainer(user);
+
+		return TrainerMemberManagementResponse.toResponse(tickets);
 	}
 }
