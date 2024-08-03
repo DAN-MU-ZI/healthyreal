@@ -18,7 +18,7 @@ import net.minidev.json.annotate.JsonIgnore;
 @Getter
 @NoArgsConstructor
 @Entity
-public class Schedule {
+public class TrainerSchedule {
 	@JsonIgnore
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,7 +36,7 @@ public class Schedule {
 	@JoinColumn(name = "trainer_info_id")
 	private TrainerInfo trainerInfo;
 
-	public Schedule(final DayOfWeek dayOfWeek, final LocalTime startTime, final LocalTime endTime) {
+	public TrainerSchedule(final DayOfWeek dayOfWeek, final LocalTime startTime, final LocalTime endTime) {
 		this.dayOfWeek = dayOfWeek;
 		this.startTime = startTime;
 		this.endTime = endTime;

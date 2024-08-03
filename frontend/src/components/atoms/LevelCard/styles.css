@@ -1,0 +1,18 @@
+.levelItem {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #dcdcdc;
+  border-radius: 10px;
+  padding: 16px;
+  margin: 10px 0;
+  box-shadow: 0 0px 4px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+}
+
+.levelItem:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.levelItem .level {
+  margin-bottom: 8px;
+}

@@ -1,6 +1,12 @@
 package com.healthyreal.be.api.entity.userInfo;
 
+import java.util.List;
+
+import net.minidev.json.annotate.JsonIgnore;
+
+import com.healthyreal.be.api.entity.user.Gender;
 import com.healthyreal.be.api.entity.user.Member;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -13,10 +19,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
-import java.util.List;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import net.minidev.json.annotate.JsonIgnore;
 
 @Getter
 @NoArgsConstructor
