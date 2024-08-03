@@ -2,58 +2,38 @@ package com.healthyreal.be.api.entity.community;
 
 import com.healthyreal.be.api.entity.user.Member;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
-import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import net.minidev.json.annotate.JsonIgnore;
 
+@Entity
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
-@Entity
+@NoArgsConstructor
 public class Comment {
-	@JsonIgnore
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "comment_id", nullable = false)
 	private Long id;
 
-	@NotNull
-	@Size(max = 500)
-	@Column(name = "CONTENT", length = 500)
+	@Column(nullable = false)
 	private String content;
 
-	@NotNull
-	@Column(name = "CREATED_AT")
-	private LocalDateTime createdAt;
-
-	@NotNull
-	@Column(name = "MODIFIED_AT")
-	private LocalDateTime modifiedAt;
-
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "POST_ID")
+	// Post 엔티티와의 관계를 추가합니다.
+	@ManyToOne
+	@JoinColumn(name = "post_id", nullable = false)
 	private Post post;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "USER_ID")
-	private Member user;
+	@ManyToOne
+	@JoinColumn(name = "user_seq", nullable = false)
+	private Member member;
 
-	public Comment(
-		@NotNull @Size(max = 500) String content,
-		@NotNull LocalDateTime createdAt,
-		@NotNull LocalDateTime modifiedAt,
-		Post post,
-		Member user
-	) {
+	public Comment(String content, Post post, Member member) {
 		this.content = content;
-		this.createdAt = createdAt;
-		this.modifiedAt = modifiedAt;
 		this.post = post;
-		this.user = user;
+		this.member = member;
 	}
 }

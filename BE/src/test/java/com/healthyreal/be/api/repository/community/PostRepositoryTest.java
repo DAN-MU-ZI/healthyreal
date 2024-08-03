@@ -34,7 +34,7 @@ class PostRepositoryTest {
 
 	@BeforeEach
 	void setUp() {
-		Member user = new Member(
+		user = new Member(
 			"localuser",
 			"Local User",
 			"localuser@example.com",
@@ -76,7 +76,7 @@ class PostRepositoryTest {
 		Post post = new Post("Test Title", "Test Content", LocalDateTime.now(), LocalDateTime.now(), user);
 		postRepository.save(post);
 
-		Comment comment = new Comment("Test Comment", LocalDateTime.now(), LocalDateTime.now(), post, user);
+		Comment comment = new Comment("Test Comment", post, user);
 		commentRepository.save(comment);
 
 		List<Comment> comments = commentRepository.findByPostId(post.getId());
