@@ -2,23 +2,23 @@ import * as React from "react";
 import { useState, useEffect } from "react";
 import "./styles.css";
 import Card from "../../atoms/Card";
-import { UserInfoGenderEnum } from "../../../typescript-axios";
+import { MemberGenderEnum } from "../../../typescript-axios";
 
 interface GenderProp {
-  onboardingGender: UserInfoGenderEnum | undefined;
-  onDataChange: (selectedGender: UserInfoGenderEnum) => void;
+  onboardingGender: MemberGenderEnum | undefined;
+  onDataChange: (selectedGender: MemberGenderEnum) => void;
 }
 
 const GenderSelection: React.FC<GenderProp> = ({ onboardingGender, onDataChange }) => {
-  const [selectedGender, setSelectedGender] = useState<UserInfoGenderEnum | undefined>(onboardingGender);
+  const [selectedGender, setSelectedGender] = useState<MemberGenderEnum | undefined>(onboardingGender);
 
   useEffect(() => {
     if (onboardingGender !== selectedGender) {
-      setSelectedGender(onboardingGender || UserInfoGenderEnum.Male);
+      setSelectedGender(onboardingGender || MemberGenderEnum.Male);
     }
   }, [onboardingGender, selectedGender]);
 
-  const handleGenderSelect = (gender: UserInfoGenderEnum) => {
+  const handleGenderSelect = (gender: MemberGenderEnum) => {
     setSelectedGender(gender);
     onDataChange(gender);
   };
@@ -26,14 +26,14 @@ const GenderSelection: React.FC<GenderProp> = ({ onboardingGender, onDataChange 
   return (
     <div className="genderCardContainer">
       <Card
-        onClick={() => handleGenderSelect(UserInfoGenderEnum.Male)}
-        selected={selectedGender === UserInfoGenderEnum.Male}
+        onClick={() => handleGenderSelect(MemberGenderEnum.Male)}
+        selected={selectedGender === MemberGenderEnum.Male}
       >
         남성
       </Card>
       <Card
-        onClick={() => handleGenderSelect(UserInfoGenderEnum.Female)}
-        selected={selectedGender === UserInfoGenderEnum.Female}
+        onClick={() => handleGenderSelect(MemberGenderEnum.Female)}
+        selected={selectedGender === MemberGenderEnum.Female}
       >
         여성
       </Card>

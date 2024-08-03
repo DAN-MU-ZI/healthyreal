@@ -1,6 +1,12 @@
 package com.healthyreal.be.api.entity.userInfo;
 
+import java.util.List;
+
+import net.minidev.json.annotate.JsonIgnore;
+
+import com.healthyreal.be.api.entity.user.Gender;
 import com.healthyreal.be.api.entity.user.Member;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -13,10 +19,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
-import java.util.List;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import net.minidev.json.annotate.JsonIgnore;
 
 @Getter
 @NoArgsConstructor
@@ -33,10 +37,6 @@ public class UserInfo {
 
 	@OneToMany(mappedBy = "userInfo", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<Goal> goalList;
-
-	@Enumerated(EnumType.STRING)
-	@Column(nullable = false)
-	private Gender gender;
 
 	@OneToOne(mappedBy = "userInfo", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private BodyInfo bodyInfo;
@@ -56,7 +56,7 @@ public class UserInfo {
 		final Boolean agreeToReceive) {
 		this.user = user;
 		this.goalList = goalList;
-		this.gender = gender;
+		this.user.setGender(gender);
 		this.bodyInfo = bodyInfo;
 		this.gym = gym;
 		this.exerciseLevel = exerciseLevel;
