@@ -7,9 +7,10 @@ import com.healthyreal.be.api.entity.userInfo.Gym;
 import com.healthyreal.be.api.entity.userInfo.UserInfo;
 import com.healthyreal.be.api.entity.userInfo.dto.MemberRegisterRequest;
 import com.healthyreal.be.api.repository.userInfo.UserInfoRepository;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -31,31 +32,5 @@ public class MemberService {
 			request.agreeToReceive());
 
 		userInfoRepository.save(userInfo);
-	}
-
-
-	@Autowired
-	public UserService(UserRepository userRepository) {
-		this.userRepository = userRepository;
-	}
-
-	public List<User> findAll() {
-		return userRepository.findAll();
-	}
-
-	public User save(User user){
-		return userRepository.save(user)
-	}
-
-	public User findById(Long id) {
-		return userRepository.findById(id).orElse(null);
-	}
-
-	public User findByUsername(String username) {
-		return userRepository.findByUsername(username);
-	}
-
-	public void deleteById(Long id) {
-		userRepository.deleteById(id);
 	}
 }
