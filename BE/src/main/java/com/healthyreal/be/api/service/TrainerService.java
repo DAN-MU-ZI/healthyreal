@@ -4,7 +4,6 @@ import com.healthyreal.be.api.controller.trainer.SearchTrainerResponse;
 import com.healthyreal.be.api.controller.trainer.TrainerRequest;
 import com.healthyreal.be.api.entity.Meal;
 import com.healthyreal.be.api.entity.Ticket;
-import com.healthyreal.be.api.entity.cloud.S3Image;
 import com.healthyreal.be.api.entity.schedule.Schedule;
 import com.healthyreal.be.api.entity.trainer.*;
 import com.healthyreal.be.api.entity.trainer.dto.TrainerMyPageResponse;
@@ -17,8 +16,6 @@ import com.healthyreal.be.api.repository.MealRepository;
 import com.healthyreal.be.api.repository.TicketRepository;
 import com.healthyreal.be.api.repository.schedule.ScheduleRepository;
 import com.healthyreal.be.api.repository.trainer.TrainerInfoRepository;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -28,7 +25,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
-import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -41,9 +37,6 @@ public class TrainerService {
 	private final ScheduleRepository scheduleRepository;
 	private final MealRepository mealRepository;
 	private final TicketRepository ticketRepository;
-
-	@PersistenceContext
-	private EntityManager entityManager;
 
 	public void register(
 		final Member user,
@@ -60,20 +53,32 @@ public class TrainerService {
 
 		validateImageCounts(qualifications, trainingProgram, qualificationImages, trainingProgramImages);
 
-		List<S3Image> s3Images = s3Service.saveImages(qualificationImages, "trainer/qualification");
-		Iterator<S3Image> imageIterator = s3Images.iterator();
-
-		qualifications.forEach(qualification -> {
-			if (imageIterator.hasNext()) {
-				qualification.setImage(imageIterator.next());
-			}
-		});
-		List<S3Image> trainingProgramImagesList = s3Service.saveImages(trainingProgramImages,
-			"trainer/trainingProgram");
-		trainingProgram.addAllImage(trainingProgramImagesList);
+		//		try {
+		//			List<S3Image> s3Images = s3Service.saveImages(qualificationImages, "trainer/qualification");
+		//			Iterator<S3Image> imageIterator = s3Images.iterator();
+		//
+		//			qualifications.forEach(qualification -> {
+		//				if (imageIterator.hasNext()) {
+		//					qualification.setImage(imageIterator.next());
+		//				}
+		//			});
+		//			List<S3Image> trainingProgramImagesList = s3Service.saveImages(trainingProgramImages,
+		//				"trainer/trainingProgram");
+		//			trainingProgram.addAllImage(trainingProgramImagesList);
+		//		} catch (Exception e) {
+		//			// 예외를 무시하고 계속 진행합니다.
+		//			e.printStackTrace(); // 로그를 남깁니다.
+		//		}
 
 		TrainerInfo trainerInfo = createTrainerInfo(user, gym, goals, qualifications, trainingProgram, trainerSchedules,
 			profileDescription, null);
+
+		// Save trainerInfo without transactional rollback
+		saveTrainerInfoWithoutRollback(trainerInfo);
+	}
+
+	@Transactional(dontRollbackOn = Exception.class)
+	public void saveTrainerInfoWithoutRollback(TrainerInfo trainerInfo) {
 		trainerInfoRepository.save(trainerInfo);
 	}
 
@@ -113,39 +118,22 @@ public class TrainerService {
 	}
 
 	public TrainerMainPageResponse getMainPageByTrainer(Member user) {
-
 		//식단 3개
-		List<Meal> meals =
-			mealRepository.findMealsWithoutComment(user, LocalDate.now())
-				.stream()
-				.limit(3)
-				.toList();
+		List<Meal> meals = mealRepository.findMealsWithoutComment(user, LocalDate.now()).stream().limit(3).toList();
 
 		//일정 3개
-		List<Schedule> schedules =
-			scheduleRepository.findSchedules(user, LocalDate.now())
-				.stream()
-				.limit(3)
-				.toList();
+		List<Schedule> schedules = scheduleRepository.findSchedules(user, LocalDate.now()).stream().limit(3).toList();
 
 		//회원 3개
-		List<Ticket> tickets =
-			ticketRepository.findAllByTrainer(user)
-				.stream()
-				.limit(3)
-				.toList();
+		List<Ticket> tickets = ticketRepository.findAllByTrainer(user).stream().limit(3).toList();
 
 		return TrainerMainPageResponse.toResponse(schedules, meals, tickets);
 	}
 
 	public TrainerMyPageResponse readTrainerMyPage(Member user) {
-
 		TrainerInfo trainerInfo = trainerInfoRepository.findByUser(user);
-
 		Gym gym = trainerInfo.getGym();
-
 		List<TrainingProgram> trainingPrograms = trainerInfo.getTrainingProgramList();
-
 		List<Qualification> qualifications = trainerInfo.getQualificationList();
 
 		return TrainerMyPageResponse.toResponse(user, trainerInfo, gym, trainingPrograms, qualifications);
