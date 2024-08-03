@@ -2,6 +2,7 @@ package com.healthyreal.be.api.controller.user;
 
 import com.healthyreal.be.api.entity.user.Member;
 import com.healthyreal.be.api.entity.userInfo.dto.MemberRegisterRequest;
+import com.healthyreal.be.api.service.CommunityService;
 import com.healthyreal.be.api.service.MemberService;
 import com.healthyreal.be.utils.CurrentUser;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class UserController {
     private final MemberService memberService;
+    private final CommunityService communityService;
 
     @GetMapping
     public ResponseEntity<UserResponse> getUser(@CurrentUser Member user) {
@@ -29,6 +31,8 @@ public class UserController {
 												 @CurrentUser Member user) {
 
         memberService.register(user, request);
+
+
 
         return ResponseEntity.ok("ok");
     }
