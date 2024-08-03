@@ -15,21 +15,13 @@ const UsersPage: React.FC = () => {
       try {
         const token = localStorage.getItem('token');
         if (token) {
-          // const response = await axios.get<User[]>('http://localhost:8080/api/v1/users',
-          const response = await axios.get<User[]>('http://default-loadbalancer-ser-e983d-25608891-dc411cb92a75.kr.lb.naverncp.com:8080/api/v1/users',
+          const response = await axios.get<User[]>(`${process.env.REACT_APP_BASE_URL}/api/v1/users`,
             {
               headers: {
                 Authorization: `Bearer ${localStorage.getItem('token')}`
               }
             }
           );
-          // const response = await axios.get<User[]>('http://default-loadbalancer-ser-e983d-25608891-dc411cb92a75.kr.lb.naverncp.com:8080/api/v1/users',
-          //   {
-          //     headers:{
-          //       Authorization: `Bearer ${localStorage.getItem('token')}`
-          //     }
-          //   }
-          // );
 
           setResponseData(response.data);
         }

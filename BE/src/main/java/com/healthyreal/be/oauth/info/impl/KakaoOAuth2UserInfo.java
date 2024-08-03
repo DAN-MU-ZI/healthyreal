@@ -35,8 +35,7 @@ public class KakaoOAuth2UserInfo extends OAuth2UserInfo {
 	@Override
 	public String getImageUrl() {
 		return Optional.ofNullable((Map<String, Object>)attributes.get("properties"))
-			.map(properties -> properties.get("thumbnail_image"))
-			.map(Object::toString)
-			.orElse(null);
+			.orElse(null)
+			.get("thumbnail_image").toString();
 	}
 }
