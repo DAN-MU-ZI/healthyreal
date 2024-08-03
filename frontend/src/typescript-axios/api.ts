@@ -309,6 +309,12 @@ export interface Member {
      * @memberof Member
      */
     'trainerInfo'?: TrainerInfo;
+    /**
+     * 
+     * @type {string}
+     * @memberof Member
+     */
+    'gender'?: MemberGenderEnum;
 }
 
 export const MemberProviderTypeEnum = {
@@ -325,6 +331,12 @@ export const MemberRoleTypeEnum = {
 } as const;
 
 export type MemberRoleTypeEnum = typeof MemberRoleTypeEnum[keyof typeof MemberRoleTypeEnum];
+export const MemberGenderEnum = {
+    Male: 'MALE',
+    Female: 'FEMALE'
+} as const;
+
+export type MemberGenderEnum = typeof MemberGenderEnum[keyof typeof MemberGenderEnum];
 
 /**
  * 
@@ -900,12 +912,6 @@ export interface UserInfo {
     'goalList'?: Array<Goal>;
     /**
      * 
-     * @type {string}
-     * @memberof UserInfo
-     */
-    'gender'?: UserInfoGenderEnum;
-    /**
-     * 
      * @type {BodyInfo}
      * @memberof UserInfo
      */
@@ -930,12 +936,6 @@ export interface UserInfo {
     'agreeToReceive'?: boolean;
 }
 
-export const UserInfoGenderEnum = {
-    Male: 'MALE',
-    Female: 'FEMALE'
-} as const;
-
-export type UserInfoGenderEnum = typeof UserInfoGenderEnum[keyof typeof UserInfoGenderEnum];
 export const UserInfoExerciseLevelEnum = {
     Beginner: 'BEGINNER',
     Intermediate: 'INTERMEDIATE',
@@ -966,14 +966,11 @@ export const TrainerControllerApiAxiosParamCreator = function (configuration?: C
     return {
         /**
          * 
-         * @param {Member} user 
          * @param {RegisterTrainerRequest} [registerTrainerRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        registerTrainer: async (user: Member, registerTrainerRequest?: RegisterTrainerRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'user' is not null or undefined
-            assertParamExists('registerTrainer', 'user', user)
+        registerTrainer: async (registerTrainerRequest?: RegisterTrainerRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/api/v1/trainer/register`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -989,12 +986,6 @@ export const TrainerControllerApiAxiosParamCreator = function (configuration?: C
             // authentication bearerAuth required
             // http bearer authentication required
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-            if (user !== undefined) {
-                for (const [key, value] of Object.entries(user)) {
-                    localVarQueryParameter[key] = value;
-                }
-            }
 
 
     
@@ -1022,13 +1013,12 @@ export const TrainerControllerApiFp = function(configuration?: Configuration) {
     return {
         /**
          * 
-         * @param {Member} user 
          * @param {RegisterTrainerRequest} [registerTrainerRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async registerTrainer(user: Member, registerTrainerRequest?: RegisterTrainerRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.registerTrainer(user, registerTrainerRequest, options);
+        async registerTrainer(registerTrainerRequest?: RegisterTrainerRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.registerTrainer(registerTrainerRequest, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['TrainerControllerApi.registerTrainer']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -1045,13 +1035,12 @@ export const TrainerControllerApiFactory = function (configuration?: Configurati
     return {
         /**
          * 
-         * @param {Member} user 
          * @param {RegisterTrainerRequest} [registerTrainerRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        registerTrainer(user: Member, registerTrainerRequest?: RegisterTrainerRequest, options?: any): AxiosPromise<string> {
-            return localVarFp.registerTrainer(user, registerTrainerRequest, options).then((request) => request(axios, basePath));
+        registerTrainer(registerTrainerRequest?: RegisterTrainerRequest, options?: any): AxiosPromise<string> {
+            return localVarFp.registerTrainer(registerTrainerRequest, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -1065,14 +1054,13 @@ export const TrainerControllerApiFactory = function (configuration?: Configurati
 export class TrainerControllerApi extends BaseAPI {
     /**
      * 
-     * @param {Member} user 
      * @param {RegisterTrainerRequest} [registerTrainerRequest] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof TrainerControllerApi
      */
-    public registerTrainer(user: Member, registerTrainerRequest?: RegisterTrainerRequest, options?: RawAxiosRequestConfig) {
-        return TrainerControllerApiFp(this.configuration).registerTrainer(user, registerTrainerRequest, options).then((request) => request(this.axios, this.basePath));
+    public registerTrainer(registerTrainerRequest?: RegisterTrainerRequest, options?: RawAxiosRequestConfig) {
+        return TrainerControllerApiFp(this.configuration).registerTrainer(registerTrainerRequest, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
@@ -1086,13 +1074,10 @@ export const UserControllerApiAxiosParamCreator = function (configuration?: Conf
     return {
         /**
          * 
-         * @param {Member} user 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getUser: async (user: Member, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'user' is not null or undefined
-            assertParamExists('getUser', 'user', user)
+        getUser: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/api/v1/users`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -1108,12 +1093,6 @@ export const UserControllerApiAxiosParamCreator = function (configuration?: Conf
             // authentication bearerAuth required
             // http bearer authentication required
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-            if (user !== undefined) {
-                for (const [key, value] of Object.entries(user)) {
-                    localVarQueryParameter[key] = value;
-                }
-            }
 
 
     
@@ -1177,12 +1156,11 @@ export const UserControllerApiFp = function(configuration?: Configuration) {
     return {
         /**
          * 
-         * @param {Member} user 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getUser(user: Member, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserResponse>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getUser(user, options);
+        async getUser(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getUser(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['UserControllerApi.getUser']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -1211,12 +1189,11 @@ export const UserControllerApiFactory = function (configuration?: Configuration,
     return {
         /**
          * 
-         * @param {Member} user 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getUser(user: Member, options?: any): AxiosPromise<UserResponse> {
-            return localVarFp.getUser(user, options).then((request) => request(axios, basePath));
+        getUser(options?: any): AxiosPromise<UserResponse> {
+            return localVarFp.getUser(options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -1239,13 +1216,12 @@ export const UserControllerApiFactory = function (configuration?: Configuration,
 export class UserControllerApi extends BaseAPI {
     /**
      * 
-     * @param {Member} user 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof UserControllerApi
      */
-    public getUser(user: Member, options?: RawAxiosRequestConfig) {
-        return UserControllerApiFp(this.configuration).getUser(user, options).then((request) => request(this.axios, this.basePath));
+    public getUser(options?: RawAxiosRequestConfig) {
+        return UserControllerApiFp(this.configuration).getUser(options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

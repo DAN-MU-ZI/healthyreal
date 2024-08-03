@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import request from "../apis/api/request";
 import { useNavigate } from "react-router-dom";
+import { userApi } from "../apis/custom";
 
 interface User {
   userSeq: number;
@@ -25,7 +26,7 @@ const LoginUser: React.FC = () => {
       const token = localStorage.getItem("token");
 
       if (token) {
-        const response = await request<ApiResponse>("GET", "/api/v1/users");
+        const response = await userApi.getUser();
         console.log(response);
         setUserData(response.data.user as User);
       }
