@@ -181,9 +181,6 @@ public class TrainerService {
 	public TrainerMemberManagementResponse readTrainerMembers(Member user) {
 
 		List<Ticket> tickets = ticketRepository.findAllByTrainer(user);
-		if (tickets.isEmpty()) {
-			return new TrainerMemberManagementResponse();
-		}
 
 		return TrainerMemberManagementResponse.toResponse(tickets);
 	}
