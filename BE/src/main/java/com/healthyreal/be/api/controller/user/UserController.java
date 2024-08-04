@@ -36,7 +36,9 @@ public class UserController {
 	}
 
 	@PostMapping
-	public ResponseEntity<String> registerMember(@RequestBody MemberRegisterRequest request, @CurrentUser Member user) {
+	public ResponseEntity<String> registerMember(
+		@RequestBody MemberRegisterRequest request,
+		@CurrentUser Member user) {
 
 		memberService.register(user, request);
 
