@@ -20,6 +20,7 @@ const globalStyle = (theme: Theme) => css`
     --sub-blue: #524b6b;
 
     /* 버튼 크기 변수 */
+    --btn-small: 100px;
     --btn-medium: 155px;
     --btn-large: 264px;
   }

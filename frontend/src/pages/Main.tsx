@@ -17,21 +17,21 @@ export default function Main() {
           <>
             <AlarmCard
               time="10:30"
-              state="에정"
+              state="예정"
               title="개인 운동"
               detail="등, 이두 루틴하는 날"
               more="자세히 보기"
             />
             <AlarmCard
               time="10:30"
-              state="에정"
+              state="예정"
               title="개인 운동"
               detail="등, 이두 루틴하는 날"
               more="자세히 보기"
             />
             <AlarmCard
               time="10:30"
-              state="에정"
+              state="예정"
               title="개인 운동"
               detail="등, 이두 루틴하는 날"
               more="자세히 보기"
