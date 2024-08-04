@@ -14,22 +14,6 @@ interface EventItem {
 }
 
 interface Props {
-  callbacks: {
-    addSchedule: (
-      eventTitle: string,
-      eventDesc: string,
-      date: string,
-      callback: () => void
-    ) => Promise<void>;
-    editSchedule: (
-      id: number,
-      eventTitle: string,
-      eventDesc: string,
-      date: string,
-      callback: () => void
-    ) => Promise<void>;
-    deleteSchedule: (id: number) => Promise<void>;
-  };
   states: {
     eventList: EventItem[];
   };
