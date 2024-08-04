@@ -31,16 +31,22 @@ import { BASE_PATH, COLLECTION_FORMATS, BaseAPI, RequiredError, operationServerM
 export interface BodyInfo {
     /**
      * 
-     * @type {number}
+     * @type {string}
      * @memberof BodyInfo
      */
-    'id'?: number;
+    'createdAt'?: string;
     /**
      * 
      * @type {string}
      * @memberof BodyInfo
      */
-    'birthDate'?: string;
+    'modifiedAt'?: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof BodyInfo
+     */
+    'id'?: number;
     /**
      * 
      * @type {number}
@@ -1577,10 +1583,10 @@ export interface UserInfo {
     'goalList'?: Array<Goal>;
     /**
      * 
-     * @type {BodyInfo}
+     * @type {Array<BodyInfo>}
      * @memberof UserInfo
      */
-    'bodyInfo'?: BodyInfo;
+    'bodyInfoList'?: Array<BodyInfo>;
     /**
      * 
      * @type {Gym}
@@ -1599,6 +1605,12 @@ export interface UserInfo {
      * @memberof UserInfo
      */
     'agreeToReceive'?: boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof UserInfo
+     */
+    'birthDate'?: string;
 }
 
 export const UserInfoExerciseLevelEnum = {
@@ -2091,6 +2103,39 @@ export const TrainerControllerApiAxiosParamCreator = function (configuration?: C
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
+        memberManagementTrainer: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/v1/trainer/members`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
         myPageTrainer: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/api/v1/trainer/mypage`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -2267,6 +2312,17 @@ export const TrainerControllerApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
+        async memberManagementTrainer(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<object>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.memberManagementTrainer(options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['TrainerControllerApi.memberManagementTrainer']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
         async myPageTrainer(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<TrainerMyPageResponse>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.myPageTrainer(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
@@ -2333,6 +2389,14 @@ export const TrainerControllerApiFactory = function (configuration?: Configurati
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
+        memberManagementTrainer(options?: any): AxiosPromise<object> {
+            return localVarFp.memberManagementTrainer(options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
         myPageTrainer(options?: any): AxiosPromise<TrainerMyPageResponse> {
             return localVarFp.myPageTrainer(options).then((request) => request(axios, basePath));
         },
@@ -2387,6 +2451,16 @@ export class TrainerControllerApi extends BaseAPI {
      */
     public memberDetailManagementTrainer(userId?: string, options?: RawAxiosRequestConfig) {
         return TrainerControllerApiFp(this.configuration).memberDetailManagementTrainer(userId, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof TrainerControllerApi
+     */
+    public memberManagementTrainer(options?: RawAxiosRequestConfig) {
+        return TrainerControllerApiFp(this.configuration).memberManagementTrainer(options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

@@ -32,7 +32,7 @@ public class MemberService {
 		Gym gym = request.gymDto().toEntity();
 
 		UserInfo userInfo = new UserInfo(user, goals, request.gender(), bodyInfo, gym, request.exerciseLevel(),
-			request.agreeToReceive());
+			request.agreeToReceive(), request.bodyInfoDto().birthDate());
 
 		userInfoRepository.save(userInfo);
 	}

@@ -1,9 +1,7 @@
 package com.healthyreal.be.api.entity.trainer.dto;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import com.healthyreal.be.api.entity.Ticket;
 import com.healthyreal.be.api.entity.user.Gender;
@@ -15,14 +13,20 @@ public record TrainerMemberDetailManagementResponse(
 	LocalDate birthDate,
 	String profileUrl,
 	String phone,
-	MemberBodyInfo memberBodyInfo,
+	List<MemberBodyInfo> memberBodyInfoList,
 	List<CurrentProgram> currentProgramList,
 	List<String> memos
 ) {
 	public static TrainerMemberDetailManagementResponse toResponse(Member member, List<Ticket> ticketList) {
 
-		MemberBodyInfo memberBodyInfo = new MemberBodyInfo(member.getUserInfo().getBodyInfo().getHeight(),
-			member.getUserInfo().getBodyInfo().getWeight());
+		List<MemberBodyInfo> memberBodyInfoList = member.getUserInfo()
+			.getBodyInfoList()
+			.stream()
+			.map(bodyInfo -> new MemberBodyInfo(
+				bodyInfo.getHeight(),
+				bodyInfo.getWeight()
+			))
+			.toList();
 
 		List<CurrentProgram> currentPrograms = ticketList.stream()
 			.map(ticket -> new CurrentProgram(
@@ -37,13 +41,13 @@ public record TrainerMemberDetailManagementResponse(
 		return new TrainerMemberDetailManagementResponse(
 			member.getUsername(),
 			member.getGender(),
-			member.getUserInfo().getBodyInfo().getBirthDate(),
+			member.getUserInfo().getBirthDate(),
 			member.getProfileImageUrl(),
 			member.getPhone(),
-			memberBodyInfo,
+			memberBodyInfoList,
 			currentPrograms,
 			memos
-			);
+		);
 	}
 }
 

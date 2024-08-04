@@ -1,26 +1,32 @@
 package com.healthyreal.be.api.repository.userInfo;
 
-import com.healthyreal.be.api.entity.user.Gender;
-import com.healthyreal.be.api.entity.user.Member;
-import com.healthyreal.be.api.entity.userInfo.*;
-import com.healthyreal.be.api.entity.userInfo.dto.MemberRegisterRequest;
-import com.healthyreal.be.api.entity.userInfo.dto.MemberRegisterRequest.BodyInfoDto;
-import com.healthyreal.be.api.entity.userInfo.dto.MemberRegisterRequest.GymDto;
-import com.healthyreal.be.api.repository.user.UserRepository;
-import com.healthyreal.be.oauth.entity.ProviderType;
-import com.healthyreal.be.oauth.entity.RoleType;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import static org.assertj.core.api.Assertions.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+
+import com.healthyreal.be.api.entity.user.Gender;
+import com.healthyreal.be.api.entity.user.Member;
+import com.healthyreal.be.api.entity.userInfo.BodyInfo;
+import com.healthyreal.be.api.entity.userInfo.ExerciseLevel;
+import com.healthyreal.be.api.entity.userInfo.Goal;
+import com.healthyreal.be.api.entity.userInfo.GoalType;
+import com.healthyreal.be.api.entity.userInfo.Gym;
+import com.healthyreal.be.api.entity.userInfo.UserInfo;
+import com.healthyreal.be.api.entity.userInfo.dto.MemberRegisterRequest;
+import com.healthyreal.be.api.entity.userInfo.dto.MemberRegisterRequest.BodyInfoDto;
+import com.healthyreal.be.api.entity.userInfo.dto.MemberRegisterRequest.GymDto;
+import com.healthyreal.be.api.repository.user.UserRepository;
+import com.healthyreal.be.oauth.entity.ProviderType;
+import com.healthyreal.be.oauth.entity.RoleType;
 
 @ExtendWith(SpringExtension.class)
 @DataJpaTest
@@ -77,7 +83,8 @@ class UserInfoRepositoryTest {
 			bodyInfo,
 			gym,
 			request.exerciseLevel(),
-			request.agreeToReceive());
+			request.agreeToReceive(),
+			request.bodyInfoDto().birthDate());
 
 		userInfoRepository.save(userInfo);
 
