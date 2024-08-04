@@ -1,14 +1,24 @@
 package com.healthyreal.be.api.entity.cloud;
 
+import java.time.LocalDateTime;
+
+import com.healthyreal.be.api.entity.Meal;
 import com.healthyreal.be.api.entity.community.Post;
 import com.healthyreal.be.api.entity.trainer.Qualification;
 import com.healthyreal.be.api.entity.trainer.TrainingProgram;
-import jakarta.persistence.*;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor
@@ -47,6 +57,11 @@ public class S3Image {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "post_id")
 	private Post post;
+
+	@Setter
+	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "meal_id")
+	private Meal meal;
 
 	public S3Image(String fileName, String url, LocalDateTime uploadDate, Long fileSize, String contentType) {
 		this.fileName = fileName;

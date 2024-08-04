@@ -17,4 +17,6 @@ public interface MealRepository extends JpaRepository<Meal, Long> {
 		"JOIN Ticket t ON m.member = t.member " +
 		"WHERE t.trainer = :trainer AND t.endPoint > :date AND m.comment IS NULL")
 	List<Meal> findMealsWithoutComment(@Param("trainer") Member trainer, @Param("date") LocalDate date);
+
+	List<Meal> findMealsByDateAndMember(LocalDate date, Member member);
 }
