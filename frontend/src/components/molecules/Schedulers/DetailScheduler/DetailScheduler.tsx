@@ -16,13 +16,20 @@ interface EventItem {
 }
 
 interface Props {
+  callbacks: {
+    deleteSchedule: (id: number) => Promise<void>;
+  };
   states: {
     eventList: EventItem[];
   };
   selectedDate: Date | null;
 }
 
-const DetailScheduler: React.FC<Props> = ({selectedDate, states}) => {
+const DetailScheduler: React.FC<Props> = ({
+  callbacks,
+  selectedDate,
+  states,
+}) => {
   const navigate = useNavigate();
   const {id} = useParams();
 
@@ -34,15 +41,39 @@ const DetailScheduler: React.FC<Props> = ({selectedDate, states}) => {
     ? moment(selectedDate).format("YYYY.MM.DD.dd")
     : moment().format("YYYY.MM.DD.dd");
 
+  const onClickDelete = () => {
+    callbacks.deleteSchedule(parseInt(id || "0", 10));
+    alert("삭제되었습니다.");
+    navigate("/scheduler");
+  };
+  const onClickEdit = () => {
+    navigate("/scheduler/edit/" + id);
+    console.log("edit");
+  };
+
   return (
     <div className="addEventLayout">
       <Back onClick={() => navigate("/scheduler")} />
       <Text color="var(--main-blue)" fontSize="20px" fontWeight="600">
         일정 상세보기
       </Text>
-      <Text color="black" fontSize="16px" fontWeight="600">
-        {displayDate}
-      </Text>
+      <div className="eventHeaderContainer">
+        <Text color="black" fontSize="16px" fontWeight="600">
+          {displayDate}
+        </Text>
+        <div className="btnArea">
+          <button className="editBtn" onClick={onClickEdit}>
+            <Text color="#674DC8" fontSize="12px" fontWeight="500">
+              수정
+            </Text>
+          </button>
+          <button className="deleteBtn" onClick={onClickDelete}>
+            <Text color="#CC0000" fontSize="12px" fontWeight="500">
+              삭제
+            </Text>
+          </button>
+        </div>
+      </div>
       <article className="addEventForm">
         <div className="inputContainer">
           <Text color="var(--main-blue)" fontSize="14px" fontWeight="500">

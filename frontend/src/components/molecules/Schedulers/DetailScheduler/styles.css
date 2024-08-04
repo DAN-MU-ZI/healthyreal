@@ -1,16 +1,35 @@
 .addEventLayout {
   display: flex;
   flex-direction: column;
-  /* align-items: start; */
   gap: 20px;
-}
-
-.backBtn {
-  align-self: center;
 }
 
 .back {
   align-self: flex-start;
+}
+
+.eventHeaderContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.btnArea {
+  display: flex;
+  gap: 7px;
+}
+
+.editBtn,
+.deleteBtn {
+  all: unset;
+}
+
+.editBtn:hover {
+  border-bottom: 1px solid #674dc8;
+}
+
+.deleteBtn:hover {
+  border-bottom: 1px solid #cc0000;
 }
 
 .addEventForm {

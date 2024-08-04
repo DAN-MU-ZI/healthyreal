@@ -46,15 +46,17 @@ const Scheduler: React.FC = () => {
     eventTitle: string,
     eventDesc: string,
     date: string,
+    state: "진행중" | "완료" | "예정" | "",
+    startTime: string,
     callback: () => void
   ) => {
-    console.log("edit");
+    console.log(eventTitle, eventDesc, date, state, startTime);
     // 실제 수정 로직 구현
     callback();
   };
 
   const deleteSchedule = async (id: number) => {
-    console.log("delete");
+    console.log("delete" + id);
     // 실제 삭제 로직 구현
   };
 
@@ -79,11 +81,24 @@ const Scheduler: React.FC = () => {
           <AddScheduler callbacks={callbacks} selectedDate={selectedDate} />
         }
       />
-      <Route path="edit/:id" element={<EditScheduler />} />
+      <Route
+        path="edit/:id"
+        element={
+          <EditScheduler
+            callbacks={callbacks}
+            selectedDate={selectedDate}
+            states={states}
+          />
+        }
+      />
       <Route
         path="detail/:id"
         element={
-          <DetailScheduler states={states} selectedDate={selectedDate} />
+          <DetailScheduler
+            states={states}
+            selectedDate={selectedDate}
+            callbacks={callbacks}
+          />
         }
       />
     </Routes>
