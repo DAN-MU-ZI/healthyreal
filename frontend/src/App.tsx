@@ -10,11 +10,7 @@ import Onboarding from "./pages/Onboarding";
 import Food from "./pages/Food";
 import MypageFood from "./components/molecules/MypageFood";
 import PostFood from "./components/molecules/PostFood";
-import SchedulerLayout from "./components/templates/SchedulerLayout";
 import Scheduler from "./pages/Scheduler";
-import AddScheduler from "./components/molecules/Schedulers/AddScheduler";
-import EditScheduler from "./components/molecules/Schedulers/EditScheduler";
-import DetailScheduler from "./components/molecules/Schedulers/DetailScheduler";
 
 function App() {
   const {isAuthenticated} = useAuth();
@@ -30,15 +26,11 @@ function App() {
               <Route path="food" element={<Food />} />
               <Route path="mypage-food" element={<MypageFood />} />
               <Route path="post-food" element={<PostFood />} />
-              <Route path="scheduler/*" element={<SchedulerLayout />}>
-                <Route index element={<Scheduler />} />
-                <Route path="add" element={<AddScheduler />} />
-                <Route path="edit/:id" element={<EditScheduler />} />
-                <Route path="detail" element={<DetailScheduler />} />
-              </Route>
+              {/* <Route path="scheduler/*" element={<Scheduler />} /> */}
             </>
           ) : (
             <>
+              <Route path="scheduler/*" element={<Scheduler />} />
               <Route path="oauth/redirect" element={<LoginRedirect />} />
               <Route path="login/*" element={<Login />} />
               <Route path="intro/login" element={<Login />} />

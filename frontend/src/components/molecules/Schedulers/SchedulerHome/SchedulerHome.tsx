@@ -18,22 +18,6 @@ interface EventItem {
 }
 
 interface Props {
-  callbacks: {
-    addSchedule: (
-      eventTitle: string,
-      eventDesc: string,
-      date: string,
-      callback: () => void
-    ) => Promise<void>;
-    editSchedule: (
-      id: number,
-      eventTitle: string,
-      eventDesc: string,
-      date: string,
-      callback: () => void
-    ) => Promise<void>;
-    deleteSchedule: (id: number) => Promise<void>;
-  };
   states: {
     eventList: EventItem[];
   };
@@ -57,7 +41,6 @@ const StyledDot = styled.div`
 `;
 
 const SchedulerHome: React.FC<Props> = ({
-  callbacks,
   states,
   setSelectedDate,
   selectedDate,
@@ -115,11 +98,7 @@ const SchedulerHome: React.FC<Props> = ({
           {displayDate}
         </Text>
         <div className="eventListContainer">
-          <EventList
-            callbacks={callbacks}
-            states={states}
-            selectedDate={selectedDate}
-          />
+          <EventList states={states} selectedDate={selectedDate} />
         </div>
         <div className="addEventCard" onClick={() => navigate("add")}>
           <Text color="#212121" fontSize="14px" fontWeight="600">
