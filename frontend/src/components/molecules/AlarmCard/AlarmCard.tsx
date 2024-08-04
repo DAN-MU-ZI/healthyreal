@@ -12,6 +12,7 @@ interface Props {
 
 export default function AlarmCard(props: Props) {
   const {time, state, title, detail, more, onClick} = props;
+
   return (
     <div className="alarmCard">
       <section className="leftArea">
@@ -23,10 +24,20 @@ export default function AlarmCard(props: Props) {
         </Text>
       </section>
       <section className="centerArea">
-        <Text color="black" fontSize="14px" fontWeight="600">
+        <Text
+          color="black"
+          fontSize="14px"
+          fontWeight="600"
+          className="eventTitle"
+        >
           {title}
         </Text>
-        <Text color="var(--sub-blue)" fontSize="12px" fontWeight="400">
+        <Text
+          color="var(--sub-blue)"
+          fontSize="12px"
+          fontWeight="400"
+          className="eventDetail"
+        >
           {detail}
         </Text>
       </section>

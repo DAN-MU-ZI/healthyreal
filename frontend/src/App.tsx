@@ -33,7 +33,7 @@ function App() {
               <Route path="scheduler/*" element={<SchedulerLayout />}>
                 <Route index element={<Scheduler />} />
                 <Route path="add" element={<AddScheduler />} />
-                <Route path="edit" element={<EditScheduler />} />
+                <Route path="edit/:id" element={<EditScheduler />} />
                 <Route path="detail" element={<DetailScheduler />} />
               </Route>
             </>
