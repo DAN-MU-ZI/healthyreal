@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.healthyreal.be.api.entity.trainer.dto.TrainerMainPageResponse;
 import com.healthyreal.be.api.entity.trainer.dto.TrainerMemberDetailManagementResponse;
+import com.healthyreal.be.api.entity.trainer.dto.TrainerMemberManagementResponse;
 import com.healthyreal.be.api.entity.trainer.dto.TrainerMyPageResponse;
 import com.healthyreal.be.api.entity.user.Member;
 import com.healthyreal.be.api.entity.userInfo.GoalType;
@@ -21,10 +22,12 @@ import com.healthyreal.be.api.service.TrainerService;
 import com.healthyreal.be.utils.CurrentUser;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @RequestMapping("/api/v1/trainer")
 @RequiredArgsConstructor
+@Slf4j
 public class TrainerController {
 	private final TrainerService trainerService;
 
@@ -64,6 +67,14 @@ public class TrainerController {
 		@RequestParam(name = "location", required = false) String location) {
 		SearchTrainerResponse response = trainerService.searchTrainers(keyWord, category, location, null, null);
 		return ResponseEntity.ok().body(response);
+	}
+
+	@GetMapping("/members")
+	public ResponseEntity<Object> memberManagementTrainer(
+		@CurrentUser Member user
+	) {
+		TrainerMemberManagementResponse response = trainerService.readTrainerMembers(user);
+		return ResponseEntity.ok(response);
 	}
 
 	@GetMapping("/members/detail")

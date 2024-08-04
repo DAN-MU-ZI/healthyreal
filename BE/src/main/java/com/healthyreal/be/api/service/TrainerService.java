@@ -32,7 +32,6 @@ import com.healthyreal.be.api.repository.MealRepository;
 import com.healthyreal.be.api.repository.TicketRepository;
 import com.healthyreal.be.api.repository.schedule.ScheduleRepository;
 import com.healthyreal.be.api.repository.trainer.TrainerInfoRepository;
-import com.healthyreal.be.api.repository.trainer.TrainingProgramRepository;
 import com.healthyreal.be.api.repository.user.UserRepository;
 
 import jakarta.transaction.Transactional;
@@ -49,7 +48,6 @@ public class TrainerService {
 	private final ScheduleRepository scheduleRepository;
 	private final MealRepository mealRepository;
 	private final TicketRepository ticketRepository;
-	private final TrainingProgramRepository trainingProgramRepository;
 	private final UserRepository userRepository;
 
 	public void register(
