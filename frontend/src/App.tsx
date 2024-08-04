@@ -19,21 +19,10 @@ import { TrainerOnboardingStep3 } from "./components/molecules/TrainerOnboarding
 import TrainerOnboardingStep4 from './components/molecules/TrainerOnboardingStep4/TrainerOnboardingStep4';
 import TrainerOnboardingStep5 from "./components/molecules/TrainerOnboardingStep5/TrainerOnboardingStep5";
 import { MemberGenderEnum } from './typescript-axios';
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-=======
 import MessageMain from "./components/molecules/MessageMain/MessageMain";
 import MessageNoMain from "./components/molecules/MessageNoMain/MessageNoMain";
 import MessagePost from "./components/molecules/MessagePost/MessagePost";
-=======
-import MessageMain from "./components/molecules/MessageMain/MessageMain";
-import MessageNoMain from "./components/molecules/MessageNoMain/MessageNoMain";
-import MessagePost from "./components/molecules/MessagePost/MessagePost";
-<<<<<<< Updated upstream
-=======
->>>>>>> feature/#53-fe-Message
 import { ProgramProvider } from './pages/PostContext';
->>>>>>> Stashed changes
 
 const App: React.FC = () => {
   const [onboardingGender, setOnboardingGender] = useState<MemberGenderEnum | undefined>(undefined);
@@ -86,19 +75,9 @@ const App: React.FC = () => {
               />
               <Route path = "LectureProgramPrevie" element={<LectureProgramPreview/>}/>
               <Route path="TrainerOn4/TrainerOn5" element={<TrainerOnboardingStep5 />} />
-<<<<<<< Updated upstream
-<<<<<<< HEAD
-=======
               <Route path="MessageMain" element={<MessageMain/>}/>
               <Route path="MessageNoMain" element={<MessageNoMain/>}/>
               <Route path="MessagePost" element={<MessagePost/>}/>
-=======
->>>>>>> Stashed changes
->>>>>>> feature/#53-fe-Message
-            </>
-          )}
-=======
->>>>>>> Stashed changes
         </Routes>
       </Router>
     </ProgramProvider>
