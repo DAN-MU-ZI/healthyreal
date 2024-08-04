@@ -1,6 +1,6 @@
 import {Link} from "react-router-dom";
 import * as React from "react";
-import {useState} from "react";
+import {useNavigate} from "react-router-dom";
 import AlarmCard from "../../AlarmCard";
 import "./styles.css";
 import moment from "moment";
@@ -10,7 +10,8 @@ interface EventItem {
   eventTitle: string;
   eventDesc: string;
   date: string;
-  state: string;
+  state: "진행중" | "완료" | "예정";
+  startTime: string;
 }
 
 interface Props {
@@ -21,6 +22,8 @@ interface Props {
 }
 
 const EventList: React.FC<Props> = ({states, selectedDate}) => {
+  const navigate = useNavigate();
+
   const selectedDateEvents = selectedDate
     ? states.eventList.filter((event) =>
         moment(event.date, "YYYY-MM-DD").isSame(selectedDate, "day")
@@ -31,12 +34,14 @@ const EventList: React.FC<Props> = ({states, selectedDate}) => {
     return (
       <AlarmCard
         key={event.id}
-        time={moment(event.date).format("MM.DD")}
+        time={event.startTime}
         state={event.state}
         title={event.eventTitle}
         detail={event.eventDesc}
         more="자세히 보기"
-        onClick={() => {}}
+        onClick={() => {
+          navigate("detail/" + event.id);
+        }}
       />
     );
   });
