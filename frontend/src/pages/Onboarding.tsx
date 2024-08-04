@@ -67,7 +67,7 @@ export default function Onboarding() {
       console.log(onboardingData);
       const userApi = createUserApi();  // 매 요청마다 최신 토큰을 사용하여 API 인스턴스 생성
       await userApi.registerMember(onboardingData);
-      navigate(`/main`);
+      navigate(`/`);
     } catch (error) {
       console.error("온보딩 중 오류가 발생했습니다.", error);
       alert("온보딩 중 오류가 발생했습니다. 다시 시도해주세요.");
