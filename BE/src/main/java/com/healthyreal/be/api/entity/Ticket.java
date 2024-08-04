@@ -2,8 +2,9 @@ package com.healthyreal.be.api.entity;
 
 import java.time.LocalDate;
 
-import org.hibernate.mapping.ToOne;
+import javax.xml.stream.events.EndDocument;
 
+import com.healthyreal.be.api.entity.trainer.TrainerInfo;
 import com.healthyreal.be.api.entity.trainer.TrainingProgram;
 import com.healthyreal.be.api.entity.user.Member;
 
@@ -14,7 +15,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -55,4 +55,14 @@ public class Ticket {
 
 	@Column(nullable = false)
 	private String memo;
+
+	public Ticket(Member member, Member trainer, TrainingProgram trainingProgram, Long totalCnt, LocalDate endPoint, String memo) {
+		this.member = member;
+		this.trainer = trainer;
+		this.trainingProgram = trainingProgram;
+		this.totalCnt = totalCnt;
+		this.remainingCnt = totalCnt;
+		this.endPoint = endPoint;
+		this.memo = memo;
+	}
 }
