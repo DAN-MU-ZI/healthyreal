@@ -64,4 +64,22 @@ public class MealRepositoryTest {
 		assertThat(savedMeal.getDate()).isEqualTo(LocalDate.of(2024, 8, 4));
 		assertThat(savedMeal.getMember()).isEqualTo(user);
 	}
+
+	@Test
+	void testFindMealsByDate() {
+		LocalDate targetDate = LocalDate.of(2024, 8, 4);
+		Meal meal1 = new Meal("Title1", "Content1", MealType.BREAKFAST, targetDate);
+		Meal meal2 = new Meal("Title2", "Content2", MealType.LUNCH, targetDate);
+		Meal meal3 = new Meal("Title3", "Content3", MealType.DINNER, targetDate);
+		Meal meal4 = new Meal("Title4", "Content4", MealType.DINNER, LocalDate.of(2222, 3, 3));
+		List<Meal> mealList = List.of(meal1, meal2, meal3, meal4);
+		mealList.forEach(meal -> meal.setMember(user));
+
+		// When
+		mealRepository.saveAll(mealList);
+		List<Meal> mealsByDate = mealRepository.findMealsByDateAndMember(targetDate, user);
+
+		// Then
+		assertThat(mealsByDate).hasSize(3);
+	}
 }

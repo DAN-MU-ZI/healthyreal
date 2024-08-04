@@ -1,5 +1,6 @@
 package com.healthyreal.be.api.service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -30,12 +31,7 @@ public class MemberService {
 		BodyInfo bodyInfo = request.bodyInfoDto().toEntity();
 		Gym gym = request.gymDto().toEntity();
 
-		UserInfo userInfo = new UserInfo(user,
-			goals,
-			request.gender(),
-			bodyInfo,
-			gym,
-			request.exerciseLevel(),
+		UserInfo userInfo = new UserInfo(user, goals, request.gender(), bodyInfo, gym, request.exerciseLevel(),
 			request.agreeToReceive());
 
 		userInfoRepository.save(userInfo);
@@ -46,5 +42,9 @@ public class MemberService {
 		meal.setMember(user);
 
 		mealRepository.save(meal);
+	}
+
+	public DailyMealDto getDailyMealLog(Member user, LocalDate date) {
+		return DailyMealDto.of(mealRepository.findMealsByDateAndMember(date, user));
 	}
 }
