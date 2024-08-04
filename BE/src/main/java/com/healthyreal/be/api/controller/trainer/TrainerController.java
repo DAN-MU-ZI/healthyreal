@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.healthyreal.be.api.entity.trainer.dto.TrainerMainPageResponse;
+import com.healthyreal.be.api.entity.trainer.dto.TrainerMemberDetailManagementResponse;
 import com.healthyreal.be.api.entity.trainer.dto.TrainerMyPageResponse;
 import com.healthyreal.be.api.entity.user.Member;
 import com.healthyreal.be.api.entity.userInfo.GoalType;
@@ -63,5 +64,19 @@ public class TrainerController {
 		@RequestParam(name = "location", required = false) String location) {
 		SearchTrainerResponse response = trainerService.searchTrainers(keyWord, category, location, null, null);
 		return ResponseEntity.ok().body(response);
+	}
+
+	@GetMapping("/members/detail")
+	public ResponseEntity<Object> memberDetailManagementTrainer(
+		@CurrentUser Member user,
+		@RequestParam(required = false) String userId
+	) {
+		try {
+			TrainerMemberDetailManagementResponse response = trainerService.readTrainerMembersDetail(
+				user, userId);
+			return ResponseEntity.ok(response);
+		} catch (Exception e) {
+			return ResponseEntity.status(400).body(e.getMessage());
+		}
 	}
 }
