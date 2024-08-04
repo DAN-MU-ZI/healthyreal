@@ -7,9 +7,10 @@ import com.healthyreal.be.api.entity.userInfo.Gym;
 import com.healthyreal.be.api.entity.userInfo.UserInfo;
 import com.healthyreal.be.api.entity.userInfo.dto.MemberRegisterRequest;
 import com.healthyreal.be.api.repository.userInfo.UserInfoRepository;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor

@@ -1,22 +1,16 @@
 package com.healthyreal.be.api.controller.community;
 
 import com.healthyreal.be.api.entity.community.Post;
-import com.healthyreal.be.api.entity.community.Comment;
 import com.healthyreal.be.api.entity.user.Member;
 import com.healthyreal.be.api.service.CommunityService;
 import com.healthyreal.be.utils.CurrentUser;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
-
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
-import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/api/v1/community")
@@ -24,29 +18,26 @@ import lombok.RequiredArgsConstructor;
 public class CommunityController {
 	private final CommunityService communityService;
 
-	@PostMapping("/posts")
-	public ResponseEntity<Post> createPost(
+	@PostMapping(value = "/posts", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+	public ResponseEntity<String> createPost(
 		@CurrentUser Member user,
-		@RequestParam String title,
-		@RequestParam String content
+		@RequestPart(value = "data") PostCreateRequest request,
+		@RequestPart(value = "images", required = false) List<MultipartFile> images
 	) {
-		Post post = communityService.createPost(user, title, content);
-		return ResponseEntity.ok(post);
+		communityService.createPost(user, request, images);
+		return ResponseEntity.ok("ok");
 	}
 
 	@PostMapping("/posts/{postId}/comments")
-	public ResponseEntity<Comment> createComment(
+	public ResponseEntity<String> createComment(
 		@CurrentUser Member user,
-		@PathVariable Long postId,
+		@PathVariable(value = "postId") Long postId,
 		@RequestParam String content
 	) {
-		Post post = communityService.getAllPosts().stream()
-			.filter(p -> p.getId().equals(postId))
-			.findFirst()
-			.orElseThrow(() -> new RuntimeException("Post not found"));
+		Post post = communityService.findPostById(postId);
 
-		Comment comment = communityService.createComment(user, post, content);
-		return ResponseEntity.ok(comment);
+		communityService.createComment(user, post, content);
+		return ResponseEntity.ok("ok");
 	}
 
 	@GetMapping("/posts")
@@ -56,8 +47,8 @@ public class CommunityController {
 	}
 
 	@GetMapping("/posts/{postId}/comments")
-	public ResponseEntity<List<Comment>> getCommentsByPost(@PathVariable Long postId) {
-		List<Comment> comments = communityService.getCommentsByPost(postId);
-		return ResponseEntity.ok(comments);
+	public ResponseEntity<CommentsOfPostResponse> getCommentsByPost(@PathVariable(value = "postId") Long postId) {
+		CommentsOfPostResponse response = CommentsOfPostResponse.of(communityService.getCommentsByPost(postId));
+		return ResponseEntity.ok(response);
 	}
 }
