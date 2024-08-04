@@ -1,9 +1,14 @@
 package com.healthyreal.be.api.entity.user;
 
+import java.time.LocalDateTime;
+
+import net.minidev.json.annotate.JsonIgnore;
+
 import com.healthyreal.be.api.entity.trainer.TrainerInfo;
 import com.healthyreal.be.api.entity.userInfo.UserInfo;
 import com.healthyreal.be.oauth.entity.ProviderType;
 import com.healthyreal.be.oauth.entity.RoleType;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -16,12 +21,10 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToOne;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import net.minidev.json.annotate.JsonIgnore;
 
 @Getter
 @Setter
@@ -76,6 +79,10 @@ public class Member {
 	@NotNull
 	private RoleType roleType;
 
+	@Column(name = "GENDER", length = 10)
+	@Enumerated(EnumType.STRING)
+	private Gender gender;
+
 	@Column(name = "CREATED_AT")
 	@NotNull
 	private LocalDateTime createdAt;
@@ -84,11 +91,16 @@ public class Member {
 	@NotNull
 	private LocalDateTime modifiedAt;
 
+	@Column(name = "PHONE")
+	@NotNull
+	private String phone;
+
 	@OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private UserInfo userInfo;
 
 	@OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private TrainerInfo trainerInfo;
+
 
 	public Member(
 		@NotNull @Size(max = 64) final String userId,
@@ -113,3 +125,4 @@ public class Member {
 		this.modifiedAt = modifiedAt;
 	}
 }
+

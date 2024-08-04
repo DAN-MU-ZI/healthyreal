@@ -1,6 +1,7 @@
 package com.healthyreal.be.api.entity.userInfo;
 
 import com.healthyreal.be.api.entity.trainer.TrainerInfo;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -36,6 +37,9 @@ public class Gym {
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "trainer_info_id")
 	private TrainerInfo trainerInfo;
+
+	@Column(nullable = false)
+	private String gymPhone;
 
 	public Gym(final String name, final String address) {
 		this.name = name;

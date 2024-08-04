@@ -11,6 +11,7 @@ import com.healthyreal.be.api.entity.trainer.Schedule;
 import com.healthyreal.be.api.entity.trainer.TrainerInfo;
 import com.healthyreal.be.api.entity.trainer.TrainingProgram;
 import com.healthyreal.be.api.entity.user.Member;
+import com.healthyreal.be.api.entity.userInfo.Gender;
 import com.healthyreal.be.api.entity.userInfo.Goal;
 import com.healthyreal.be.api.entity.userInfo.GoalType;
 import com.healthyreal.be.api.entity.userInfo.Gym;
@@ -142,7 +143,8 @@ class TrainerInfoRepositoryTest {
 			qualificationList,
 			trainingProgram,
 			scheduleList,
-			profileDescription);
+			profileDescription,
+			Gender.MALE);
 
 		trainerInfoRepository.save(trainerInfo);
 

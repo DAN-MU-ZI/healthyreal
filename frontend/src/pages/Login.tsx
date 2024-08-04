@@ -11,7 +11,7 @@ import kakaotalkLogo from "../assets/images/kakaotalkLogo.png";
 
 export default function Login() {
   const baseUrl = process.env.REACT_APP_BASE_URL;
-  const redirect_uri = "http://localhost:3000/oauth/redirect";
+  const redirect_uri = `${process.env.REACT_APP_CURRENT_URL}/oauth/redirect`;
   const [memberType, setMemberType] = useState("");
 
   const onClickTypeCard = (type: string) => {
