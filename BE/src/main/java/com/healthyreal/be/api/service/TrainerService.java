@@ -7,6 +7,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.healthyreal.be.api.entity.trainer.dto.TrainerMainPageResponse;
+import com.healthyreal.be.api.entity.trainer.dto.TrainerMemberDetailManagementResponse;
 import com.healthyreal.be.api.entity.trainer.dto.TrainerMemberManagementResponse;
 import com.healthyreal.be.api.entity.trainer.dto.TrainerMyPageResponse;
 import com.healthyreal.be.api.entity.user.Gender;
@@ -29,6 +30,7 @@ import com.healthyreal.be.api.repository.TicketRepository;
 import com.healthyreal.be.api.repository.schedule.ScheduleRepository;
 import com.healthyreal.be.api.repository.trainer.TrainerInfoRepository;
 import com.healthyreal.be.api.repository.trainer.TrainingProgramRepository;
+import com.healthyreal.be.api.repository.user.UserRepository;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -38,6 +40,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import lombok.extern.slf4j.Slf4j;
@@ -53,6 +57,7 @@ public class TrainerService {
 	private final MealRepository mealRepository;
 	private final TicketRepository ticketRepository;
 	private final TrainingProgramRepository trainingProgramRepository;
+	private final UserRepository userRepository;
 
 	@PersistenceContext
 	private EntityManager entityManager;
@@ -195,5 +200,19 @@ public class TrainerService {
 		List<Ticket> tickets = ticketRepository.findAllByTrainer(user);
 
 		return TrainerMemberManagementResponse.toResponse(tickets);
+	}
+
+	public TrainerMemberDetailManagementResponse readTrainerMembersDetail(Member user, String userId) {
+
+		Member member = userRepository.findByUserId(userId);
+		Ticket ticket = ticketRepository.findByTrainerAndMember(user, member);
+
+		if (ticket == null) {
+			throw new IllegalArgumentException("잘못된 접근: 회원 번호");
+		}
+
+		List<Ticket> ticketList = ticketRepository.findAllByMember(member);
+
+		return TrainerMemberDetailManagementResponse.toResponse(member, ticketList);
 	}
 }

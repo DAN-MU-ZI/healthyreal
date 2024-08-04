@@ -1,6 +1,7 @@
 package com.healthyreal.be.api.controller.trainer;
 
 import com.healthyreal.be.api.entity.trainer.dto.TrainerMainPageResponse;
+import com.healthyreal.be.api.entity.trainer.dto.TrainerMemberDetailManagementResponse;
 import com.healthyreal.be.api.entity.trainer.dto.TrainerMemberManagementResponse;
 import com.healthyreal.be.api.entity.user.Member;
 import com.healthyreal.be.api.entity.userInfo.GoalType;
@@ -71,5 +72,19 @@ public class TrainerController {
 	){
 		TrainerMemberManagementResponse trainerMemberManagementResponse = trainerService.readTrainerMembers(user);
 		return ResponseEntity.ok(trainerMemberManagementResponse);
+	}
+
+	@GetMapping("/members/detail")
+	public ResponseEntity<Object> memberDetailManagementTrainer(
+		@CurrentUser Member user,
+		@RequestParam(required = false) String userId
+	) {
+		try {
+			TrainerMemberDetailManagementResponse response = trainerService.readTrainerMembersDetail(
+				user, userId);
+			return ResponseEntity.ok(response);
+		} catch (Exception e) {
+			return ResponseEntity.status(400).body(e.getMessage());
+		}
 	}
 }

@@ -22,7 +22,7 @@ public class BodyInfo {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(nullable = false)
+	@Column
 	private LocalDate birthDate;
 
 	@Column(nullable = false)
