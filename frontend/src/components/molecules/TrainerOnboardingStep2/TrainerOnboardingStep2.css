@@ -1,62 +1,75 @@
-.container {
+.onboarding-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 20px;
-  width: 100%;
-  max-width: 400px;
-  margin: 0 auto;
 }
 
 .header {
   display: flex;
   align-items: center;
   width: 100%;
-  justify-content: space-between;
+  margin-bottom: 20px;
 }
 
-.header h1 {
+.back-button {
+  font-size: 20px;
+  text-align: left;
+
+}
+
+h1 {
   flex-grow: 1;
   text-align: center;
-  font-size: 24px;
+  font-size: 25px;
   margin: 0;
+  font-weight: bold;
 }
 
-.header .back-button {
-  background: none;
-  border: none;
-  font-size: 24px;
+p {
+  font-size: 16px;
+  margin: 10px 0 20px 0;
+  text-align: center;
 }
 
-.video-upload {
+.add-program {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100%;
-  height: 200px;
-  border: 2px dashed #6200ee;
-  border-radius: 4px;
-  margin: 20px 0;
-  position: relative;
-}
-
-#video-upload-input {
-  display: none;
-}
-
-.video-upload-label {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 100%;
-  font-size: 32px;
-  color: #6200ee;
+  width: 250px;
+  height: 250px;
+  border: 2px dashed #007bff;
+  border-radius: 10px;
+  color: #007bff;
   cursor: pointer;
+  margin-bottom: 20px;
 }
 
-.video-upload-label span {
-  font-size: 48px;
+.plus-icon {
+  font-size: 2rem;
+}
+
+.program-list {
+  width: 100%;
+}
+
+.program-item {
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.keywords {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.keyword {
+  background-color: #f0f0f0;
+  border-radius: 3px;
+  padding: 5px;
+  margin: 2px;
 }
 
 .next-button {

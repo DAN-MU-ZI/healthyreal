@@ -1,7 +1,7 @@
 body {
   font-family: Arial, sans-serif;
-  margin: 0;
-  padding: 0;
+  margin: 15px;
+  padding: 15px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -10,7 +10,7 @@ body {
 }
 
 .container {
-  width: 375px;
+  width: 320px; /* 너비를 320px로 줄임 */
   background-color: white;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -20,7 +20,7 @@ body {
 .header {
   display: flex;
   align-items: center;
-  padding: 16px;
+  padding: 15px;
   background-color: #f8f8f8;
   border-bottom: 1px solid #eaeaea;
 }
@@ -37,35 +37,36 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 16px;
+  padding: 15px; /* 패딩을 줄임 */
+  width: 300px;
 }
 
 .selected-date {
-  margin-top: 8px;
-  font-size: 18px;
+  margin-top: 4px;
+  font-size: 16px; /* 폰트 크기를 줄임 */
   font-weight: bold;
 }
 
 .meal-list {
-  padding: 16px;
+  padding: 8px; /* 패딩을 줄임 */
 }
 
 .meal-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 0;
+  padding: 5px 0; /* 패딩을 줄임 */
   border-bottom: 1px solid #eee;
   cursor: pointer;
 }
 
 .meal-time {
-  font-size: 18px;
+  font-size: 16px; /* 폰트 크기를 줄임 */
 }
 
 .meal-status {
-  font-size: 16px;
-  padding: 4px 8px;
+  font-size: 14px; /* 폰트 크기를 줄임 */
+  padding: 2px 4px; /* 패딩을 줄임 */
   border-radius: 4px;
 }
 
@@ -77,4 +78,14 @@ body {
 .complete {
   background-color: #ccffcc;
   color: #006600;
+}
+
+.mypage-button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
 }

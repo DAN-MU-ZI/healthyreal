@@ -1,13 +1,15 @@
-
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import './PostFood.css';
 import { PostContext } from '../../../pages/PostContext';
 
+
 const PostFood: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { mealTime, selectedDate, postToEdit } = location.state as { mealTime: string; selectedDate: string; postToEdit?: any };
+  const state = location.state as { mealTime?: string; selectedDate?: string; postToEdit?: any } || {};
+  const { mealTime = '', selectedDate = '', postToEdit } = state;
+
   const context = useContext(PostContext);
 
   if (!context) {
@@ -20,22 +22,25 @@ const PostFood: React.FC = () => {
 
   const handleSubmit = () => {
     const newPost = {
-      id: postToEdit?.id || new Date().getTime(),
+      id: postToEdit?.id || new Date().getTime(), // ID가 없으면 새로 생성
       username: '윤민지',
-      profilePic: '/path/to/profile-pic.jpg', // Change to actual profile pic path
-      date: `${selectedDate} ${mealTime}`,
+      profilePic: '/path/to/profile-pic.jpg',
+      date: selectedDate,
+      mealTime,
       title,
       content,
-      foodPic: '/path/to/food-pic.jpg', // Change to actual food pic path
+      foodPic: '/path/to/food-pic.jpg',
     };
+  
     if (postToEdit) {
-      editPost(postToEdit.id, newPost);
+      editPost(postToEdit.id, newPost); // 수정된 포스트를 editPost로 업데이트
     } else {
       addPost(newPost);
     }
-    navigate('/mypage-food');
+  
+    navigate('/MypageFood', { state: { updatedPost: newPost } }); // 상태로 업데이트된 포스트 전달
   };
-
+  
   return (
     <div className="container">
       <div className="header">
@@ -46,7 +51,11 @@ const PostFood: React.FC = () => {
       <div className="form-container">
         <div className="form-group">
           <label>작성 날짜*</label>
-          <input type="text" value={`${selectedDate} ${mealTime}`} readOnly />
+          <input type="text" value={selectedDate} readOnly />
+        </div>
+        <div className="form-group">
+          <label>식사 시간*</label>
+          <input type="text" value={mealTime} readOnly />
         </div>
         <div className="form-group">
           <label>글 작성</label>
