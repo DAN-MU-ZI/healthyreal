@@ -10,8 +10,9 @@ interface EventItem {
   id: number;
   eventTitle: string;
   eventDesc: string;
+  startTime: string;
   date: string;
-  state: string;
+  state: "진행중" | "완료" | "예정";
 }
 
 const Scheduler: React.FC = () => {
@@ -20,7 +21,7 @@ const Scheduler: React.FC = () => {
 
   // 상태관리 함수 넣기
   const getSchedule = () => {
-    console.log("delete");
+    console.log("get");
   };
 
   useEffect(() => {
@@ -31,11 +32,11 @@ const Scheduler: React.FC = () => {
     eventTitle: string,
     eventDesc: string,
     date: string,
-    state: string,
-    time: string,
+    state: "진행중" | "완료" | "예정" | "",
+    startTime: string,
     callback: () => void
   ) => {
-    console.log(eventTitle, eventDesc, date, state, time);
+    console.log(eventTitle, eventDesc, date, state, startTime);
     callback();
     // post Event
   };
@@ -79,7 +80,12 @@ const Scheduler: React.FC = () => {
         }
       />
       <Route path="edit/:id" element={<EditScheduler />} />
-      <Route path="detail" element={<DetailScheduler />} />
+      <Route
+        path="detail/:id"
+        element={
+          <DetailScheduler states={states} selectedDate={selectedDate} />
+        }
+      />
     </Routes>
   );
 };
@@ -93,6 +99,7 @@ const dummyData: EventItem[] = [
     state: "진행중",
     eventTitle: "개인운동",
     eventDesc: "등, 이두 루틴하는 날",
+    startTime: "10:00",
   },
   {
     id: 2,
@@ -100,6 +107,7 @@ const dummyData: EventItem[] = [
     state: "진행중",
     eventTitle: "개인운동",
     eventDesc: "등, 이두 루틴하는 날",
+    startTime: "10:00",
   },
   {
     id: 3,
@@ -107,6 +115,7 @@ const dummyData: EventItem[] = [
     state: "진행중",
     eventTitle: "개인운동",
     eventDesc: "등, 이두 루틴하는 날",
+    startTime: "10:00",
   },
   {
     id: 4,
@@ -114,6 +123,7 @@ const dummyData: EventItem[] = [
     state: "진행중",
     eventTitle: "개인운동",
     eventDesc: "등, 이두 루틴하는 날",
+    startTime: "10:00",
   },
   {
     id: 5,
@@ -121,6 +131,7 @@ const dummyData: EventItem[] = [
     state: "진행중",
     eventTitle: "개인운동",
     eventDesc: "등, 이두 루틴하는 날",
+    startTime: "10:00",
   },
   {
     id: 6,
@@ -129,6 +140,7 @@ const dummyData: EventItem[] = [
     eventTitle: "개인운동",
     eventDesc:
       "등, 이두 루틴하는 날 등, 이두 루틴하는 날등, 이두 루틴하는 날등, 이두 루틴하는 날",
+    startTime: "10:00",
   },
   {
     id: 7,
@@ -137,14 +149,16 @@ const dummyData: EventItem[] = [
     eventTitle: "개인운동",
     eventDesc:
       "등, 이두 루틴하는 날 등, 이두 루틴하는 날등, 이두 루틴하는 날등, 이두 루틴하는 날",
+    startTime: "10:00",
   },
   {
     id: 68,
     date: "2024-08-22",
-    state: "진행중",
+    state: "예정",
     eventTitle: "개인운동",
     eventDesc:
       "등, 이두 루틴하는 날 등, 이두 루틴하는 날등, 이두 루틴하는 날등, 이두 루틴하는 날",
+    startTime: "10:00",
   },
   {
     id: 76,
@@ -153,13 +167,15 @@ const dummyData: EventItem[] = [
     eventTitle: "개인운동",
     eventDesc:
       "등, 이두 루틴하는 날 등, 이두 루틴하는 날등, 이두 루틴하는 날등, 이두 루틴하는 날",
+    startTime: "10:00",
   },
   {
     id: 65,
     date: "2024-08-22",
-    state: "진행중",
+    state: "완료",
     eventTitle: "개인운동",
     eventDesc:
       "등, 이두 루틴하는 날 등, 이두 루틴하는 날등, 이두 루틴하는 날등, 이두 루틴하는 날",
+    startTime: "10:00",
   },
 ];

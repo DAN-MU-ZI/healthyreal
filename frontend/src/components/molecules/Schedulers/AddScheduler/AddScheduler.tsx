@@ -13,8 +13,8 @@ interface Props {
       eventTitle: string,
       eventDesc: string,
       date: string,
-      state: string,
-      time: string,
+      state: "진행중" | "완료" | "예정" | "",
+      startTime: string,
       callback: () => void
     ) => Promise<void>;
   };
@@ -25,8 +25,8 @@ const AddScheduler: React.FC<Props> = ({callbacks, selectedDate}) => {
   let [eventTitle, setEventTitle] = useState("");
   let [eventDesc, setEventDesc] = useState("");
   let [date, setDate] = useState("");
-  let [time, setTime] = useState("");
-  let [state, setState] = useState("");
+  let [startTime, setTime] = useState("");
+  let [state, setState] = useState<"진행중" | "완료" | "예정" | "">("");
   let [errorMessages, setErrorMessages] = useState<string[]>([]);
 
   const navigate = useNavigate();
@@ -34,7 +34,7 @@ const AddScheduler: React.FC<Props> = ({callbacks, selectedDate}) => {
   const validate = () => {
     const newErrors: string[] = [];
 
-    if (!eventTitle || !eventDesc || !date || !time || !state)
+    if (!eventTitle || !eventDesc || !date || !startTime || !state)
       newErrors.push("모든 정보를 입력해주세요.");
 
     return newErrors;
@@ -48,8 +48,7 @@ const AddScheduler: React.FC<Props> = ({callbacks, selectedDate}) => {
     }
 
     setErrorMessages([]);
-
-    callbacks.addSchedule(eventTitle, eventDesc, date, state, time, () => {
+    callbacks.addSchedule(eventTitle, eventDesc, date, state, startTime, () => {
       navigate("/scheduler");
     });
   };
@@ -98,14 +97,18 @@ const AddScheduler: React.FC<Props> = ({callbacks, selectedDate}) => {
               시작 시간 :{" "}
               <input
                 type="time"
-                value={time}
+                value={startTime}
                 onChange={(e) => setTime(e.target.value)}
               />
             </p>
             <p>
               상태 :{" "}
-              <select value={state} onChange={(e) => setState(e.target.value)}>
-                <option value="">선택하기</option>
+              <select
+                value={state}
+                onChange={(e) =>
+                  setState(e.target.value as "진행중" | "완료" | "예정" | "")
+                }
+              >
                 <option value="예정">예정</option>
                 <option value="진행중">진행중</option>
                 <option value="완료">완료</option>

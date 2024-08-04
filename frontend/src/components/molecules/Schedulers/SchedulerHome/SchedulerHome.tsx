@@ -14,7 +14,8 @@ interface EventItem {
   eventTitle: string;
   eventDesc: string;
   date: string;
-  state: string;
+  state: "진행중" | "완료" | "예정";
+  startTime: string;
 }
 
 interface Props {
