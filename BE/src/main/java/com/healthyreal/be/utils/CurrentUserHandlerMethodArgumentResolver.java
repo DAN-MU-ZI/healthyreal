@@ -25,8 +25,6 @@ public class CurrentUserHandlerMethodArgumentResolver implements HandlerMethodAr
 	public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
 		NativeWebRequest webRequest, org.springframework.web.bind.support.WebDataBinderFactory binderFactory) {
 		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		log.info("hello : {}", principal.getClass());
-		log.info("hello : {}", principal);
 		if (principal instanceof UserPrincipal) {
 			return ((UserPrincipal)principal).getUser();
 		}
