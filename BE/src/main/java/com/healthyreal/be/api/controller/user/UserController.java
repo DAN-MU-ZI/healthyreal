@@ -19,10 +19,11 @@ import com.healthyreal.be.api.controller.user.dto.UserResponse;
 import com.healthyreal.be.api.entity.DailyMealDto;
 import com.healthyreal.be.api.entity.user.Member;
 import com.healthyreal.be.api.entity.userInfo.dto.MemberRegisterRequest;
-import com.healthyreal.be.api.service.CommunityService;
 import com.healthyreal.be.api.service.MemberService;
 import com.healthyreal.be.utils.CurrentUser;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -30,13 +31,27 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UserController {
 	private final MemberService memberService;
-	private final CommunityService communityService;
 
+	@Operation(
+		summary = "회원 정보 조회",
+		description = "현재 로그인한 회원의 정보를 조회합니다.",
+		parameters = {
+			@Parameter(name = "user", description = "현재 로그인한 회원", hidden = true)
+		}
+	)
 	@GetMapping
 	public ResponseEntity<UserResponse> getUser(@CurrentUser Member user) {
 		return ResponseEntity.ok(UserResponse.from(user));
 	}
 
+	@Operation(
+		summary = "회원 등록",
+		description = "새 회원을 등록합니다.",
+		parameters = {
+			@Parameter(name = "request", description = "회원 등록 요청 데이터"),
+			@Parameter(name = "user", description = "현재 로그인한 회원", hidden = true)
+		}
+	)
 	@PostMapping
 	public ResponseEntity<String> registerMember(
 		@RequestBody MemberRegisterRequest request,
@@ -47,20 +62,38 @@ public class UserController {
 		return ResponseEntity.ok("ok");
 	}
 
+	@Operation(
+		summary = "식단 업로드",
+		description = "현재 로그인한 회원의 식단을 업로드합니다.",
+		parameters = {
+			@Parameter(name = "user", description = "현재 로그인한 회원", hidden = true),
+			@Parameter(name = "data", description = "식단 업로드 요청 데이터"),
+			@Parameter(name = "image", description = "식단 이미지 파일")
+		}
+	)
 	@PostMapping(value = "/meal", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-	public ResponseEntity<String> uploadMeal(@CurrentUser Member user,
-		@RequestPart(value = "data") MealUploadRequest request, @RequestPart(value = "image") MultipartFile image) {
+	public ResponseEntity<String> uploadMeal(
+		@CurrentUser Member user,
+		@RequestPart(value = "data") MealUploadRequest request,
+		@RequestPart(value = "image") MultipartFile image) {
 
 		memberService.uploadMeal(user, request, image);
 
 		return ResponseEntity.ok("ok");
 	}
 
+	@Operation(
+		summary = "일일 식단 로그 조회",
+		description = "주어진 날짜의 일일 식단 로그를 조회합니다.",
+		parameters = {
+			@Parameter(name = "member", description = "현재 로그인한 회원", hidden = true),
+			@Parameter(name = "date", description = "조회할 날짜", required = true, example = "yyyy-MM-dd")
+		}
+	)
 	@GetMapping("/dailyMealLog")
 	public ResponseEntity<DailyMealDto> getDailyMealLog(
 		@CurrentUser Member member,
-		@RequestParam("date") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date
-	) {
+		@RequestParam("date") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date) {
 		return ResponseEntity.ok().body(memberService.getDailyMealLog(member, date));
 	}
 }

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import { createChatApi, createUserApi } from '../apis/custom';
 import { useParams } from 'react-router-dom';
@@ -92,6 +92,7 @@ const Chat: React.FC = () => {
     const [messageList, setMessageList] = useState<GetMessage[]>([]);
     const [message, setMessage] = useState<string>('');
     const [client, setClient] = useState<Client | null>(null);
+    const messagesEndRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         const loadUser = async () => {
@@ -110,7 +111,7 @@ const Chat: React.FC = () => {
         loadMessages();
 
         const stompClient = new Client({
-            webSocketFactory: () => new SockJS('http://localhost:8080/ws'),
+            webSocketFactory: () => new SockJS(`${process.env.REACT_APP_BASE_URL}/ws`),
             onConnect: (frame) => {
                 console.log('Connected: ' + frame);
                 stompClient.subscribe(`/topic/chat/${chatRoomId}`, (message) => {
@@ -135,6 +136,10 @@ const Chat: React.FC = () => {
         };
     }, [chatRoomId]);
 
+    useEffect(() => {
+        scrollToBottom();
+    }, [messageList]);
+
     const handleSendMessage = () => {
         if (chatRoomId && message.trim() && client && user && user.userId) {
             const messagePayload: ChatMessagePayload = {
@@ -155,6 +160,16 @@ const Chat: React.FC = () => {
         }
     };
 
+    const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+        if (event.key === 'Enter') {
+            handleSendMessage();
+        }
+    };
+
+    const scrollToBottom = () => {
+        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    };
+
     return (
         <ChatContainer>
             {chatRoomId ? (
@@ -169,12 +184,14 @@ const Chat: React.FC = () => {
                                 {msg.content}
                             </MessageItem>
                         ))}
+                        <div ref={messagesEndRef} />
                     </MessagesList>
                     <InputContainer>
                         <Input
                             type="text"
                             value={message}
                             onChange={e => setMessage(e.target.value)}
+                            onKeyPress={handleKeyPress}
                         />
                         <Button onClick={handleSendMessage}>Send</Button>
                     </InputContainer>
