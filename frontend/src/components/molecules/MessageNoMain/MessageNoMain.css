@@ -1,0 +1,31 @@
+.message-no-main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    text-align: center;
+  }
+  
+  .message-no-main h1 {
+    font-size: 2em;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+  
+  .no-messages-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .no-messages-container p {
+    font-size: 1.2em;
+    margin-bottom: 10px;
+  }
+  
+  .no-messages-image {
+    width: 200px;
+    height: auto;
+  }
+  

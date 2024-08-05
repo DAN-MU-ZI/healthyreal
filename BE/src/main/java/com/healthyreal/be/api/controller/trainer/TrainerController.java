@@ -1,7 +1,5 @@
 package com.healthyreal.be.api.controller.trainer;
 
-import java.util.List;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -47,12 +45,10 @@ public class TrainerController {
 	public ResponseEntity<String> registerTrainer(
 		@CurrentUser Member user,
 		@RequestPart(value = "data") TrainerRequest request,
-		@RequestPart(value = "qualificationImages") List<MultipartFile> qualificationImages,
-		@RequestPart(value = "trainingProgramImages") List<MultipartFile> trainingProgramImages
+		@RequestPart(value = "qualificationImage") MultipartFile qualificationImage, // 단일 파일로 수정했습니다.
+		@RequestPart(value = "trainingProgramImage") MultipartFile trainingProgramImage // 단일 파일로 수정했습니다.
 	) {
-
-		trainerService.register(user, request, qualificationImages, trainingProgramImages);
-
+		trainerService.register(user, request, qualificationImage, trainingProgramImage); // 단일 파일로 수정했습니다.
 		return ResponseEntity.ok("ok");
 	}
 
