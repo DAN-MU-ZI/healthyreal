@@ -1,7 +1,8 @@
 import {
     Configuration,
     UserControllerApi,
-    TrainerControllerApi
+    TrainerControllerApi,
+    ChatControllerApi
 } from "../typescript-axios";
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
@@ -28,4 +29,13 @@ const createTrainerApi = () => {
     return new TrainerControllerApi(config);
 };
 
-export { createUserApi, createTrainerApi };
+const createChatApi = () => {
+    const token = localStorage.getItem('token');
+    const config = new Configuration({
+        basePath: BASE_URL,
+        accessToken: token ? token : undefined,
+    });
+    return new ChatControllerApi(config);
+};
+
+export { createUserApi, createTrainerApi, createChatApi };

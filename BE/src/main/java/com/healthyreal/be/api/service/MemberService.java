@@ -15,6 +15,7 @@ import com.healthyreal.be.api.entity.userInfo.Gym;
 import com.healthyreal.be.api.entity.userInfo.UserInfo;
 import com.healthyreal.be.api.entity.userInfo.dto.MemberRegisterRequest;
 import com.healthyreal.be.api.repository.MealRepository;
+import com.healthyreal.be.api.repository.user.UserRepository;
 import com.healthyreal.be.api.repository.userInfo.UserInfoRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -23,6 +24,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class MemberService {
 
+	private final UserRepository userRepository;
 	private final UserInfoRepository userInfoRepository;
 	private final MealRepository mealRepository;
 
@@ -46,5 +48,9 @@ public class MemberService {
 
 	public DailyMealDto getDailyMealLog(Member user, LocalDate date) {
 		return DailyMealDto.of(mealRepository.findMealsByDateAndMember(date, user));
+	}
+
+	public Member getMemberById(String userId) {
+		return userRepository.findByUserId(userId);
 	}
 }

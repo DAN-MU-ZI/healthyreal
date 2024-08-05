@@ -94,6 +94,50 @@ export interface BodyInfoDto {
 /**
  * 
  * @export
+ * @interface ChatRoomInfo
+ */
+export interface ChatRoomInfo {
+    /**
+     * 
+     * @type {number}
+     * @memberof ChatRoomInfo
+     */
+    'chatRoomId'?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof ChatRoomInfo
+     */
+    'lastChatMsg'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ChatRoomInfo
+     */
+    'createdAt'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ChatRoomInfo
+     */
+    'chatRoomUser'?: string;
+}
+/**
+ * 
+ * @export
+ * @interface ChatRoomsResponse
+ */
+export interface ChatRoomsResponse {
+    /**
+     * 
+     * @type {Array<ChatRoomInfo>}
+     * @memberof ChatRoomsResponse
+     */
+    'chatRooms'?: Array<ChatRoomInfo>;
+}
+/**
+ * 
+ * @export
  * @interface Comment
  */
 export interface Comment {
@@ -159,6 +203,25 @@ export interface CommentsOfPostResponse {
      * @memberof CommentsOfPostResponse
      */
     'commentDtoList'?: Array<CommentDto>;
+}
+/**
+ * 
+ * @export
+ * @interface CreateOrGetResponse
+ */
+export interface CreateOrGetResponse {
+    /**
+     * 
+     * @type {number}
+     * @memberof CreateOrGetResponse
+     */
+    'chatRoomId'?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateOrGetResponse
+     */
+    'createAt'?: string;
 }
 /**
  * 
@@ -238,6 +301,37 @@ export const FoundTrainerCategoriesEnum = {
 
 export type FoundTrainerCategoriesEnum = typeof FoundTrainerCategoriesEnum[keyof typeof FoundTrainerCategoriesEnum];
 
+/**
+ * 
+ * @export
+ * @interface GetMessage
+ */
+export interface GetMessage {
+    /**
+     * 
+     * @type {string}
+     * @memberof GetMessage
+     */
+    'senderId'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetMessage
+     */
+    'senderName'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetMessage
+     */
+    'content'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetMessage
+     */
+    'sendAt'?: string;
+}
 /**
  * 
  * @export
@@ -825,6 +919,19 @@ export type MemberRegisterRequestExerciseLevelEnum = typeof MemberRegisterReques
 /**
  * 
  * @export
+ * @interface MessageListResponse
+ */
+export interface MessageListResponse {
+    /**
+     * 
+     * @type {Array<GetMessage>}
+     * @memberof MessageListResponse
+     */
+    'messages'?: Array<GetMessage>;
+}
+/**
+ * 
+ * @export
  * @interface Post
  */
 export interface Post {
@@ -895,6 +1002,19 @@ export interface PostCreateRequest {
      * @memberof PostCreateRequest
      */
     'content'?: string;
+}
+/**
+ * 
+ * @export
+ * @interface ProgramListResponse
+ */
+export interface ProgramListResponse {
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof ProgramListResponse
+     */
+    'ticketTitleList'?: Array<string>;
 }
 /**
  * 
@@ -1184,6 +1304,43 @@ export interface SearchTrainerResponse {
      * @memberof SearchTrainerResponse
      */
     'pageSize'?: number;
+}
+/**
+ * 
+ * @export
+ * @interface TicketRegisterRequest
+ */
+export interface TicketRegisterRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof TicketRegisterRequest
+     */
+    'userId'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof TicketRegisterRequest
+     */
+    'programName'?: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof TicketRegisterRequest
+     */
+    'totalCnt'?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof TicketRegisterRequest
+     */
+    'endPoint'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof TicketRegisterRequest
+     */
+    'memo'?: string;
 }
 /**
  * 
@@ -1687,6 +1844,323 @@ export type UserResponseRoleTypeEnum = typeof UserResponseRoleTypeEnum[keyof typ
 
 
 /**
+ * ChatControllerApi - axios parameter creator
+ * @export
+ */
+export const ChatControllerApiAxiosParamCreator = function (configuration?: Configuration) {
+    return {
+        /**
+         * 
+         * @param {number} chatRoomId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getChatMessages: async (chatRoomId: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'chatRoomId' is not null or undefined
+            assertParamExists('getChatMessages', 'chatRoomId', chatRoomId)
+            const localVarPath = `/api/chat/messages`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+            if (chatRoomId !== undefined) {
+                localVarQueryParameter['chatRoomId'] = chatRoomId;
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {number} trainerInfoId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getOrCreateChatRoom: async (trainerInfoId: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'trainerInfoId' is not null or undefined
+            assertParamExists('getOrCreateChatRoom', 'trainerInfoId', trainerInfoId)
+            const localVarPath = `/api/chat/create-or-get`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+            if (trainerInfoId !== undefined) {
+                localVarQueryParameter['trainerInfoId'] = trainerInfoId;
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getUserChatRooms: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/chat/member/rooms`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {number} chatRoomId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        leaveChatRoom: async (chatRoomId: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'chatRoomId' is not null or undefined
+            assertParamExists('leaveChatRoom', 'chatRoomId', chatRoomId)
+            const localVarPath = `/api/chat/leave`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+            if (chatRoomId !== undefined) {
+                localVarQueryParameter['chatRoomId'] = chatRoomId;
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+    }
+};
+
+/**
+ * ChatControllerApi - functional programming interface
+ * @export
+ */
+export const ChatControllerApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = ChatControllerApiAxiosParamCreator(configuration)
+    return {
+        /**
+         * 
+         * @param {number} chatRoomId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getChatMessages(chatRoomId: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<MessageListResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getChatMessages(chatRoomId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ChatControllerApi.getChatMessages']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @param {number} trainerInfoId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getOrCreateChatRoom(trainerInfoId: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CreateOrGetResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getOrCreateChatRoom(trainerInfoId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ChatControllerApi.getOrCreateChatRoom']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getUserChatRooms(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ChatRoomsResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getUserChatRooms(options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ChatControllerApi.getUserChatRooms']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @param {number} chatRoomId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async leaveChatRoom(chatRoomId: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.leaveChatRoom(chatRoomId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ChatControllerApi.leaveChatRoom']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+    }
+};
+
+/**
+ * ChatControllerApi - factory interface
+ * @export
+ */
+export const ChatControllerApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = ChatControllerApiFp(configuration)
+    return {
+        /**
+         * 
+         * @param {number} chatRoomId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getChatMessages(chatRoomId: number, options?: any): AxiosPromise<MessageListResponse> {
+            return localVarFp.getChatMessages(chatRoomId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {number} trainerInfoId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getOrCreateChatRoom(trainerInfoId: number, options?: any): AxiosPromise<CreateOrGetResponse> {
+            return localVarFp.getOrCreateChatRoom(trainerInfoId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getUserChatRooms(options?: any): AxiosPromise<ChatRoomsResponse> {
+            return localVarFp.getUserChatRooms(options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {number} chatRoomId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        leaveChatRoom(chatRoomId: number, options?: any): AxiosPromise<void> {
+            return localVarFp.leaveChatRoom(chatRoomId, options).then((request) => request(axios, basePath));
+        },
+    };
+};
+
+/**
+ * ChatControllerApi - object-oriented interface
+ * @export
+ * @class ChatControllerApi
+ * @extends {BaseAPI}
+ */
+export class ChatControllerApi extends BaseAPI {
+    /**
+     * 
+     * @param {number} chatRoomId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ChatControllerApi
+     */
+    public getChatMessages(chatRoomId: number, options?: RawAxiosRequestConfig) {
+        return ChatControllerApiFp(this.configuration).getChatMessages(chatRoomId, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {number} trainerInfoId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ChatControllerApi
+     */
+    public getOrCreateChatRoom(trainerInfoId: number, options?: RawAxiosRequestConfig) {
+        return ChatControllerApiFp(this.configuration).getOrCreateChatRoom(trainerInfoId, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ChatControllerApi
+     */
+    public getUserChatRooms(options?: RawAxiosRequestConfig) {
+        return ChatControllerApiFp(this.configuration).getUserChatRooms(options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {number} chatRoomId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ChatControllerApi
+     */
+    public leaveChatRoom(chatRoomId: number, options?: RawAxiosRequestConfig) {
+        return ChatControllerApiFp(this.configuration).leaveChatRoom(chatRoomId, options).then((request) => request(this.axios, this.basePath));
+    }
+}
+
+
+
+/**
  * CommunityControllerApi - axios parameter creator
  * @export
  */
@@ -2029,6 +2503,44 @@ export const TrainerControllerApiAxiosParamCreator = function (configuration?: C
     return {
         /**
          * 
+         * @param {string} [userId] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        checkMember: async (userId?: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/v1/trainer/checkmember`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+            if (userId !== undefined) {
+                localVarQueryParameter['userId'] = userId;
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -2138,6 +2650,78 @@ export const TrainerControllerApiAxiosParamCreator = function (configuration?: C
          */
         myPageTrainer: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/api/v1/trainer/mypage`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {TicketRegisterRequest} ticketRegisterRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        registerTicket: async (ticketRegisterRequest: TicketRegisterRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'ticketRegisterRequest' is not null or undefined
+            assertParamExists('registerTicket', 'ticketRegisterRequest', ticketRegisterRequest)
+            const localVarPath = `/api/v1/trainer/ticket/register`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(ticketRegisterRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        registerTicketPage: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/v1/trainer/ticket/register`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -2286,6 +2870,18 @@ export const TrainerControllerApiFp = function(configuration?: Configuration) {
     return {
         /**
          * 
+         * @param {string} [userId] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async checkMember(userId?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.checkMember(userId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['TrainerControllerApi.checkMember']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -2331,6 +2927,29 @@ export const TrainerControllerApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @param {TicketRegisterRequest} ticketRegisterRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async registerTicket(ticketRegisterRequest: TicketRegisterRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.registerTicket(ticketRegisterRequest, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['TrainerControllerApi.registerTicket']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async registerTicketPage(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ProgramListResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.registerTicketPage(options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['TrainerControllerApi.registerTicketPage']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
          * @param {TrainerRequest} data 
          * @param {Array<File>} qualificationImages 
          * @param {Array<File>} trainingProgramImages 
@@ -2369,6 +2988,15 @@ export const TrainerControllerApiFactory = function (configuration?: Configurati
     return {
         /**
          * 
+         * @param {string} [userId] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        checkMember(userId?: string, options?: any): AxiosPromise<string> {
+            return localVarFp.checkMember(userId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -2402,6 +3030,23 @@ export const TrainerControllerApiFactory = function (configuration?: Configurati
         },
         /**
          * 
+         * @param {TicketRegisterRequest} ticketRegisterRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        registerTicket(ticketRegisterRequest: TicketRegisterRequest, options?: any): AxiosPromise<string> {
+            return localVarFp.registerTicket(ticketRegisterRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        registerTicketPage(options?: any): AxiosPromise<ProgramListResponse> {
+            return localVarFp.registerTicketPage(options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @param {TrainerRequest} data 
          * @param {Array<File>} qualificationImages 
          * @param {Array<File>} trainingProgramImages 
@@ -2432,6 +3077,17 @@ export const TrainerControllerApiFactory = function (configuration?: Configurati
  * @extends {BaseAPI}
  */
 export class TrainerControllerApi extends BaseAPI {
+    /**
+     * 
+     * @param {string} [userId] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof TrainerControllerApi
+     */
+    public checkMember(userId?: string, options?: RawAxiosRequestConfig) {
+        return TrainerControllerApiFp(this.configuration).checkMember(userId, options).then((request) => request(this.axios, this.basePath));
+    }
+
     /**
      * 
      * @param {*} [options] Override http request option.
@@ -2471,6 +3127,27 @@ export class TrainerControllerApi extends BaseAPI {
      */
     public myPageTrainer(options?: RawAxiosRequestConfig) {
         return TrainerControllerApiFp(this.configuration).myPageTrainer(options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {TicketRegisterRequest} ticketRegisterRequest 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof TrainerControllerApi
+     */
+    public registerTicket(ticketRegisterRequest: TicketRegisterRequest, options?: RawAxiosRequestConfig) {
+        return TrainerControllerApiFp(this.configuration).registerTicket(ticketRegisterRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof TrainerControllerApi
+     */
+    public registerTicketPage(options?: RawAxiosRequestConfig) {
+        return TrainerControllerApiFp(this.configuration).registerTicketPage(options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

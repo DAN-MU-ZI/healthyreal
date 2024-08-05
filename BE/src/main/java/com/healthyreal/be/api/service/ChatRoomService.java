@@ -1,20 +1,18 @@
 package com.healthyreal.be.api.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import jakarta.transaction.Transactional;
-
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
+
+import org.springframework.stereotype.Service;
 
 import com.healthyreal.be.api.entity.chat.ChatRoom;
 import com.healthyreal.be.api.entity.chat.ChatRoomUsers;
 import com.healthyreal.be.api.entity.chat.Message;
+import com.healthyreal.be.api.entity.chat.dto.ChatMessageRequest;
 import com.healthyreal.be.api.entity.chat.dto.ChatRoomsResponse;
 import com.healthyreal.be.api.entity.chat.dto.CreateOrGetResponse;
+import com.healthyreal.be.api.entity.chat.dto.MessageDTO;
 import com.healthyreal.be.api.entity.chat.dto.MessageListResponse;
 import com.healthyreal.be.api.entity.trainer.TrainerInfo;
 import com.healthyreal.be.api.entity.user.Member;
@@ -24,6 +22,7 @@ import com.healthyreal.be.api.repository.chat.MessageRepository;
 import com.healthyreal.be.api.repository.trainer.TrainerInfoRepository;
 import com.healthyreal.be.api.repository.user.UserRepository;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -84,19 +83,29 @@ public class ChatRoomService {
 	}
 
 	@Transactional
-	public void sendMessage(Long chatRoomId, Member member, String content) {
+	public MessageDTO sendMessage(ChatMessageRequest chatMessageRequest, Member member) {
+		Long chatRoomId = chatMessageRequest.chatRoomId();
+		String senderId = chatMessageRequest.senderId();
+		String content = chatMessageRequest.content();
+
 		ChatRoom chatRoom = chatRoomRepository.findById(chatRoomId)
 			.orElseThrow(() -> new RuntimeException("ChatRoom not found"));
 
+		Member persistedMember = userRepository.findByUserId(senderId);
+		if (persistedMember == null) {
+			persistedMember = userRepository.save(member);
+		}
+
 		Message message = new Message();
 		message.setChatRoom(chatRoom);
-		message.setMember(member);
+		message.setMember(persistedMember);
 		message.setContent(content);
 		message.setSentAt(LocalDateTime.now());
 
 		Message savedMessage = messageRepository.save(message);
-
 		chatRoom.setLastChatMsgId(savedMessage.getMessageId());
+
+		return MessageDTO.from(savedMessage);
 	}
 
 	@Transactional
@@ -130,3 +139,4 @@ public class ChatRoomService {
 		return message.getContent();
 	}
 }
+
