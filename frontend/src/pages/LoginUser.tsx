@@ -1,34 +1,25 @@
 // 요청하게 될 떄 필요한 코드
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import request from "../apis/api/request";
 import { useNavigate } from "react-router-dom";
-import { userApi } from "../apis/custom";
+import { createUserApi } from "../apis/custom";
+import { UserResponse } from "../typescript-axios";
 
-interface User {
-  userSeq: number;
-  userId: string;
-  username: string;
-  email: string;
-}
-
-interface ApiResponse {
-  user: User;
-}
 
 const LoginUser: React.FC = () => {
   const navigate = useNavigate();
-  const [userData, setUserData] = useState<User | null>(null);
+  const [userData, setUserData] = useState<UserResponse | null>(null);
   const [error, setError] = useState<string | null>(null);
 
+  const api = createUserApi();
   const getUserData = async () => {
     try {
       const token = localStorage.getItem("token");
 
       if (token) {
-        const response = await userApi.getUser();
+        const response = await api.getUser();
         console.log(response);
-        setUserData(response.data.user as User);
+        setUserData(response as UserResponse);
       }
     } catch (err) {
       console.error(error);

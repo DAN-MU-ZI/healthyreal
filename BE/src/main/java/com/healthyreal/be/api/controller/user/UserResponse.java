@@ -11,10 +11,11 @@ public record UserResponse(
 	String email,
 	String profileImageUrl,
 	String phone,
-	RoleType roleType
+	RoleType roleType,
+	String username
 ) {
 	public static UserResponse from(Member user) {
 		return new UserResponse(user.getGender(), user.getUserId(), user.getEmail(), user.getProfileImageUrl(),
-			user.getPhone(), user.getRoleType());
+			user.getPhone(), user.getRoleType(), user.getUsername());
 	}
 }

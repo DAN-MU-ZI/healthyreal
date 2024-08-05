@@ -13,4 +13,8 @@ public interface TicketRepository extends JpaRepository<Ticket, Long> {
 
 	@Query("select t from Ticket t where t.trainer = :trainer")
 	List<Ticket> findAllByTrainer(@Param("trainer") Member trainer);
+
+	Ticket findByTrainerAndMember(Member trainer, Member member);
+
+	List<Ticket> findAllByMember(Member member);
 }
