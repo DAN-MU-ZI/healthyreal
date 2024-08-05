@@ -1,0 +1,35 @@
+.trainerItem {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  box-sizing: border-box;
+  padding: 10px 15px;
+  gap: 10px;
+  border-radius: 10px;
+  box-shadow: 0 0 3px 2px rgba(213, 212, 212, 0.2);
+}
+
+.trainerItem > img {
+  width: 40px;
+  height: 40px;
+}
+
+.trainerLabel {
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+  align-items: end;
+  font-size: 11px;
+}
+
+.trainerInfo {
+  width: 100%;
+}
+.moreBtn {
+  white-space: nowrap;
+  font-size: 10px;
+  color: #7551ff;
+  font-weight: 400;
+}

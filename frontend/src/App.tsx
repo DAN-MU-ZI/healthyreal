@@ -11,6 +11,8 @@ import Food from "./pages/Food";
 import MypageFood from "./components/molecules/MypageFood";
 import PostFood from "./components/molecules/PostFood";
 import Scheduler from "./pages/Scheduler";
+import FindTrainer from "./pages/FindTrainer";
+import PageLayout from "./components/templates/PageLayout";
 
 function App() {
   const {isAuthenticated} = useAuth();
@@ -19,24 +21,27 @@ function App() {
       <Router>
         <Routes>
           {isAuthenticated ? (
-            <>
-              <Route path="/" element={<Main />} />
+            <Route path="/" element={<PageLayout />}>
+              <Route index element={<Main />} />
               <Route path="intro/*" element={<Intro />} />
               <Route path="login/user" element={<LoginUser />} />
-              <Route path="food" element={<Food />} />
+              {/* <Route path="food" element={<Food />} /> */}
               <Route path="mypage-food" element={<MypageFood />} />
               <Route path="post-food" element={<PostFood />} />
               {/* <Route path="scheduler/*" element={<Scheduler />} /> */}
-            </>
+              {/* <Route path="findTrainer/*" element={<FindTrainer />} /> */}
+            </Route>
           ) : (
-            <>
+            <Route path="/" element={<PageLayout />}>
+              <Route path="food" element={<Food />} />
               <Route path="scheduler/*" element={<Scheduler />} />
+              <Route path="findTrainer/*" element={<FindTrainer />} />
               <Route path="oauth/redirect" element={<LoginRedirect />} />
               <Route path="login/*" element={<Login />} />
               <Route path="intro/login" element={<Login />} />
               <Route path="intro/tutorial" element={<Tutorial />} />
               <Route path="intro/onboarding" element={<Onboarding />} />
-            </>
+            </Route>
           )}
         </Routes>
       </Router>
