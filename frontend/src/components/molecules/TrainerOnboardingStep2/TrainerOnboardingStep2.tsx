@@ -19,7 +19,7 @@ const TrainerOnboardingStep2: React.FC = () => {
 
   return (
     <div className="onboarding-container">
-      <div className="header">
+      <div className="header2">
         <button onClick={() => window.history.back()} className="back-button">←</button>
         <h1>대표 프로그램을 등록해주세요</h1>
       </div>

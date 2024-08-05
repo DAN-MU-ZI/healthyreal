@@ -50,7 +50,7 @@ const MypageFood: React.FC = () => {
 
   return (
     <div className="mypage-container">
-      <div className="header">
+      <div className="headermpf">
         <button onClick={handleBack} className="back-button">←</button>
         <h1>식단 관리</h1>
         <p>업로드가 완료되었습니다</p>
@@ -71,6 +71,14 @@ const MypageFood: React.FC = () => {
                 <h2>{post.title}</h2>
                 <p>{post.content}</p>
               </div>
+            </div>
+            <div className="post-feedback">
+              {post.feedback && (
+                <div className="feedback">
+                  <h3>트레이너 피드백:</h3>
+                  <p>{post.feedback}</p>
+                </div>
+              )}
             </div>
             <div className="post-actions">
               <button onClick={() => handleEdit(post)} className="edit-button">수정</button>

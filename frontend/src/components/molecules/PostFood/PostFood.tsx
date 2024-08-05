@@ -43,7 +43,7 @@ const PostFood: React.FC = () => {
   
   return (
     <div className="container">
-      <div className="header">
+      <div className="headerpf">
         <button onClick={() => window.history.back()} className="back-button">←</button>
         <h1>식단 관리</h1>
         <p>나의 식단을 공유하고 피드백 받으세요.</p>

@@ -9,6 +9,7 @@ interface Post {
   title: string;
   content: string;
   foodPic: string;
+  feedback?: string;
 }
 
 interface PostContextType {

@@ -28,7 +28,7 @@ const TrainerOnboardingStep4: React.FC<GenderProp> = ({ onboardingGender, onData
   return (
     <div className="container">
       <button onClick={() => navigate(-1)} className="back-button">←</button>
-      <div className="header">
+      <div className="header4">
         <h1 className="title">성별이 어떻게 되시나요?</h1>
         <p className="subtitle">당신의 성별을 선택하고 맞춤형 운동과 식단 계획을 시작해 보세요!</p>
       </div>

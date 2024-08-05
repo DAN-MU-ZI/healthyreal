@@ -23,6 +23,9 @@ import MessageMain from "./components/molecules/MessageMain/MessageMain";
 import MessageNoMain from "./components/molecules/MessageNoMain/MessageNoMain";
 import MessagePost from "./components/molecules/MessagePost/MessagePost";
 import { ProgramProvider } from './pages/PostContext';
+import MainFoodTrainer from "./components/molecules/MainFoodTrainer/MainFoodTrainer";
+import TrainerFeedback from "./components/molecules/TrainerFeedback/TrainerFeedback";
+
 
 const App: React.FC = () => {
   const [onboardingGender, setOnboardingGender] = useState<MemberGenderEnum | undefined>(undefined);
@@ -42,6 +45,7 @@ const App: React.FC = () => {
               <Route path="/" element={<Main />} />
               <Route path="intro/*" element={<Intro />} />
               <Route path="login/user" element={<LoginUser />} />
+              
             </>
           ) : (
             <>
@@ -56,6 +60,8 @@ const App: React.FC = () => {
               <Route path="MainFood" element={<MainFood />} />
               <Route path="MypageFood" element={<MypageFood />} />
               <Route path="PostFood" element={<PostFood />} />
+              <Route path="MainFoodTrainer" element={<MainFoodTrainer />} />
+              <Route path="TrainerFeedback" element={<TrainerFeedback />} />
             </>
           )}
         </Routes>

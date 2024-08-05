@@ -2,10 +2,10 @@ import React, { useState, useContext, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
-import './MainFood.css';
+import './MainFoodTrainer.css';
 import { PostContext } from '../../../pages/PostContext';
 
-const MainFood: React.FC = () => {
+const MainFoodTrainer: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const context = useContext(PostContext);
@@ -37,21 +37,23 @@ const MainFood: React.FC = () => {
   };
 
   const handleMealClick = (mealTime: string) => {
-    navigate('/PostFood', {
-      state: {
-        mealTime,
-        selectedDate: formattedDate,
-        postToEdit: posts.find(post => post.date.startsWith(formattedDate) && post.mealTime === mealTime)
-      }
-    });
+    const postToEdit = posts.find(post => post.date.startsWith(formattedDate) && post.mealTime === mealTime);
+    if (postToEdit) {
+      navigate('/TrainerFeedback', {
+        state: {
+          mealTime,
+          selectedDate: formattedDate,
+          postToEdit
+        }
+      });
+    }
   };
 
   return (
     <div className="container">
       <div className="headermf">
         <button onClick={() => navigate(-1)} className="back-button">←</button>
-        <h1>식단 관리</h1>
-        <button onClick={() => navigate('/MypageFood')} className="mypage-button">마이페이지로 이동</button>
+        <h1>식단 관리 (트레이너)</h1>
       </div>
       <div className="calendar-container">
         <Calendar onChange={(date) => setSelectedDate(date as Date)} value={selectedDate} />
@@ -66,6 +68,7 @@ const MainFood: React.FC = () => {
             <span className={`meal-status ${mealStatus(mealTime) === '작성' ? 'complete' : 'incomplete'}`}>
               {mealStatus(mealTime)}
             </span>
+            <button onClick={() => handleMealClick(mealTime)} className="feedback-button">피드백 작성하기</button>
           </div>
         ))}
       </div>
@@ -73,4 +76,4 @@ const MainFood: React.FC = () => {
   );
 };
 
-export default MainFood;
+export default MainFoodTrainer;
