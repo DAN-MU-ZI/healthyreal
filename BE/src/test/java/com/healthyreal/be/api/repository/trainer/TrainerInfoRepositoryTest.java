@@ -1,9 +1,35 @@
 package com.healthyreal.be.api.repository.trainer;
 
-import com.healthyreal.be.api.controller.trainer.TrainerRequest;
-import com.healthyreal.be.api.controller.trainer.TrainerRequest.GymDto;
+import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.*;
+
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import org.apache.http.entity.ContentType;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+
+import com.healthyreal.be.api.controller.trainer.dto.TrainerRequest;
+import com.healthyreal.be.api.controller.trainer.dto.TrainerRequest.GymDto;
 import com.healthyreal.be.api.entity.cloud.S3Image;
-import com.healthyreal.be.api.entity.trainer.*;
+import com.healthyreal.be.api.entity.trainer.Qualification;
+import com.healthyreal.be.api.entity.trainer.QualificationCategory;
+import com.healthyreal.be.api.entity.trainer.TrainerInfo;
+import com.healthyreal.be.api.entity.trainer.TrainerSchedule;
+import com.healthyreal.be.api.entity.trainer.TrainingProgram;
 import com.healthyreal.be.api.entity.user.Gender;
 import com.healthyreal.be.api.entity.user.Member;
 import com.healthyreal.be.api.entity.userInfo.Goal;
@@ -15,29 +41,6 @@ import com.healthyreal.be.api.repository.userInfo.GoalRepository;
 import com.healthyreal.be.api.repository.userInfo.GymRepository;
 import com.healthyreal.be.oauth.entity.ProviderType;
 import com.healthyreal.be.oauth.entity.RoleType;
-import org.apache.http.entity.ContentType;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-
-import java.time.DayOfWeek;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @ExtendWith(SpringExtension.class)
 @DataJpaTest
@@ -77,25 +80,17 @@ class TrainerInfoRepositoryTest {
 		// GymDto 객체 생성
 		GymDto gymDto = new GymDto("Fitness Center", "123 Main St, Anytown, USA");
 
-		// GoalType 리스트 생성 (예시로 문자열로 대체)
+		// GoalType 리스트 생성
 		List<GoalType> goalTypes = List.of(GoalType.WEIGHT_LOSS, GoalType.MUSCLE_GAIN);
 
-		// QualificationDto 리스트 생성
-		List<TrainerRequest.QualificationDto> qualificationDtoList = new ArrayList<>();
-		qualificationDtoList.add(new TrainerRequest.QualificationDto(
+		// 단일 QualificationDto 객체 생성
+		TrainerRequest.QualificationDto qualificationDto = new TrainerRequest.QualificationDto(
 			"Certified Personal Trainer",
 			QualificationCategory.CERTIFICATION,
 			LocalDate.of(2023, 1, 1),
 			LocalDate.of(2024, 1, 1),
 			"Nationally recognized certification."
-		));
-		qualificationDtoList.add(new TrainerRequest.QualificationDto(
-			"Nutrition Specialist",
-			QualificationCategory.CERTIFICATION,
-			LocalDate.of(2022, 5, 1),
-			LocalDate.of(2023, 5, 1),
-			"Specialized in sports nutrition."
-		));
+		);
 
 		// TrainingProgramDto 객체 생성
 		TrainerRequest.TrainingProgramDto trainingProgramDto = new TrainerRequest.TrainingProgramDto(
@@ -105,17 +100,17 @@ class TrainerInfoRepositoryTest {
 		);
 
 		// ScheduleDto 리스트 생성
-		List<TrainerRequest.ScheduleDto> scheduleDtoList = new ArrayList<>();
-		scheduleDtoList.add(new TrainerRequest.ScheduleDto(DayOfWeek.MONDAY, LocalTime.of(9, 0), LocalTime.of(10, 0)));
-		scheduleDtoList.add(
-			new TrainerRequest.ScheduleDto(DayOfWeek.WEDNESDAY, LocalTime.of(9, 0), LocalTime.of(10, 0)));
-		scheduleDtoList.add(new TrainerRequest.ScheduleDto(DayOfWeek.FRIDAY, LocalTime.of(9, 0), LocalTime.of(10, 0)));
+		List<TrainerRequest.ScheduleDto> scheduleDtoList = Arrays.asList(
+			new TrainerRequest.ScheduleDto(DayOfWeek.MONDAY, LocalTime.of(9, 0), LocalTime.of(10, 0)),
+			new TrainerRequest.ScheduleDto(DayOfWeek.WEDNESDAY, LocalTime.of(9, 0), LocalTime.of(10, 0)),
+			new TrainerRequest.ScheduleDto(DayOfWeek.FRIDAY, LocalTime.of(9, 0), LocalTime.of(10, 0))
+		);
 
 		// TrainerRequest 객체 생성
 		TrainerRequest request = new TrainerRequest(
 			gymDto,
 			goalTypes,
-			qualificationDtoList,
+			qualificationDto, // 단일 자격증으로 수정
 			trainingProgramDto,
 			scheduleDtoList,
 			"Passionate trainer with 5 years of experience."
@@ -123,16 +118,15 @@ class TrainerInfoRepositoryTest {
 
 		Gym gym = request.gymDto().toEntity();
 		List<Goal> goals = request.goalTypesToEntity();
-		List<Qualification> qualificationList = request.qualificationDtoListToEntity();
+		Qualification qualification = request.qualificationDtoToEntity(); // 단일 객체로 처리
 		TrainingProgram trainingProgram = request.trainingProgramDto().toEntity();
 		List<TrainerSchedule> scheduleList = request.scheduleDtoListToEntity();
 		String profileDescription = request.profileDescription();
 
-		qualificationList.forEach(qualification -> {
-			S3Image s3Image = new S3Image("/test", qualification.getContent(), LocalDateTime.now(), 100L,
-				ContentType.IMAGE_PNG.getMimeType());
-			qualification.setImage(s3Image);
-		});
+		// 단일 자격증 객체로 처리
+		S3Image s3Image = new S3Image("/test", qualification.getContent(), LocalDateTime.now(), 100L,
+			ContentType.IMAGE_PNG.getMimeType());
+		qualification.setImage(s3Image);
 
 		String imageDir = "/test";
 		List<S3Image> imageList = Arrays.asList(
@@ -146,7 +140,7 @@ class TrainerInfoRepositoryTest {
 		TrainerInfo trainerInfo = new TrainerInfo(user,
 			gym,
 			goals,
-			qualificationList,
+			List.of(qualification), // 단일 자격증 객체를 리스트로 변환하여 전달
 			trainingProgram,
 			scheduleList,
 			profileDescription,
@@ -157,12 +151,10 @@ class TrainerInfoRepositoryTest {
 		assertThat(userRepository.findAll().size()).isEqualTo(1);
 		assertThat(gymRepository.findAll().size()).isEqualTo(1);
 		assertThat(goalRepository.findAll().size()).isEqualTo(goals.size() + trainingProgram.getGoalList().size());
-		assertThat(qualificationRepository.findAll().size()).isEqualTo(qualificationList.size());
+		assertThat(qualificationRepository.findAll().size()).isEqualTo(1); // 단일 자격증 객체로 수정
 		assertThat(trainingProgramRepository.findAll().size()).isEqualTo(1);
 		assertThat(trainerInfoRepository.findAll().size()).isEqualTo(1);
-		assertThat(s3ImageRepository.findAll().size()).isEqualTo(
-			trainerInfo.getQualificationList().size() + imageList.size());
-
+		assertThat(s3ImageRepository.findAll().size()).isEqualTo(1 + imageList.size()); // 단일 자격증 이미지 포함
 	}
 
 	@Test
@@ -190,25 +182,25 @@ class TrainerInfoRepositoryTest {
 		goalRepository.saveAll(goals);
 
 		// Create and save Qualifications
-		List<Qualification> qualifications = List.of(
-			new Qualification("Certified Personal Trainer", QualificationCategory.CERTIFICATION,
-				LocalDate.of(2023, 1, 1), LocalDate.of(2024, 1, 1), "Nationally recognized certification."),
-			new Qualification("Nutrition Specialist", QualificationCategory.CERTIFICATION, LocalDate.of(2022, 5, 1),
-				LocalDate.of(2023, 5, 1), "Specialized in sports nutrition.")
+		Qualification qualification = new Qualification(
+			"Certified Personal Trainer",
+			QualificationCategory.CERTIFICATION,
+			LocalDate.of(2023, 1, 1),
+			LocalDate.of(2024, 1, 1),
+			"Nationally recognized certification."
 		);
-		qualificationRepository.saveAll(qualifications);
+		qualificationRepository.saveAndFlush(qualification);
 
 		// Create and save Training Program
 		TrainingProgram trainingProgram = new TrainingProgram(
 			"Beginner Training Program",
 			"A program designed for beginners.",
-			Stream.of(GoalType.WEIGHT_LOSS, GoalType.BODY_PROFILE).map(Goal::new)
-				.collect(Collectors.toList())
+			Stream.of(GoalType.WEIGHT_LOSS, GoalType.BODY_PROFILE).map(Goal::new).collect(Collectors.toList())
 		);
 		trainingProgramRepository.saveAndFlush(trainingProgram);
 
 		// Create and save Schedules
-		List<TrainerSchedule> schedules = List.of(
+		List<TrainerSchedule> schedules = Arrays.asList(
 			new TrainerSchedule(DayOfWeek.MONDAY, LocalTime.of(9, 0), LocalTime.of(10, 0)),
 			new TrainerSchedule(DayOfWeek.WEDNESDAY, LocalTime.of(9, 0), LocalTime.of(10, 0)),
 			new TrainerSchedule(DayOfWeek.FRIDAY, LocalTime.of(9, 0), LocalTime.of(10, 0))
@@ -220,7 +212,7 @@ class TrainerInfoRepositoryTest {
 			user,
 			gym,
 			goals,
-			qualifications,
+			List.of(qualification), // 단일 자격증 객체를 리스트로 변환하여 전달
 			trainingProgram,
 			schedules,
 			"Passionate trainer with 5 years of experience.",
@@ -230,10 +222,7 @@ class TrainerInfoRepositoryTest {
 
 		// Test the repository method
 		Pageable pageable = PageRequest.of(0, 10);
-		//		Page<TrainerInfo> result = trainerInfoRepository.findAllByFilters("username", GoalType.WEIGHT_LOSS,
-		//			"test location", pageable);
-		Page<TrainerInfo> result = trainerInfoRepository.findAllByFilters("trainer", null,
-			null, pageable);
+		Page<TrainerInfo> result = trainerInfoRepository.findAllByFilters("trainer", null, null, pageable);
 
 		assertNotNull(result);
 		assertEquals(1, result.getTotalElements());

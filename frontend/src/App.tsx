@@ -19,6 +19,9 @@ import TrainerOnboardingStep5 from "./components/molecules/TrainerOnboardingStep
 import { MemberGenderEnum } from './typescript-axios';
 import ChatRooms from "./pages/ChatRooms";
 import Chat from "./pages/Chat";
+import MessageMain from "./components/molecules/MessageMain/MessageMain";
+import MessageNoMain from "./components/molecules/MessageNoMain/MessageNoMain";
+import MessagePost from "./components/molecules/MessagePost/MessagePost";
 
 const App: React.FC = () => {
   const [onboardingGender, setOnboardingGender] = useState<MemberGenderEnum | undefined>(undefined);
@@ -59,6 +62,9 @@ const App: React.FC = () => {
                 element={<TrainerOnboardingStep4 onboardingGender={onboardingGender} onDataChange={handleGenderChange} />} 
               />
               <Route path="TrainerOn4/TrainerOn5" element={<TrainerOnboardingStep5 />} />
+              <Route path="MessageMain" element={<MessageMain/>}/>
+              <Route path="MessageNoMain" element={<MessageNoMain/>}/>
+              <Route path="MessagePost" element={<MessagePost/>}/>
             </>
           )}
         </Routes>

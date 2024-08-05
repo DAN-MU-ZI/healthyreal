@@ -20,4 +20,5 @@ public interface TrainerInfoRepository extends JpaRepository<TrainerInfo, Long> 
 	@Query("select distinct t from TrainerInfo t " + "left join t.goalList c " + "where (:keyWord is null or t.user.username like %:keyWord% or t.profileDescription like %:keyWord%) " + "and (:category is null or c.goalType = :category) " + "and (:location is null or t.gym.address like %:location%)")
 	Page<TrainerInfo> findAllByFilters(@Param("keyWord") String keyWord, @Param("category") GoalType category,
 		@Param("location") String location, Pageable pageable);
+
 }

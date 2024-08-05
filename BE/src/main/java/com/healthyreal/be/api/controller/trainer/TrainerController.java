@@ -1,11 +1,10 @@
 package com.healthyreal.be.api.controller.trainer;
 
-import java.util.List;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,6 +13,10 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.healthyreal.be.api.controller.trainer.dto.MealPlanResponse;
+import com.healthyreal.be.api.controller.trainer.dto.ReviewMealRequest;
+import com.healthyreal.be.api.controller.trainer.dto.SearchTrainerResponse;
+import com.healthyreal.be.api.controller.trainer.dto.TrainerRequest;
 import com.healthyreal.be.api.entity.trainer.dto.ProgramListResponse;
 import com.healthyreal.be.api.entity.trainer.dto.TicketRegisterRequest;
 import com.healthyreal.be.api.entity.trainer.dto.TrainerMainPageResponse;
@@ -22,6 +25,7 @@ import com.healthyreal.be.api.entity.trainer.dto.TrainerMemberManagementResponse
 import com.healthyreal.be.api.entity.trainer.dto.TrainerMyPageResponse;
 import com.healthyreal.be.api.entity.user.Member;
 import com.healthyreal.be.api.entity.userInfo.GoalType;
+import com.healthyreal.be.api.service.MemberService;
 import com.healthyreal.be.api.service.TrainerService;
 import com.healthyreal.be.utils.CurrentUser;
 
@@ -34,6 +38,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class TrainerController {
 	private final TrainerService trainerService;
+	private final MemberService memberService;
 
 	@GetMapping
 	public ResponseEntity<TrainerMainPageResponse> mainTrainer(
@@ -47,12 +52,10 @@ public class TrainerController {
 	public ResponseEntity<String> registerTrainer(
 		@CurrentUser Member user,
 		@RequestPart(value = "data") TrainerRequest request,
-		@RequestPart(value = "qualificationImages") List<MultipartFile> qualificationImages,
-		@RequestPart(value = "trainingProgramImages") List<MultipartFile> trainingProgramImages
+		@RequestPart(value = "qualificationImage") MultipartFile qualificationImage, // 단일 파일로 수정했습니다.
+		@RequestPart(value = "trainingProgramImage") MultipartFile trainingProgramImage // 단일 파일로 수정했습니다.
 	) {
-
-		trainerService.register(user, request, qualificationImages, trainingProgramImages);
-
+		trainerService.register(user, request, qualificationImage, trainingProgramImage); // 단일 파일로 수정했습니다.
 		return ResponseEntity.ok("ok");
 	}
 
@@ -120,5 +123,25 @@ public class TrainerController {
 	) {
 		trainerService.registerTicket(trainer, request);
 		return ResponseEntity.ok("ok");
+	}
+
+	@PostMapping("/meal/review")
+	public ResponseEntity<String> reviewMeal(
+		@CurrentUser Member trainer,
+		@RequestBody ReviewMealRequest request
+	) {
+
+		memberService.reviewMeal(trainer, request);
+		return ResponseEntity.ok("ok");
+	}
+
+	@GetMapping("/meal/review/{id}")
+	public ResponseEntity<MealPlanResponse> getMealPlan(
+		@PathVariable("id") Long mealId
+	) {
+
+		MealPlanResponse response = memberService.getMealById(mealId);
+
+		return ResponseEntity.ok().body(response);
 	}
 }

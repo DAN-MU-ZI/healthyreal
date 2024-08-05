@@ -10,10 +10,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.healthyreal.be.api.controller.trainer.SearchTrainerResponse;
-import com.healthyreal.be.api.controller.trainer.TrainerRequest;
+import com.healthyreal.be.api.controller.trainer.dto.SearchTrainerResponse;
+import com.healthyreal.be.api.controller.trainer.dto.TrainerRequest;
 import com.healthyreal.be.api.entity.Meal;
 import com.healthyreal.be.api.entity.Ticket;
+import com.healthyreal.be.api.entity.cloud.S3Image;
 import com.healthyreal.be.api.entity.schedule.Schedule;
 import com.healthyreal.be.api.entity.trainer.Qualification;
 import com.healthyreal.be.api.entity.trainer.TrainerInfo;
@@ -57,37 +58,30 @@ public class TrainerService {
 	public void register(
 		final Member user,
 		final TrainerRequest request,
-		final List<MultipartFile> qualificationImages,
-		final List<MultipartFile> trainingProgramImages
+		final MultipartFile qualificationImage, // 단일 파일로 수정했습니다.
+		final MultipartFile trainingProgramImage // 단일 파일로 수정했습니다.
 	) {
 		Gym gym = request.gymDto().toEntity();
 		List<Goal> goals = request.goalTypesToEntity();
-		List<Qualification> qualifications = request.qualificationDtoListToEntity();
+		Qualification qualification = request.qualificationDtoToEntity();
 		TrainingProgram trainingProgram = request.trainingProgramDto().toEntity();
 		List<TrainerSchedule> trainerSchedules = request.scheduleDtoListToEntity();
 		String profileDescription = request.profileDescription();
 
-		validateImageCounts(qualifications, trainingProgram, qualificationImages, trainingProgramImages);
+		validateImageCounts(qualification, trainingProgram, qualificationImage, trainingProgramImage);
 
-		//		try {
-		//			List<S3Image> s3Images = s3Service.saveImages(qualificationImages, "trainer/qualification");
-		//			Iterator<S3Image> imageIterator = s3Images.iterator();
-		//
-		//			qualifications.forEach(qualification -> {
-		//				if (imageIterator.hasNext()) {
-		//					qualification.setImage(imageIterator.next());
-		//				}
-		//			});
-		//			List<S3Image> trainingProgramImagesList = s3Service.saveImages(trainingProgramImages,
-		//				"trainer/trainingProgram");
-		//			trainingProgram.addAllImage(trainingProgramImagesList);
-		//		} catch (Exception e) {
-		//			// 예외를 무시하고 계속 진행합니다.
-		//			e.printStackTrace(); // 로그를 남깁니다.
-		//		}
+		try {
+			S3Image s3Image = s3Service.saveImage(qualificationImage, "trainer/qualification");
+			qualification.setImage(s3Image);
 
-		TrainerInfo trainerInfo = createTrainerInfo(user, gym, goals, qualifications, trainingProgram, trainerSchedules,
-			profileDescription, null);
+			S3Image trainingProgramS3Image = s3Service.saveImage(trainingProgramImage, "trainer/trainingProgram");
+			trainingProgram.getImageList().add(trainingProgramS3Image);
+		} catch (Exception e) {
+			e.printStackTrace(); // 로그를 남깁니다.
+		}
+
+		TrainerInfo trainerInfo = createTrainerInfo(user, gym, goals, List.of(qualification), trainingProgram,
+			trainerSchedules, profileDescription, null);
 
 		// Save trainerInfo without transactional rollback
 		saveTrainerInfoWithoutRollback(trainerInfo);
@@ -99,23 +93,21 @@ public class TrainerService {
 	}
 
 	private void validateImageCounts(
-		final List<Qualification> qualifications,
+		final Qualification qualification, // 단일 객체로 수정했습니다.
 		final TrainingProgram trainingProgram,
-		final List<MultipartFile> qualificationImages,
-		final List<MultipartFile> trainingProgramImages
+		final MultipartFile qualificationImage, // 단일 파일로 수정했습니다.
+		final MultipartFile trainingProgramImage // 단일 파일로 수정했습니다.
 	) {
-		if (qualifications.size() != qualificationImages.size()) {
-			throw new IllegalArgumentException(
-				"The number of qualifications must match the number of qualification images.");
+		if (qualification == null) {
+			throw new IllegalArgumentException("Qualification must be provided.");
 		}
 
-		if (qualificationImages.size() != trainingProgramImages.size()) {
-			throw new IllegalArgumentException(
-				"The number of qualification images must match the number of training program images.");
+		if (qualificationImage == null) {
+			throw new IllegalArgumentException("Qualification image must be provided.");
 		}
 
-		if (trainingProgramImages.isEmpty() && trainingProgram == null) {
-			throw new IllegalArgumentException("No training program images provided.");
+		if (trainingProgramImage == null && trainingProgram == null) {
+			throw new IllegalArgumentException("No training program image provided.");
 		}
 	}
 
@@ -134,13 +126,13 @@ public class TrainerService {
 	}
 
 	public TrainerMainPageResponse getMainPageByTrainer(Member user) {
-		//식단 3개
+		// 식단 3개
 		List<Meal> meals = mealRepository.findMealsWithoutComment(user, LocalDate.now()).stream().limit(3).toList();
 
-		//일정 3개
+		// 일정 3개
 		List<Schedule> schedules = scheduleRepository.findSchedules(user, LocalDate.now()).stream().limit(3).toList();
 
-		//회원 3개
+		// 회원 3개
 		List<Ticket> tickets = ticketRepository.findAllByTrainer(user).stream().limit(3).toList();
 
 		log.info("tickets.size() = " + tickets.size());
@@ -183,14 +175,11 @@ public class TrainerService {
 	}
 
 	public TrainerMemberManagementResponse readTrainerMembers(Member user) {
-
 		List<Ticket> tickets = ticketRepository.findAllByTrainer(user);
-
 		return TrainerMemberManagementResponse.toResponse(tickets);
 	}
 
 	public TrainerMemberDetailManagementResponse readTrainerMembersDetail(Member user, String userId) {
-
 		Member member = userRepository.findByUserId(userId);
 		Ticket ticket = ticketRepository.findByTrainerAndMember(user, member);
 
@@ -199,7 +188,6 @@ public class TrainerService {
 		}
 
 		List<Ticket> ticketList = ticketRepository.findAllByMember(member);
-
 		return TrainerMemberDetailManagementResponse.toResponse(member, ticketList);
 	}
 
@@ -225,8 +213,7 @@ public class TrainerService {
 		TrainerInfo trainerInfo = trainerInfoRepository.findByUser(trainer);
 		TrainingProgram trainingProgram = trainingProgramRepository.findByTitleAndTrainerInfo(
 			request.programName(), trainerInfo);
-		Ticket ticket = new Ticket(member, trainer, trainingProgram, request.totalCnt(),
-			request.endPoint(),
+		Ticket ticket = new Ticket(member, trainer, trainingProgram, request.totalCnt(), request.endPoint(),
 			request.memo());
 
 		saveTicketWithoutRollback(ticket);

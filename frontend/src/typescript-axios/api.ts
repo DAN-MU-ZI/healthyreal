@@ -174,22 +174,22 @@ export interface Comment {
 export interface CommentDto {
     /**
      * 
-     * @type {number}
+     * @type {string}
      * @memberof CommentDto
      */
-    'id'?: number;
+    'profileImageUrl'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CommentDto
+     */
+    'username'?: string;
     /**
      * 
      * @type {string}
      * @memberof CommentDto
      */
     'content'?: string;
-    /**
-     * 
-     * @type {number}
-     * @memberof CommentDto
-     */
-    'userSeq'?: number;
 }
 /**
  * 
@@ -633,6 +633,46 @@ export const MealDtoMealTypeEnum = {
 } as const;
 
 export type MealDtoMealTypeEnum = typeof MealDtoMealTypeEnum[keyof typeof MealDtoMealTypeEnum];
+
+/**
+ * 
+ * @export
+ * @interface MealPlanResponse
+ */
+export interface MealPlanResponse {
+    /**
+     * 
+     * @type {string}
+     * @memberof MealPlanResponse
+     */
+    'mealType'?: MealPlanResponseMealTypeEnum;
+    /**
+     * 
+     * @type {string}
+     * @memberof MealPlanResponse
+     */
+    'title'?: string;
+    /**
+     * 
+     * @type {CommentDto}
+     * @memberof MealPlanResponse
+     */
+    'o'?: CommentDto;
+    /**
+     * 
+     * @type {string}
+     * @memberof MealPlanResponse
+     */
+    'date'?: string;
+}
+
+export const MealPlanResponseMealTypeEnum = {
+    Breakfast: 'BREAKFAST',
+    Lunch: 'LUNCH',
+    Dinner: 'DINNER'
+} as const;
+
+export type MealPlanResponseMealTypeEnum = typeof MealPlanResponseMealTypeEnum[keyof typeof MealPlanResponseMealTypeEnum];
 
 /**
  * 
@@ -1129,6 +1169,25 @@ export type QualificationDtoCategoryEnum = typeof QualificationDtoCategoryEnum[k
 /**
  * 
  * @export
+ * @interface ReviewMealRequest
+ */
+export interface ReviewMealRequest {
+    /**
+     * 
+     * @type {number}
+     * @memberof ReviewMealRequest
+     */
+    'mealID'?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof ReviewMealRequest
+     */
+    'content'?: string;
+}
+/**
+ * 
+ * @export
  * @interface S3Image
  */
 export interface S3Image {
@@ -1541,10 +1600,10 @@ export interface TrainerRequest {
     'goalTypes'?: Array<TrainerRequestGoalTypesEnum>;
     /**
      * 
-     * @type {Array<QualificationDto>}
+     * @type {QualificationDto}
      * @memberof TrainerRequest
      */
-    'qualificationDtoList'?: Array<QualificationDto>;
+    'qualificationDto'?: QualificationDto;
     /**
      * 
      * @type {TrainingProgramDto}
@@ -2541,6 +2600,43 @@ export const TrainerControllerApiAxiosParamCreator = function (configuration?: C
         },
         /**
          * 
+         * @param {number} id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getMealPlan: async (id: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('getMealPlan', 'id', id)
+            const localVarPath = `/api/v1/trainer/meal/review/{id}`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -2751,18 +2847,18 @@ export const TrainerControllerApiAxiosParamCreator = function (configuration?: C
         /**
          * 
          * @param {TrainerRequest} data 
-         * @param {Array<File>} qualificationImages 
-         * @param {Array<File>} trainingProgramImages 
+         * @param {File} qualificationImage 
+         * @param {File} trainingProgramImage 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        registerTrainer: async (data: TrainerRequest, qualificationImages: Array<File>, trainingProgramImages: Array<File>, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        registerTrainer: async (data: TrainerRequest, qualificationImage: File, trainingProgramImage: File, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'data' is not null or undefined
             assertParamExists('registerTrainer', 'data', data)
-            // verify required parameter 'qualificationImages' is not null or undefined
-            assertParamExists('registerTrainer', 'qualificationImages', qualificationImages)
-            // verify required parameter 'trainingProgramImages' is not null or undefined
-            assertParamExists('registerTrainer', 'trainingProgramImages', trainingProgramImages)
+            // verify required parameter 'qualificationImage' is not null or undefined
+            assertParamExists('registerTrainer', 'qualificationImage', qualificationImage)
+            // verify required parameter 'trainingProgramImage' is not null or undefined
+            assertParamExists('registerTrainer', 'trainingProgramImage', trainingProgramImage)
             const localVarPath = `/api/v1/trainer/register`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -2784,18 +2880,14 @@ export const TrainerControllerApiAxiosParamCreator = function (configuration?: C
             if (data !== undefined) { 
                 localVarFormParams.append('data', new Blob([JSON.stringify(data)], { type: "application/json", }));
             }
-                if (qualificationImages) {
-                qualificationImages.forEach((element) => {
-                    localVarFormParams.append('qualificationImages', element as any);
-                })
+    
+            if (qualificationImage !== undefined) { 
+                localVarFormParams.append('qualificationImage', qualificationImage as any);
             }
-
-                if (trainingProgramImages) {
-                trainingProgramImages.forEach((element) => {
-                    localVarFormParams.append('trainingProgramImages', element as any);
-                })
+    
+            if (trainingProgramImage !== undefined) { 
+                localVarFormParams.append('trainingProgramImage', trainingProgramImage as any);
             }
-
     
     
             localVarHeaderParameter['Content-Type'] = 'multipart/form-data';
@@ -2804,6 +2896,45 @@ export const TrainerControllerApiAxiosParamCreator = function (configuration?: C
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
             localVarRequestOptions.data = localVarFormParams;
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {ReviewMealRequest} reviewMealRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        reviewMeal: async (reviewMealRequest: ReviewMealRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'reviewMealRequest' is not null or undefined
+            assertParamExists('reviewMeal', 'reviewMealRequest', reviewMealRequest)
+            const localVarPath = `/api/v1/trainer/meal/review`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(reviewMealRequest, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -2882,6 +3013,18 @@ export const TrainerControllerApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @param {number} id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getMealPlan(id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<MealPlanResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getMealPlan(id, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['TrainerControllerApi.getMealPlan']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -2951,15 +3094,27 @@ export const TrainerControllerApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @param {TrainerRequest} data 
-         * @param {Array<File>} qualificationImages 
-         * @param {Array<File>} trainingProgramImages 
+         * @param {File} qualificationImage 
+         * @param {File} trainingProgramImage 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async registerTrainer(data: TrainerRequest, qualificationImages: Array<File>, trainingProgramImages: Array<File>, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.registerTrainer(data, qualificationImages, trainingProgramImages, options);
+        async registerTrainer(data: TrainerRequest, qualificationImage: File, trainingProgramImage: File, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.registerTrainer(data, qualificationImage, trainingProgramImage, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['TrainerControllerApi.registerTrainer']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @param {ReviewMealRequest} reviewMealRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async reviewMeal(reviewMealRequest: ReviewMealRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.reviewMeal(reviewMealRequest, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['TrainerControllerApi.reviewMeal']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -2994,6 +3149,15 @@ export const TrainerControllerApiFactory = function (configuration?: Configurati
          */
         checkMember(userId?: string, options?: any): AxiosPromise<string> {
             return localVarFp.checkMember(userId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {number} id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getMealPlan(id: number, options?: any): AxiosPromise<MealPlanResponse> {
+            return localVarFp.getMealPlan(id, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -3045,16 +3209,27 @@ export const TrainerControllerApiFactory = function (configuration?: Configurati
         registerTicketPage(options?: any): AxiosPromise<ProgramListResponse> {
             return localVarFp.registerTicketPage(options).then((request) => request(axios, basePath));
         },
+        
+        
         /**
          * 
          * @param {TrainerRequest} data 
-         * @param {Array<File>} qualificationImages 
-         * @param {Array<File>} trainingProgramImages 
+         * @param {File} qualificationImage 
+         * @param {File} trainingProgramImage 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        registerTrainer(data: TrainerRequest, qualificationImages: Array<File>, trainingProgramImages: Array<File>, options?: any): AxiosPromise<string> {
-            return localVarFp.registerTrainer(data, qualificationImages, trainingProgramImages, options).then((request) => request(axios, basePath));
+        registerTrainer(data: TrainerRequest, qualificationImage: File, trainingProgramImage: File, options?: any): AxiosPromise<string> {
+            return localVarFp.registerTrainer(data, qualificationImage, trainingProgramImage, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {ReviewMealRequest} reviewMealRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        reviewMeal(reviewMealRequest: ReviewMealRequest, options?: any): AxiosPromise<string> {
+            return localVarFp.reviewMeal(reviewMealRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -3086,6 +3261,17 @@ export class TrainerControllerApi extends BaseAPI {
      */
     public checkMember(userId?: string, options?: RawAxiosRequestConfig) {
         return TrainerControllerApiFp(this.configuration).checkMember(userId, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {number} id 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof TrainerControllerApi
+     */
+    public getMealPlan(id: number, options?: RawAxiosRequestConfig) {
+        return TrainerControllerApiFp(this.configuration).getMealPlan(id, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -3128,10 +3314,11 @@ export class TrainerControllerApi extends BaseAPI {
     public myPageTrainer(options?: RawAxiosRequestConfig) {
         return TrainerControllerApiFp(this.configuration).myPageTrainer(options).then((request) => request(this.axios, this.basePath));
     }
-
     /**
      * 
-     * @param {TicketRegisterRequest} ticketRegisterRequest 
+     * @param {TrainerRequest} data 
+     * @param {Array<File>} qualificationImages 
+     * @param {Array<File>} trainingProgramImages 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof TrainerControllerApi
@@ -3153,14 +3340,25 @@ export class TrainerControllerApi extends BaseAPI {
     /**
      * 
      * @param {TrainerRequest} data 
-     * @param {Array<File>} qualificationImages 
-     * @param {Array<File>} trainingProgramImages 
+     * @param {File} qualificationImage 
+     * @param {File} trainingProgramImage 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof TrainerControllerApi
      */
-    public registerTrainer(data: TrainerRequest, qualificationImages: Array<File>, trainingProgramImages: Array<File>, options?: RawAxiosRequestConfig) {
-        return TrainerControllerApiFp(this.configuration).registerTrainer(data, qualificationImages, trainingProgramImages, options).then((request) => request(this.axios, this.basePath));
+    public registerTrainer(data: TrainerRequest, qualificationImage: File, trainingProgramImage: File, options?: RawAxiosRequestConfig) {
+        return TrainerControllerApiFp(this.configuration).registerTrainer(data, qualificationImage, trainingProgramImage, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {ReviewMealRequest} reviewMealRequest 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof TrainerControllerApi
+     */
+    public reviewMeal(reviewMealRequest: ReviewMealRequest, options?: RawAxiosRequestConfig) {
+        return TrainerControllerApiFp(this.configuration).reviewMeal(reviewMealRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

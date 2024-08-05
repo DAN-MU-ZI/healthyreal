@@ -1,13 +1,11 @@
 package com.healthyreal.be.api.controller.community;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.healthyreal.be.api.entity.user.Member;
-import com.healthyreal.be.api.repository.user.UserRepository;
-import com.healthyreal.be.api.service.CommunityService;
-import com.healthyreal.be.oauth.entity.ProviderType;
-import com.healthyreal.be.oauth.entity.RoleType;
-import com.healthyreal.be.oauth.token.AuthToken;
-import com.healthyreal.be.oauth.token.AuthTokenProvider;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Date;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -22,11 +20,15 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.Date;
-
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.healthyreal.be.api.controller.community.dto.PostCreateRequest;
+import com.healthyreal.be.api.entity.user.Member;
+import com.healthyreal.be.api.repository.user.UserRepository;
+import com.healthyreal.be.api.service.CommunityService;
+import com.healthyreal.be.oauth.entity.ProviderType;
+import com.healthyreal.be.oauth.entity.RoleType;
+import com.healthyreal.be.oauth.token.AuthToken;
+import com.healthyreal.be.oauth.token.AuthTokenProvider;
 
 @SpringBootTest
 @AutoConfigureMockMvc

@@ -1,4 +1,4 @@
-package com.healthyreal.be.api.controller.user;
+package com.healthyreal.be.api.controller.user.dto;
 
 import com.healthyreal.be.api.entity.user.Gender;
 import com.healthyreal.be.api.entity.user.Member;

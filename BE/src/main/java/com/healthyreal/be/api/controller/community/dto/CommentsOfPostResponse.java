@@ -1,9 +1,9 @@
-package com.healthyreal.be.api.controller.community;
-
-import com.healthyreal.be.api.entity.community.Comment;
+package com.healthyreal.be.api.controller.community.dto;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
+import com.healthyreal.be.api.entity.community.Comment;
 
 public record CommentsOfPostResponse(List<CommentDto> commentDtoList) {
 

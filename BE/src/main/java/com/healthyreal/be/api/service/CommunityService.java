@@ -1,18 +1,21 @@
 package com.healthyreal.be.api.service;
 
-import com.healthyreal.be.api.controller.community.PostCreateRequest;
+import java.time.LocalDateTime;
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.healthyreal.be.api.controller.community.dto.PostCreateRequest;
+import com.healthyreal.be.api.entity.cloud.S3Image;
 import com.healthyreal.be.api.entity.community.Comment;
 import com.healthyreal.be.api.entity.community.Post;
 import com.healthyreal.be.api.entity.user.Member;
 import com.healthyreal.be.api.repository.community.CommentRepository;
 import com.healthyreal.be.api.repository.community.PostRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.time.LocalDateTime;
-import java.util.List;
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
@@ -46,8 +49,8 @@ public class CommunityService {
 		Post post = request.toEntity();
 		post.setUser(user);
 
-		//		List<S3Image> s3Images = s3Service.saveImages(images, "member/posts");
-		//		post.getImages().addAll(s3Images);
+		List<S3Image> s3Images = s3Service.saveImages(images, "member/posts");
+		post.getImages().addAll(s3Images);
 
 		postRepository.save(post);
 	}

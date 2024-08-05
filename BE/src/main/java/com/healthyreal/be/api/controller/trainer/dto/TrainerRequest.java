@@ -1,4 +1,10 @@
-package com.healthyreal.be.api.controller.trainer;
+package com.healthyreal.be.api.controller.trainer.dto;
+
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.healthyreal.be.api.entity.trainer.Qualification;
@@ -8,18 +14,13 @@ import com.healthyreal.be.api.entity.trainer.TrainingProgram;
 import com.healthyreal.be.api.entity.userInfo.Goal;
 import com.healthyreal.be.api.entity.userInfo.GoalType;
 import com.healthyreal.be.api.entity.userInfo.Gym;
-import io.swagger.v3.oas.annotations.media.Schema;
 
-import java.time.DayOfWeek;
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.util.List;
-import java.util.stream.Collectors;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 public record TrainerRequest(
 	GymDto gymDto,
 	List<GoalType> goalTypes,
-	List<QualificationDto> qualificationDtoList,
+	QualificationDto qualificationDto, // 단일 자격증으로 수정했습니다.
 	TrainingProgramDto trainingProgramDto,
 	List<ScheduleDto> scheduleDtoList,
 	String profileDescription
@@ -45,8 +46,8 @@ public record TrainerRequest(
 		}
 	}
 
-	public List<Qualification> qualificationDtoListToEntity() {
-		return qualificationDtoList.stream().map(QualificationDto::toEntity).collect(Collectors.toList());
+	public Qualification qualificationDtoToEntity() { // 단일 자격증 변환 메서드로 수정
+		return qualificationDto.toEntity();
 	}
 
 	public record TrainingProgramDto(String title, String description, List<GoalType> goalTypes) {
