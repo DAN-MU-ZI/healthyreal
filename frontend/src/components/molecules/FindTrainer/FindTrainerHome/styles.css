@@ -1,0 +1,17 @@
+.findTrainerContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.noBackHeader {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.trainerList > div {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
