@@ -1,5 +1,7 @@
 package com.healthyreal.be.api.repository.trainer;
 
+import java.util.Optional;
+
 import com.healthyreal.be.api.entity.trainer.TrainerInfo;
 import com.healthyreal.be.api.entity.user.Member;
 import com.healthyreal.be.api.entity.userInfo.GoalType;
