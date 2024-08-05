@@ -1,4 +1,10 @@
-package com.healthyreal.be.api.controller.trainer;
+package com.healthyreal.be.api.controller.trainer.dto;
+
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.healthyreal.be.api.entity.trainer.Qualification;
@@ -8,21 +14,16 @@ import com.healthyreal.be.api.entity.trainer.TrainingProgram;
 import com.healthyreal.be.api.entity.userInfo.Goal;
 import com.healthyreal.be.api.entity.userInfo.GoalType;
 import com.healthyreal.be.api.entity.userInfo.Gym;
+
 import io.swagger.v3.oas.annotations.media.Schema;
 
-import java.time.DayOfWeek;
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.util.List;
-import java.util.stream.Collectors;
-
 public record TrainerRequest(
-		GymDto gymDto,
-		List<GoalType> goalTypes,
-		QualificationDto qualificationDto, // 단일 자격증으로 수정했습니다.
-		TrainingProgramDto trainingProgramDto,
-		List<ScheduleDto> scheduleDtoList,
-		String profileDescription
+	GymDto gymDto,
+	List<GoalType> goalTypes,
+	QualificationDto qualificationDto, // 단일 자격증으로 수정했습니다.
+	TrainingProgramDto trainingProgramDto,
+	List<ScheduleDto> scheduleDtoList,
+	String profileDescription
 ) {
 	public record GymDto(String name, String address) {
 		public Gym toEntity() {

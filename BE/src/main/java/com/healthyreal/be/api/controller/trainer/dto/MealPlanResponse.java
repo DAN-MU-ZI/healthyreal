@@ -1,4 +1,4 @@
-package com.healthyreal.be.api.controller.trainer;
+package com.healthyreal.be.api.controller.trainer.dto;
 
 import java.time.LocalDate;
 

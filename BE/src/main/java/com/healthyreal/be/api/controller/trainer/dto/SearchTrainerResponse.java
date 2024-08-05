@@ -1,8 +1,8 @@
-package com.healthyreal.be.api.controller.trainer;
-
-import com.healthyreal.be.api.entity.userInfo.GoalType;
+package com.healthyreal.be.api.controller.trainer.dto;
 
 import java.util.List;
+
+import com.healthyreal.be.api.entity.userInfo.GoalType;
 
 public record SearchTrainerResponse(
 	List<FoundTrainer> trainers,

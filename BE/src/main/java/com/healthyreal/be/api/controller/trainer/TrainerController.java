@@ -13,6 +13,10 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.healthyreal.be.api.controller.trainer.dto.MealPlanResponse;
+import com.healthyreal.be.api.controller.trainer.dto.ReviewMealRequest;
+import com.healthyreal.be.api.controller.trainer.dto.SearchTrainerResponse;
+import com.healthyreal.be.api.controller.trainer.dto.TrainerRequest;
 import com.healthyreal.be.api.entity.trainer.dto.ProgramListResponse;
 import com.healthyreal.be.api.entity.trainer.dto.TicketRegisterRequest;
 import com.healthyreal.be.api.entity.trainer.dto.TrainerMainPageResponse;

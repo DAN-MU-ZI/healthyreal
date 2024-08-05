@@ -10,10 +10,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.healthyreal.be.api.controller.trainer.SearchTrainerResponse;
-import com.healthyreal.be.api.controller.trainer.TrainerRequest;
+import com.healthyreal.be.api.controller.trainer.dto.SearchTrainerResponse;
+import com.healthyreal.be.api.controller.trainer.dto.TrainerRequest;
 import com.healthyreal.be.api.entity.Meal;
 import com.healthyreal.be.api.entity.Ticket;
+import com.healthyreal.be.api.entity.cloud.S3Image;
 import com.healthyreal.be.api.entity.schedule.Schedule;
 import com.healthyreal.be.api.entity.trainer.Qualification;
 import com.healthyreal.be.api.entity.trainer.TrainerInfo;
@@ -55,10 +56,10 @@ public class TrainerService {
 	private final UserRepository userRepository;
 
 	public void register(
-			final Member user,
-			final TrainerRequest request,
-			final MultipartFile qualificationImage, // 단일 파일로 수정했습니다.
-			final MultipartFile trainingProgramImage // 단일 파일로 수정했습니다.
+		final Member user,
+		final TrainerRequest request,
+		final MultipartFile qualificationImage, // 단일 파일로 수정했습니다.
+		final MultipartFile trainingProgramImage // 단일 파일로 수정했습니다.
 	) {
 		Gym gym = request.gymDto().toEntity();
 		List<Goal> goals = request.goalTypesToEntity();
@@ -69,18 +70,18 @@ public class TrainerService {
 
 		validateImageCounts(qualification, trainingProgram, qualificationImage, trainingProgramImage);
 
-		// Uncomment and update S3 service code if needed
-		// try {
-		//     S3Image s3Image = s3Service.saveImage(qualificationImage, "trainer/qualification");
-		//     qualification.setImage(s3Image);
-		//
-		//     S3Image trainingProgramS3Image = s3Service.saveImage(trainingProgramImage, "trainer/trainingProgram");
-		//     trainingProgram.addImage(trainingProgramS3Image);
-		// } catch (Exception e) {
-		//     e.printStackTrace(); // 로그를 남깁니다.
-		// }
+		try {
+			S3Image s3Image = s3Service.saveImage(qualificationImage, "trainer/qualification");
+			qualification.setImage(s3Image);
 
-		TrainerInfo trainerInfo = createTrainerInfo(user, gym, goals, List.of(qualification), trainingProgram, trainerSchedules, profileDescription, null);
+			S3Image trainingProgramS3Image = s3Service.saveImage(trainingProgramImage, "trainer/trainingProgram");
+			trainingProgram.getImageList().add(trainingProgramS3Image);
+		} catch (Exception e) {
+			e.printStackTrace(); // 로그를 남깁니다.
+		}
+
+		TrainerInfo trainerInfo = createTrainerInfo(user, gym, goals, List.of(qualification), trainingProgram,
+			trainerSchedules, profileDescription, null);
 
 		// Save trainerInfo without transactional rollback
 		saveTrainerInfoWithoutRollback(trainerInfo);
@@ -92,10 +93,10 @@ public class TrainerService {
 	}
 
 	private void validateImageCounts(
-			final Qualification qualification, // 단일 객체로 수정했습니다.
-			final TrainingProgram trainingProgram,
-			final MultipartFile qualificationImage, // 단일 파일로 수정했습니다.
-			final MultipartFile trainingProgramImage // 단일 파일로 수정했습니다.
+		final Qualification qualification, // 단일 객체로 수정했습니다.
+		final TrainingProgram trainingProgram,
+		final MultipartFile qualificationImage, // 단일 파일로 수정했습니다.
+		final MultipartFile trainingProgramImage // 단일 파일로 수정했습니다.
 	) {
 		if (qualification == null) {
 			throw new IllegalArgumentException("Qualification must be provided.");
@@ -111,16 +112,17 @@ public class TrainerService {
 	}
 
 	private TrainerInfo createTrainerInfo(
-			final Member user,
-			final Gym gym,
-			final List<Goal> goals,
-			final List<Qualification> qualifications,
-			final TrainingProgram trainingProgram,
-			final List<TrainerSchedule> trainerSchedules,
-			final String profileDescription,
-			final Gender gender
+		final Member user,
+		final Gym gym,
+		final List<Goal> goals,
+		final List<Qualification> qualifications,
+		final TrainingProgram trainingProgram,
+		final List<TrainerSchedule> trainerSchedules,
+		final String profileDescription,
+		final Gender gender
 	) {
-		return new TrainerInfo(user, gym, goals, qualifications, trainingProgram, trainerSchedules, profileDescription, gender);
+		return new TrainerInfo(user, gym, goals, qualifications, trainingProgram, trainerSchedules, profileDescription,
+			gender);
 	}
 
 	public TrainerMainPageResponse getMainPageByTrainer(Member user) {
@@ -152,22 +154,24 @@ public class TrainerService {
 		return TrainerMyPageResponse.toResponse(user, trainerInfo, gym, trainingPrograms, qualifications);
 	}
 
-	public SearchTrainerResponse searchTrainers(String keyWord, GoalType category, String location, Integer minPrice, Integer maxPrice) {
+	public SearchTrainerResponse searchTrainers(String keyWord, GoalType category, String location, Integer minPrice,
+		Integer maxPrice) {
 		Pageable pageable = PageRequest.of(0, 10); // 페이지 번호와 크기를 설정할 수 있습니다.
 		Page<TrainerInfo> trainerPage = trainerInfoRepository.findAllByFilters(keyWord, category, location, pageable);
 
 		List<SearchTrainerResponse.FoundTrainer> foundTrainers = trainerPage.getContent().stream()
-				.map(trainer -> new SearchTrainerResponse.FoundTrainer(
-						trainer.getUser().getProfileImageUrl(),
-						trainer.getId(),
-						trainer.getUser().getUsername(),
-						trainer.getGym().getAddress(),
-						trainer.getUser().getPhone(),
-						trainer.getProfileDescription(),
-						trainer.getGoalList().stream().map(Goal::getGoalType).collect(Collectors.toList())))
-				.collect(Collectors.toList());
+			.map(trainer -> new SearchTrainerResponse.FoundTrainer(
+				trainer.getUser().getProfileImageUrl(),
+				trainer.getId(),
+				trainer.getUser().getUsername(),
+				trainer.getGym().getAddress(),
+				trainer.getUser().getPhone(),
+				trainer.getProfileDescription(),
+				trainer.getGoalList().stream().map(Goal::getGoalType).collect(Collectors.toList())))
+			.collect(Collectors.toList());
 
-		return new SearchTrainerResponse(foundTrainers, trainerPage.getTotalPages(), trainerPage.getTotalElements(), trainerPage.getNumber(), trainerPage.getSize());
+		return new SearchTrainerResponse(foundTrainers, trainerPage.getTotalPages(), trainerPage.getTotalElements(),
+			trainerPage.getNumber(), trainerPage.getSize());
 	}
 
 	public TrainerMemberManagementResponse readTrainerMembers(Member user) {
@@ -208,8 +212,9 @@ public class TrainerService {
 		Member member = userRepository.findByUserId(request.userId());
 		TrainerInfo trainerInfo = trainerInfoRepository.findByUser(trainer);
 		TrainingProgram trainingProgram = trainingProgramRepository.findByTitleAndTrainerInfo(
-				request.programName(), trainerInfo);
-		Ticket ticket = new Ticket(member, trainer, trainingProgram, request.totalCnt(), request.endPoint(), request.memo());
+			request.programName(), trainerInfo);
+		Ticket ticket = new Ticket(member, trainer, trainingProgram, request.totalCnt(), request.endPoint(),
+			request.memo());
 
 		saveTicketWithoutRollback(ticket);
 	}

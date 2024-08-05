@@ -14,10 +14,12 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.healthyreal.be.api.controller.user.dto.MealUploadRequest;
+import com.healthyreal.be.api.controller.user.dto.UserResponse;
+import com.healthyreal.be.api.entity.DailyMealDto;
 import com.healthyreal.be.api.entity.user.Member;
 import com.healthyreal.be.api.entity.userInfo.dto.MemberRegisterRequest;
 import com.healthyreal.be.api.service.CommunityService;
-import com.healthyreal.be.api.service.DailyMealDto;
 import com.healthyreal.be.api.service.MemberService;
 import com.healthyreal.be.utils.CurrentUser;
 
