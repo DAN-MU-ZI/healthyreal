@@ -1,6 +1,18 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './LectureProgramRegistration.css';
+import KeywordSelector from './KeywordSelector';
+import FileInput from './FileInput';
+
+const keywords = [
+  '50대 이상 고객 맞춤 트레이닝',
+  '직장인 고객 맞춤 트레이닝',
+  '식단 관리 병행',
+  '보디 빌딩 대회 준비',
+  '단기간 트레이닝',
+  '상체 위주 근력 운동',
+  '하체 위주 근력 운동',
+];
 
 const LectureProgramRegistration: React.FC = () => {
   const [title, setTitle] = useState('');
@@ -9,26 +21,12 @@ const LectureProgramRegistration: React.FC = () => {
   const [image, setImage] = useState<File | null>(null);
   const navigate = useNavigate();
 
-  const keywords = [
-    '50대 이상 고객 맞춤 트레이닝',
-    '직장인 고객 맞춤 트레이닝',
-    '식단 관리 병행',
-    '보디 빌딩 대회 준비',
-    '단기간 트레이닝',
-    '상체 위주 근력 운동',
-    '하체 위주 근력 운동',
-  ];
-
-  const handleKeywordToggle = (keyword: string) => {
-    setSelectedKeywords((prev) =>
-      prev.includes(keyword) ? prev.filter((k) => k !== keyword) : [...prev, keyword]
-    );
+  const handleKeywordChange = (newKeywords: string[]) => {
+    setSelectedKeywords(newKeywords);
   };
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files.length > 0) {
-      setImage(e.target.files[0]);
-    }
+  const handleImageChange = (file: File | null) => {
+    setImage(file);
   };
 
   const handleSubmit = () => {
@@ -38,7 +36,9 @@ const LectureProgramRegistration: React.FC = () => {
       keywords: selectedKeywords,
       image,
     };
-    navigate('/LectureProgramPreview', { state: newProgram });
+    // Check if the data is correct
+    console.log('Submitting:', newProgram);
+    navigate('/LectureProgramPreview', { state: { program: newProgram } });
   };
 
   return (
@@ -54,23 +54,15 @@ const LectureProgramRegistration: React.FC = () => {
       </div>
       <div className="form-group">
         <label>관련 키워드 (최대 3개)</label>
-        <div className="keywords">
-          {keywords.map((keyword) => (
-            <button
-              key={keyword}
-              type="button"
-              className={`keyword-button ${selectedKeywords.includes(keyword) ? 'selected' : ''}`}
-              onClick={() => handleKeywordToggle(keyword)}
-              disabled={!selectedKeywords.includes(keyword) && selectedKeywords.length >= 3}
-            >
-              {keyword}
-            </button>
-          ))}
-        </div>
+        <KeywordSelector
+          keywords={keywords}
+          selectedKeywords={selectedKeywords}
+          onKeywordChange={handleKeywordChange}
+        />
       </div>
       <div className="form-group">
         <label>사진</label>
-        <input type="file" accept="image/*" onChange={handleImageChange} />
+        <FileInput onFileChange={handleImageChange} />
       </div>
       <button onClick={handleSubmit}>등록하기</button>
     </div>
