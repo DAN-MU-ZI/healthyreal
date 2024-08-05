@@ -17,12 +17,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public record TrainerRequest(
-	GymDto gymDto,
-	List<GoalType> goalTypes,
-	List<QualificationDto> qualificationDtoList,
-	TrainingProgramDto trainingProgramDto,
-	List<ScheduleDto> scheduleDtoList,
-	String profileDescription
+		GymDto gymDto,
+		List<GoalType> goalTypes,
+		QualificationDto qualificationDto, // 단일 자격증으로 수정했습니다.
+		TrainingProgramDto trainingProgramDto,
+		List<ScheduleDto> scheduleDtoList,
+		String profileDescription
 ) {
 	public record GymDto(String name, String address) {
 		public Gym toEntity() {
@@ -45,8 +45,8 @@ public record TrainerRequest(
 		}
 	}
 
-	public List<Qualification> qualificationDtoListToEntity() {
-		return qualificationDtoList.stream().map(QualificationDto::toEntity).collect(Collectors.toList());
+	public Qualification qualificationDtoToEntity() { // 단일 자격증 변환 메서드로 수정
+		return qualificationDto.toEntity();
 	}
 
 	public record TrainingProgramDto(String title, String description, List<GoalType> goalTypes) {
