@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { createChatApi } from '../apis/custom';
 import { ChatRoomInfo, ChatRoomsResponse } from '../typescript-axios';
+import emptyImg from '../assets/images/NoMessage.png'
 
 const ChatRoomsContainer = styled.div`
     display: flex;
@@ -76,7 +77,8 @@ const ChatRooms: React.FC = () => {
         <ChatRoomsContainer>
             <Title>Your Chat Rooms</Title>
             {chatRooms.length === 0 ? (
-                <NoChatRooms>현재 진행중인 채팅이 없어요. 채팅을 시작해보세요!</NoChatRooms>
+                <img src={emptyImg} alt="no chatRoom Image"/>
+                // <NoChatRooms>현재 진행중인 채팅이 없어요. 채팅을 시작해보세요!</NoChatRooms>
             ) : (
                 <ChatRoomList>
                     {chatRooms.map(room => (
