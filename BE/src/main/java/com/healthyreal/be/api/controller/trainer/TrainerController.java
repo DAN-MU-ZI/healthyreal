@@ -4,6 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +21,7 @@ import com.healthyreal.be.api.entity.trainer.dto.TrainerMemberManagementResponse
 import com.healthyreal.be.api.entity.trainer.dto.TrainerMyPageResponse;
 import com.healthyreal.be.api.entity.user.Member;
 import com.healthyreal.be.api.entity.userInfo.GoalType;
+import com.healthyreal.be.api.service.MemberService;
 import com.healthyreal.be.api.service.TrainerService;
 import com.healthyreal.be.utils.CurrentUser;
 
@@ -32,6 +34,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class TrainerController {
 	private final TrainerService trainerService;
+	private final MemberService memberService;
 
 	@GetMapping
 	public ResponseEntity<TrainerMainPageResponse> mainTrainer(
@@ -116,5 +119,25 @@ public class TrainerController {
 	) {
 		trainerService.registerTicket(trainer, request);
 		return ResponseEntity.ok("ok");
+	}
+
+	@PostMapping("/meal/review")
+	public ResponseEntity<String> reviewMeal(
+		@CurrentUser Member trainer,
+		@RequestBody ReviewMealRequest request
+	) {
+
+		memberService.reviewMeal(trainer, request);
+		return ResponseEntity.ok("ok");
+	}
+
+	@GetMapping("/meal/review/{id}")
+	public ResponseEntity<MealPlanResponse> getMealPlan(
+		@PathVariable("id") Long mealId
+	) {
+
+		MealPlanResponse response = memberService.getMealById(mealId);
+
+		return ResponseEntity.ok().body(response);
 	}
 }

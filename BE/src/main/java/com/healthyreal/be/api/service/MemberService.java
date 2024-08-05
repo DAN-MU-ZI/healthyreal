@@ -6,6 +6,8 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.healthyreal.be.api.controller.trainer.MealPlanResponse;
+import com.healthyreal.be.api.controller.trainer.ReviewMealRequest;
 import com.healthyreal.be.api.controller.user.MealUploadRequest;
 import com.healthyreal.be.api.entity.Meal;
 import com.healthyreal.be.api.entity.user.Member;
@@ -46,5 +48,19 @@ public class MemberService {
 
 	public DailyMealDto getDailyMealLog(Member user, LocalDate date) {
 		return DailyMealDto.of(mealRepository.findMealsByDateAndMember(date, user));
+	}
+
+	public void reviewMeal(Member trainer, ReviewMealRequest request) {
+		Meal meal = mealRepository.findById(request.mealID())
+			.orElseThrow(RuntimeException::new);
+		meal.setMember(trainer);
+
+		mealRepository.save(meal);
+	}
+
+	public MealPlanResponse getMealById(Long mealId) {
+		Meal meal = mealRepository.findById(mealId).orElseThrow(RuntimeException::new);
+
+		return MealPlanResponse.of(meal);
 	}
 }
