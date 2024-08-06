@@ -1,9 +1,9 @@
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import {BrowserRouter as Router, Route, Routes} from "react-router-dom";
 import Main from "./pages/Main";
 import LoginRedirect from "./pages/LoginRedirect";
 import LoginUser from "./pages/LoginUser";
 import Intro from "./pages/Intro";
-import { useAuth } from "./providers/AuthContext";
+import {useAuth} from "./providers/AuthContext";
 import Login from "./pages/Login";
 import Tutorial from "./pages/Tutorial";
 import Onboarding from "./pages/Onboarding";
@@ -29,7 +29,6 @@ import MessageNoMain from "./components/molecules/MessageNoMain/MessageNoMain";
 import MessagePost from "./components/molecules/MessagePost/MessagePost";
 import TrainerMealManagement from "./pages/TrainerMealManagement";
 import TrainerMain from "./pages/TrainerMain/TrainerMain";
-
 
 function App() {
   const {isAuthenticated} = useAuth();
@@ -62,9 +61,9 @@ function App() {
               <Route path="/chat/:chatRoomId" element={<Chat />} />
               <Route path="/trainer/meal" element={<TrainerMealManagement/>}/>
             </>
-
           ) : (
             <>
+              <Route path="findTrainer/*" element={<FindTrainer />} />
               <Route path="oauth/redirect" element={<LoginRedirect />} />
               <Route path="login/*" element={<Login />} />
               <Route path="intro/login" element={<Login />} />
@@ -85,10 +84,11 @@ function App() {
       <ProgramProvider>
       <Router>
         <Routes>
-        <Route path="TrainerOn1" element={<TrainerOnboardingStep1 />} />
+              <Route path="scheduler/*" element={<Scheduler />} />
+              <Route path="TrainerOn1" element={<TrainerOnboardingStep1 />} />
               <Route path="TrainerOn2" element={<TrainerOnboardingStep2 />} />
-              <Route path="LectureProgramRegistration" element={<LectureProgramRegistration />} />
               <Route path="TrainerOn3" element={<TrainerOnboardingStep3 />} />
+              <Route path="LectureProgramRegistration" element={<LectureProgramRegistration />} />
               <Route
                 path="TrainerOn4"
                 element={

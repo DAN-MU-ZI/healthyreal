@@ -2,11 +2,11 @@ import "./styles.css";
 import Text from "../../../atoms/Text";
 
 interface Props {
-  id: number;
-  img: string;
-  name: string;
-  lacation: string;
-  number: string;
+  id: number | undefined;
+  img: string | undefined;
+  name: string | undefined;
+  lacation: string | undefined;
+  number: string | undefined;
   onClick: () => void;
 }
 
