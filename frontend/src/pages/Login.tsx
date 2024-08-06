@@ -2,7 +2,6 @@ import {useEffect, useState} from "react";
 import StartLayout from "../components/templates/StartLayout";
 import Text from "../components/atoms/Text";
 import Button from "../components/atoms/Button";
-import naverLogo from "../assets/images/naverLogo.png";
 import trainerIcon from "../assets/images/trainerIcon.png";
 import memberIcon from "../assets/images/memberIcon.png";
 import request from "../apis/api/request";
@@ -84,7 +83,7 @@ export default function Login() {
               color="var(--main-blue)"
               onClick={() => clickLogin("kakao")}
             >
-              <img src={kakaotalkLogo} alt="googleIcon" width="25px" />
+              <img src={kakaotalkLogo} alt="kakaoIcon" width="25px" />
               카카오톡으로 시작하기
             </Button>
           </>

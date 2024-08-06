@@ -1,6 +1,6 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useAuth } from "../providers/AuthContext";
+import {useState} from "react";
+import {useNavigate} from "react-router-dom";
+import {useAuth} from "../providers/AuthContext";
 import OnboardLayout from "../components/templates/OnboardLayout";
 import Text from "../components/atoms/Text";
 import Button from "../components/atoms/Button";
@@ -20,7 +20,7 @@ import {
   GymDto,
   UserInfoExerciseLevelEnum,
 } from "../typescript-axios";
-import { createUserApi } from "../apis/custom";  // 새로 정의된 함수 임포트
+import {createUserApi} from "../apis/custom"; // 새로 정의된 함수 임포트
 
 const initialOnboardingData: MemberRegisterRequest = {
   goalTypes: [],
@@ -31,15 +31,15 @@ const initialOnboardingData: MemberRegisterRequest = {
     weight: 0,
   },
   gymDto: {
-    name: "",
-    address: "",
+    name: "헬스장",
+    address: "어디어디",
   },
   exerciseLevel: undefined,
   agreeToReceive: true,
 };
 
 export default function Onboarding() {
-  const { logout } = useAuth();
+  const {logout} = useAuth();
   let navigate = useNavigate();
   const [onboardingData, setOnboardingData] = useState<MemberRegisterRequest>(
     initialOnboardingData
@@ -50,7 +50,7 @@ export default function Onboarding() {
   const onboarding = dbData.onboarding;
 
   const handleDataChange = (key: keyof MemberRegisterRequest, data: any) => {
-    setOnboardingData({ ...onboardingData, [key]: data });
+    setOnboardingData({...onboardingData, [key]: data});
   };
 
   const handleNext = () => {
@@ -65,12 +65,13 @@ export default function Onboarding() {
   const endOnboarding = async () => {
     try {
       console.log(onboardingData);
-      const userApi = createUserApi();  // 매 요청마다 최신 토큰을 사용하여 API 인스턴스 생성
+      const userApi = createUserApi(); // 매 요청마다 최신 토큰을 사용하여 API 인스턴스 생성
       await userApi.registerMember(onboardingData);
-      navigate(`/`);
+      navigate(`/main`);
     } catch (error) {
       console.error("온보딩 중 오류가 발생했습니다.", error);
       alert("온보딩 중 오류가 발생했습니다. 다시 시도해주세요.");
+      navigate(`/main`);
     }
   };
 

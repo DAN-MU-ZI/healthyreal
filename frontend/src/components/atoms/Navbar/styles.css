@@ -1,0 +1,20 @@
+.navbarMy {
+  bottom: 0;
+  width: 100%;
+  border-top: 1px solid #ccc;
+  display: flex;
+  justify-content: space-around;
+  padding: 10px 0;
+  box-sizing: border-box;
+}
+
+.nav-item {
+  text-decoration: none;
+  color: #000;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.nav-item.active {
+  color: #194e87;
+}

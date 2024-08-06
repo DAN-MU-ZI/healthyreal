@@ -17,7 +17,7 @@ const LoginRedirect: React.FC = () => {
         "Authorization"
       ] = `Bearer ${token}`;
 
-      navigate("/intro/tutorial");
+      navigate("/intro");
     } else {
       navigate("/login");
     }

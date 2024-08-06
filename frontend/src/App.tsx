@@ -43,18 +43,22 @@ function App() {
       <Router>
         <Routes>
           {isAuthenticated ? (
-            <>
+            <Route path="/" element={<PageLayout />}>
+              <Route index element={<PageLayout />} />
               <Route path="/main" element={<Main />} />
               <Route path="intro/*" element={<Intro />} />
               {/* <Route path="login/user" element={<LoginUser />} /> */}
               <Route path="scheduler/*" element={<Scheduler />} />
-              {/* <Route path="findTrainer/*" element={<FindTrainer />} /> */}
+              <Route path="findTrainer/*" element={<FindTrainer />} />
               {/* <Route path="intro/tutorial" element={<Tutorial />} /> */}
               <Route path="intro/onboarding" element={<Onboarding />} />
 
               <Route path="/chat" element={<ChatRooms />} />
               <Route path="/chat/:chatRoomId" element={<Chat />} />
-            </>
+              <Route path="MainFood" element={<MainFood />} />
+              <Route path="MypageFood" element={<MypageFood />} />
+              <Route path="PostFood" element={<PostFood />} />
+            </Route>
           ) : (
             <>
               <Route path="oauth/redirect" element={<LoginRedirect />} />
@@ -63,11 +67,6 @@ function App() {
               <Route path="MessageMain" element={<MessageMain />} />
               <Route path="MessageNoMain" element={<MessageNoMain />} />
               <Route path="MessagePost" element={<MessagePost />} />
-              <Route path="MainFood" element={<MainFood />} />
-              <Route path="MypageFood" element={<MypageFood />} />
-              <Route path="PostFood" element={<PostFood />} />
-
-              <Route path="PageLayout" element={<PageLayout />} />
             </>
           )}
         </Routes>
