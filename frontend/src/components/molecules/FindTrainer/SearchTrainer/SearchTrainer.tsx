@@ -1,6 +1,6 @@
 import * as React from "react";
 import {useState, useEffect} from "react";
-import {TrainerRequestGoalTypesEnum as CategoryEnum} from "../../../../typescript-axios";
+import {SearchTrainersCategoryEnum as CategoryEnum} from "../../../../typescript-axios";
 import searchIcon from "../../../../assets/images/searchIcon.png";
 import filterIcon from "../../../../assets/images/filterIcon.png";
 import Text from "../../../atoms/Text";
@@ -22,7 +22,7 @@ interface Props {
   callbacks: {
     filterTrainer: (
       keyword: string,
-      category: CategoryEnum[],
+      category: CategoryEnum,
       location: string,
       callback: () => void
     ) => Promise<void>;
@@ -38,14 +38,13 @@ const SearchTrainer: React.FC<Props> = ({
   isShow,
   setShow,
 }) => {
-  const [selectedCategories, setSelectedCategories] = useState<CategoryEnum[]>(
-    []
+  const [selectedCategory, setSelectedCategory] = useState<CategoryEnum | null>(
+    null
   );
   const [selectedLocations, setSelectedLocations] = useState<string[]>([]);
   const [keyword, setKeyword] = useState("");
 
   const categoryLabels: {[key in CategoryEnum]: string} = {
-    [CategoryEnum.WeightLoss]: "체중 감량",
     [CategoryEnum.MuscleGain]: "근육 증가",
     [CategoryEnum.StaminaImprovement]: "지구력 향상",
     [CategoryEnum.FlexibilityImprovement]: "유연성 향상",
@@ -55,16 +54,14 @@ const SearchTrainer: React.FC<Props> = ({
     [CategoryEnum.HealthImprovement]: "건강 증진",
     [CategoryEnum.BodyProfile]: "바디 프로필",
     [CategoryEnum.Other]: "기타",
+    [CategoryEnum.WeightLoss]: "체중감량",
   };
 
   const onClickSearch = () => {
     const locationString = selectedLocations.join(", ");
-    callbacks.filterTrainer(
-      keyword,
-      selectedCategories,
-      locationString,
-      () => {}
-    );
+    callbacks.filterTrainer(keyword, selectedCategory!, locationString, () => {
+      console.log("callback filterTrainer 실행");
+    });
     if (isShow == true) setShow(false);
   };
 
@@ -73,15 +70,11 @@ const SearchTrainer: React.FC<Props> = ({
   };
 
   useEffect(() => {
-    setSelectedCategories(categories);
+    setSelectedCategory(categories[0]);
   }, [categories]);
 
   const handleCategoryChange = (category: CategoryEnum) => {
-    const newCategory = selectedCategories.includes(category)
-      ? selectedCategories.filter((c) => c !== category)
-      : [...selectedCategories, category];
-
-    setSelectedCategories(newCategory);
+    setSelectedCategory(category);
   };
 
   const handleLocationChange = (location: string) => {
@@ -125,13 +118,13 @@ const SearchTrainer: React.FC<Props> = ({
                   <label
                     key={category}
                     className={`filter-btn ${
-                      selectedCategories.includes(category) ? "checked" : ""
+                      selectedCategory === category ? "checked" : ""
                     }`}
                   >
                     <input
-                      type="checkbox"
+                      type="radio"
                       value={category}
-                      checked={selectedCategories.includes(category)}
+                      checked={selectedCategory === category}
                       onChange={() => handleCategoryChange(category)}
                     />
                     <span>{categoryLabels[category]}</span>

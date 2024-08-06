@@ -1,6 +1,9 @@
 import * as React from "react";
 import {useNavigate} from "react-router-dom";
-import {TrainerRequestGoalTypesEnum as CategoryEnum} from "../../../../typescript-axios";
+import {
+  SearchTrainersCategoryEnum as CategoryEnum,
+  FoundTrainer,
+} from "../../../../typescript-axios";
 import TrainerItem from "../TrainerItem";
 
 interface TrainerItem {
@@ -15,7 +18,7 @@ interface TrainerItem {
 
 interface Props {
   states: {
-    trainerList: TrainerItem[];
+    trainerList: FoundTrainer[];
   };
 }
 

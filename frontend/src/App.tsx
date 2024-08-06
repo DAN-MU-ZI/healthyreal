@@ -1,9 +1,9 @@
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import {BrowserRouter as Router, Route, Routes} from "react-router-dom";
 import Main from "./pages/Main";
 import LoginRedirect from "./pages/LoginRedirect";
 import LoginUser from "./pages/LoginUser";
 import Intro from "./pages/Intro";
-import { useAuth } from "./providers/AuthContext";
+import {useAuth} from "./providers/AuthContext";
 import Login from "./pages/Login";
 import Tutorial from "./pages/Tutorial";
 import Onboarding from "./pages/Onboarding";
@@ -53,9 +53,9 @@ function App() {
               <Route path="/chat" element={<ChatRooms />} />
               <Route path="/chat/:chatRoomId" element={<Chat />} />
             </>
-
           ) : (
             <>
+              <Route path="findTrainer/*" element={<FindTrainer />} />
               <Route path="oauth/redirect" element={<LoginRedirect />} />
               <Route path="login/*" element={<Login />} />
               <Route path="intro/login" element={<Login />} />
