@@ -38,7 +38,7 @@ const MessagePost: React.FC = () => {
 
   return (
     <div className="message-post">
-      <header className="header">
+      <header className="headermsp">
         <button className="back-button" onClick={() => window.history.back()}>←</button>
         <h1>Chat</h1>
       </header>
