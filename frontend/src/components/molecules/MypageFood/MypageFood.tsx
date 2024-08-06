@@ -1,35 +1,63 @@
-import React, { useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useContext, useEffect, useRef } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import './MypageFood.css';
 import { PostContext } from '../../../pages/PostContext';
 
 const MypageFood: React.FC = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const context = useContext(PostContext);
+  const scrollRef = useRef<HTMLDivElement>(null);
 
   if (!context) {
     throw new Error('PostContext must be used within a PostProvider');
   }
 
-  const { posts, deletePost } = context;
+  const { posts, deletePost, addPost, editPost } = context;
 
   const handleEdit = (post: any) => {
-    navigate('/post-food', { state: { mealTime: post.date.split(' ')[1], selectedDate: post.date.split(' ')[0], existingPost: post } });
+    navigate('/PostFood', { state: { mealTime: post.mealTime, selectedDate: post.date, postToEdit: post } });
   };
 
   const handleDelete = (postId: number) => {
     deletePost(postId);
   };
 
+  const handleBack = () => {
+    navigate('/MainFood');
+  };
+
+  const handleAdd = () => {
+    navigate('/MainFood');
+  };
+
+  useEffect(() => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+    }
+
+    if (location.state?.updatedPost) {
+      const updatedPost = location.state.updatedPost;
+
+      const exists = posts.some(post => post.id === updatedPost.id);
+      if (exists) {
+        editPost(updatedPost.id, updatedPost);
+      } else {
+        addPost(updatedPost);
+      }
+    }
+  }, [posts, location.state, addPost, editPost]);
+
   return (
     <div className="mypage-container">
-      <div className="header">
+      <div className="headermpf">
+        <button onClick={handleBack} className="back-button">←</button>
         <h1>식단 관리</h1>
         <p>업로드가 완료되었습니다</p>
       </div>
-      <div className="post-list">
-        {posts.map((post, index) => (
-          <div key={index} className="post-item">
+      <div className="post-list" ref={scrollRef}>
+        {posts.map((post) => (
+          <div key={post.id} className="post-item">
             <div className="post-header">
               <img src={post.profilePic} alt="Profile" className="profile-pic" />
               <div className="post-info">
@@ -51,6 +79,7 @@ const MypageFood: React.FC = () => {
           </div>
         ))}
       </div>
+      <div className="add-button" onClick={handleAdd}>main</div>
     </div>
   );
 };

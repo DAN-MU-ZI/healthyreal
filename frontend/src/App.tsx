@@ -7,9 +7,11 @@ import {useAuth} from "./providers/AuthContext";
 import Login from "./pages/Login";
 import Tutorial from "./pages/Tutorial";
 import Onboarding from "./pages/Onboarding";
-import Food from "./pages/Food";
+import MainFood from "./components/molecules/MainFood";
 import MypageFood from "./components/molecules/MypageFood";
 import PostFood from "./components/molecules/PostFood";
+import LectureProgramRegistration from "./components/molecules/LectureProgramRegistration/LectureProgramRegistration";
+import { ProgramProvider } from './pages/PostContext';
 import Scheduler from "./pages/Scheduler";
 import FindTrainer from "./pages/FindTrainer";
 import PageLayout from "./components/templates/PageLayout";
@@ -45,10 +47,6 @@ function App() {
               <Route path="/" element={<Main />} />
               <Route path="intro/*" element={<Intro />} />
               <Route path="login/user" element={<LoginUser />} />
-              <Route path="food" element={<Food />} />
-              <Route path="mypage-food" element={<MypageFood />} />
-              <Route path="post-food" element={<PostFood />} />
-
               {/* <Route path="scheduler/*" element={<Scheduler />} /> */}
               {/* <Route path="findTrainer/*" element={<FindTrainer />} /> */}
 
@@ -63,9 +61,27 @@ function App() {
               <Route path="intro/login" element={<Login />} />
               <Route path="intro/tutorial" element={<Tutorial />} />
               <Route path="intro/onboarding" element={<Onboarding />} />
-              <Route path="scheduler/*" element={<Scheduler />} />
+              <Route path="MessageMain" element={<MessageMain/>}/>
+              <Route path="MessageNoMain" element={<MessageNoMain/>}/>
+              <Route path="MessagePost" element={<MessagePost/>}/>
+              <Route path="MainFood" element={<MainFood />} />
+              <Route path="MypageFood" element={<MypageFood />} />
+              <Route path="PostFood" element={<PostFood />} />
+              <Route path="Scheduler" element={<Scheduler />} />
+              <Route path="FindTrainer" element={<FindTrainer />} />
+              <Route path="PageLayout" element={<PageLayout />} />
+            </>
+          )}
+        </Routes>
+      </Router>
+
+
+      <ProgramProvider>
+      <Router>
+        <Routes>
               <Route path="TrainerOn1" element={<TrainerOnboardingStep1 />} />
               <Route path="TrainerOn2" element={<TrainerOnboardingStep2 />} />
+              <Route path="LectureProgramRegistration" element={<LectureProgramRegistration />} />
               <Route path="TrainerOn3" element={<TrainerOnboardingStep3 />} />
               <Route
                 path="TrainerOn4"
@@ -76,19 +92,18 @@ function App() {
                   />
                 }
               />
-              <Route
-                path="TrainerOn4/TrainerOn5"
-                element={<TrainerOnboardingStep5 />}
-              />
-              <Route path="MessageMain" element={<MessageMain />} />
-              <Route path="MessageNoMain" element={<MessageNoMain />} />
-              <Route path="MessagePost" element={<MessagePost />} />
-            </>
-          )}
+              <Route path="TrainerOn4/TrainerOn5" element={<TrainerOnboardingStep5 />} />
+              <Route path="MessageMain" element={<MessageMain/>}/>
+              <Route path="MessageNoMain" element={<MessageNoMain/>}/>
+              <Route path="MessagePost" element={<MessagePost/>}/>
         </Routes>
       </Router>
+    </ProgramProvider>
     </div>
   );
+
+
+  
 }
 
 export default App;
