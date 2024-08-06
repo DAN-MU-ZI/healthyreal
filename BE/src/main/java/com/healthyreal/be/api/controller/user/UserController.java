@@ -5,7 +5,10 @@ import java.time.LocalDate;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -88,5 +91,46 @@ public class UserController {
 		@RequestParam("date") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date
 	) {
 		return ResponseEntity.ok().body(memberService.getDailyMealLog(member, date));
+	}
+
+	@Operation(
+		summary = "식단 기록 삭제",
+		description = "식단 ID 를 통해 식단 로그를 제거"
+	)
+	@DeleteMapping("/meal/{id}")
+	public ResponseEntity<String> deleteMeal(
+		@CurrentUser Member member,
+		@PathVariable("id") Long mealId
+	) {
+		memberService.deleteMeal(member, mealId);
+
+		return ResponseEntity.ok("ok");
+	}
+
+	@Operation(
+		summary = "식단 내용 변경",
+		description = "식단 재전송을 통해 식단 내용 변경"
+	)
+	@PatchMapping("/meal")
+	public ResponseEntity<String> modifyMeal(
+		@CurrentUser Member member,
+		@RequestBody MealDto mealDto
+	) {
+		memberService.modifyMeal(member, mealDto);
+
+		return ResponseEntity.ok("ok");
+	}
+
+	@Operation(
+		summary = "식단 조회",
+		description = "식단 조회"
+	)
+	@GetMapping("/meal/{id}")
+	public ResponseEntity<MealDto> getMeal(
+		@CurrentUser Member member,
+		@PathVariable("id") Long mealId
+	) {
+		MealDto response = memberService.getMealById(member, mealId);
+		return ResponseEntity.ok().body(response);
 	}
 }
