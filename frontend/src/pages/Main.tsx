@@ -2,8 +2,10 @@ import * as React from "react";
 import AlarmLayout from "../components/templates/AlarmLayout";
 import AlarmCard from "../components/molecules/AlarmCard";
 import Text from "../components/atoms/Text";
+import {useNavigate} from "react-router-dom";
 
 export default function Main() {
+  const navigate = useNavigate();
   return (
     <>
       <Text color="var(--main-blue)" fontSize="30px" fontWeight="700">
