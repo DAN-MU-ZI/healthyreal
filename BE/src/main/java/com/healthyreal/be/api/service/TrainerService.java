@@ -1,6 +1,7 @@
 package com.healthyreal.be.api.service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,6 +26,7 @@ import com.healthyreal.be.api.entity.trainer.dto.TicketRegisterRequest;
 import com.healthyreal.be.api.entity.trainer.dto.TrainerMainPageResponse;
 import com.healthyreal.be.api.entity.trainer.dto.TrainerMemberDetailManagementResponse;
 import com.healthyreal.be.api.entity.trainer.dto.TrainerMemberManagementResponse;
+import com.healthyreal.be.api.entity.trainer.dto.TrainerMemberMealsResponse;
 import com.healthyreal.be.api.entity.trainer.dto.TrainerMyPageResponse;
 import com.healthyreal.be.api.entity.user.Gender;
 import com.healthyreal.be.api.entity.user.Member;
@@ -222,5 +224,13 @@ public class TrainerService {
 	@Transactional(dontRollbackOn = Exception.class)
 	public void saveTicketWithoutRollback(Ticket ticket) {
 		ticketRepository.save(ticket);
+	}
+
+	@Transactional
+	public List<TrainerMemberMealsResponse> getMembersMeal(Member trainer, LocalDate date) {
+		List<Meal> mealList = mealRepository.findMealsByTrainerANDDate(trainer, LocalDate.now(), date);
+		if (mealList.isEmpty())
+			return new ArrayList<TrainerMemberMealsResponse>();
+		return TrainerMemberMealsResponse.toResponse(mealList);
 	}
 }

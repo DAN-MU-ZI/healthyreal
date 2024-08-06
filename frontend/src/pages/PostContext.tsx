@@ -5,6 +5,7 @@ interface Post {
   username: string;
   profilePic: string;
   date: string;
+  mealTime: string;
   title: string;
   content: string;
   foodPic: string;
@@ -19,26 +20,53 @@ interface PostContextType {
 
 export const PostContext = createContext<PostContextType | undefined>(undefined);
 
-let nextId = 1;
-
 export const PostProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [posts, setPosts] = useState<Post[]>([]);
 
   const addPost = (post: Post) => {
-    setPosts([...posts, { ...post, id: nextId++ }]);
+    setPosts((prevPosts) => [...prevPosts, post]);
   };
 
   const editPost = (id: number, updatedPost: Post) => {
-    setPosts(posts.map(post => (post.id === id ? updatedPost : post)));
+    setPosts((prevPosts) => prevPosts.map((post) => (post.id === id ? updatedPost : post)));
   };
 
   const deletePost = (id: number) => {
-    setPosts(posts.filter(post => post.id !== id));
+    setPosts((prevPosts) => prevPosts.filter((post) => post.id !== id));
   };
 
   return (
     <PostContext.Provider value={{ posts, addPost, editPost, deletePost }}>
       {children}
     </PostContext.Provider>
+  );
+};
+
+interface Program {
+  id: number;
+  title: string;
+  description: string;
+  keywords: string[];
+  image: File | null;
+}
+
+interface ProgramContextType {
+  programs: Program[];
+  addProgram: (program: Program) => void;
+}
+
+export const ProgramContext = createContext<ProgramContextType | undefined>(undefined);
+
+export const ProgramProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+  const [programs, setPrograms] = useState<Program[]>([]);
+
+  const addProgram = (program: Program) => {
+    setPrograms((prev) => [...prev, program]);
+  };
+
+  return (
+    <ProgramContext.Provider value={{ programs, addProgram }}>
+      {children}
+    </ProgramContext.Provider>
   );
 };

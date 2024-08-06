@@ -1,5 +1,8 @@
 package com.healthyreal.be.api.controller.trainer;
 
+import java.time.LocalDate;
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +25,7 @@ import com.healthyreal.be.api.entity.trainer.dto.TicketRegisterRequest;
 import com.healthyreal.be.api.entity.trainer.dto.TrainerMainPageResponse;
 import com.healthyreal.be.api.entity.trainer.dto.TrainerMemberDetailManagementResponse;
 import com.healthyreal.be.api.entity.trainer.dto.TrainerMemberManagementResponse;
+import com.healthyreal.be.api.entity.trainer.dto.TrainerMemberMealsResponse;
 import com.healthyreal.be.api.entity.trainer.dto.TrainerMyPageResponse;
 import com.healthyreal.be.api.entity.user.Member;
 import com.healthyreal.be.api.entity.userInfo.GoalType;
@@ -186,5 +190,14 @@ public class TrainerController {
 	) {
 		MealPlanResponse response = memberService.getMealById(mealId);
 		return ResponseEntity.ok().body(response);
+	}
+
+	@GetMapping("/members/meal/{date}")
+	public ResponseEntity<List<TrainerMemberMealsResponse>> getMembersMeal(
+		@CurrentUser Member trainer,
+		@PathVariable("date") LocalDate date
+	) {
+		List<TrainerMemberMealsResponse> response = trainerService.getMembersMeal(trainer, date);
+		return ResponseEntity.ok(response);
 	}
 }

@@ -627,12 +627,6 @@ export type MealDTOMealTypeEnum = typeof MealDTOMealTypeEnum[keyof typeof MealDT
 export interface MealDto {
     /**
      * 
-     * @type {string}
-     * @memberof MealDto
-     */
-    'mealType'?: MealDtoMealTypeEnum;
-    /**
-     * 
      * @type {number}
      * @memberof MealDto
      */
@@ -645,20 +639,17 @@ export interface MealDto {
     'title'?: string;
     /**
      * 
-     * @type {boolean}
+     * @type {string}
      * @memberof MealDto
      */
-    'hasReceivedFeedback'?: boolean;
+    'content'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof MealDto
+     */
+    'imageUrl'?: string;
 }
-
-export const MealDtoMealTypeEnum = {
-    Breakfast: 'BREAKFAST',
-    Lunch: 'LUNCH',
-    Dinner: 'DINNER'
-} as const;
-
-export type MealDtoMealTypeEnum = typeof MealDtoMealTypeEnum[keyof typeof MealDtoMealTypeEnum];
-
 /**
  * 
  * @export
@@ -1564,6 +1555,43 @@ export interface TrainerMemberManagementResponse {
 /**
  * 
  * @export
+ * @interface TrainerMemberMealsResponse
+ */
+export interface TrainerMemberMealsResponse {
+    /**
+     * 
+     * @type {number}
+     * @memberof TrainerMemberMealsResponse
+     */
+    'memberSeq'?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof TrainerMemberMealsResponse
+     */
+    'memberName'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof TrainerMemberMealsResponse
+     */
+    'mealTitle'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof TrainerMemberMealsResponse
+     */
+    'mealType'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof TrainerMemberMealsResponse
+     */
+    'isComment'?: string;
+}
+/**
+ * 
+ * @export
  * @interface TrainerMyPageResponse
  */
 export interface TrainerMyPageResponse {
@@ -1983,6 +2011,357 @@ export type UserResponseRoleTypeEnum = typeof UserResponseRoleTypeEnum[keyof typ
 
 
 /**
+ * DefaultApi - axios parameter creator
+ * @export
+ */
+export const DefaultApiAxiosParamCreator = function (configuration?: Configuration) {
+    return {
+        /**
+         * 주어진 게시물 ID와 내용으로 새 댓글을 생성합니다.
+         * @summary 새 댓글 생성
+         * @param {number} postId 
+         * @param {string} content 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        createComment: async (postId: number, content: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'postId' is not null or undefined
+            assertParamExists('createComment', 'postId', postId)
+            // verify required parameter 'content' is not null or undefined
+            assertParamExists('createComment', 'content', content)
+            const localVarPath = `/api/v1/community/posts/{postId}/comments`
+                .replace(`{${"postId"}}`, encodeURIComponent(String(postId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+            if (content !== undefined) {
+                localVarQueryParameter['content'] = content;
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 주어진 데이터와 선택적인 이미지를 사용하여 새 게시물을 생성합니다.
+         * @summary 새 게시물 생성
+         * @param {PostCreateRequest} data 
+         * @param {Array<File>} [images] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        createPost: async (data: PostCreateRequest, images?: Array<File>, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'data' is not null or undefined
+            assertParamExists('createPost', 'data', data)
+            const localVarPath = `/api/v1/community/posts`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+            const localVarFormParams = new ((configuration && configuration.formDataCtor) || FormData)();
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+            if (data !== undefined) { 
+                localVarFormParams.append('data', new Blob([JSON.stringify(data)], { type: "application/json", }));
+            }
+                if (images) {
+                images.forEach((element) => {
+                    localVarFormParams.append('images', element as any);
+                })
+            }
+
+    
+    
+            localVarHeaderParameter['Content-Type'] = 'multipart/form-data';
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = localVarFormParams;
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 모든 게시물의 목록을 조회합니다.
+         * @summary 모든 게시물 조회
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getAllPosts: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/v1/community/posts`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 주어진 게시물 ID로 해당 게시물의 모든 댓글을 조회합니다.
+         * @summary 게시물의 모든 댓글 조회
+         * @param {number} postId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getCommentsByPost: async (postId: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'postId' is not null or undefined
+            assertParamExists('getCommentsByPost', 'postId', postId)
+            const localVarPath = `/api/v1/community/posts/{postId}/comments`
+                .replace(`{${"postId"}}`, encodeURIComponent(String(postId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+    }
+};
+
+/**
+ * DefaultApi - functional programming interface
+ * @export
+ */
+export const DefaultApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = DefaultApiAxiosParamCreator(configuration)
+    return {
+        /**
+         * 주어진 게시물 ID와 내용으로 새 댓글을 생성합니다.
+         * @summary 새 댓글 생성
+         * @param {number} postId 
+         * @param {string} content 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async createComment(postId: number, content: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.createComment(postId, content, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['DefaultApi.createComment']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 주어진 데이터와 선택적인 이미지를 사용하여 새 게시물을 생성합니다.
+         * @summary 새 게시물 생성
+         * @param {PostCreateRequest} data 
+         * @param {Array<File>} [images] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async createPost(data: PostCreateRequest, images?: Array<File>, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.createPost(data, images, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['DefaultApi.createPost']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 모든 게시물의 목록을 조회합니다.
+         * @summary 모든 게시물 조회
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getAllPosts(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<Post>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getAllPosts(options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['DefaultApi.getAllPosts']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 주어진 게시물 ID로 해당 게시물의 모든 댓글을 조회합니다.
+         * @summary 게시물의 모든 댓글 조회
+         * @param {number} postId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getCommentsByPost(postId: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CommentsOfPostResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getCommentsByPost(postId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['DefaultApi.getCommentsByPost']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+    }
+};
+
+/**
+ * DefaultApi - factory interface
+ * @export
+ */
+export const DefaultApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = DefaultApiFp(configuration)
+    return {
+        /**
+         * 주어진 게시물 ID와 내용으로 새 댓글을 생성합니다.
+         * @summary 새 댓글 생성
+         * @param {number} postId 
+         * @param {string} content 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        createComment(postId: number, content: string, options?: any): AxiosPromise<string> {
+            return localVarFp.createComment(postId, content, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 주어진 데이터와 선택적인 이미지를 사용하여 새 게시물을 생성합니다.
+         * @summary 새 게시물 생성
+         * @param {PostCreateRequest} data 
+         * @param {Array<File>} [images] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        createPost(data: PostCreateRequest, images?: Array<File>, options?: any): AxiosPromise<string> {
+            return localVarFp.createPost(data, images, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 모든 게시물의 목록을 조회합니다.
+         * @summary 모든 게시물 조회
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getAllPosts(options?: any): AxiosPromise<Array<Post>> {
+            return localVarFp.getAllPosts(options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 주어진 게시물 ID로 해당 게시물의 모든 댓글을 조회합니다.
+         * @summary 게시물의 모든 댓글 조회
+         * @param {number} postId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getCommentsByPost(postId: number, options?: any): AxiosPromise<CommentsOfPostResponse> {
+            return localVarFp.getCommentsByPost(postId, options).then((request) => request(axios, basePath));
+        },
+    };
+};
+
+/**
+ * DefaultApi - object-oriented interface
+ * @export
+ * @class DefaultApi
+ * @extends {BaseAPI}
+ */
+export class DefaultApi extends BaseAPI {
+    /**
+     * 주어진 게시물 ID와 내용으로 새 댓글을 생성합니다.
+     * @summary 새 댓글 생성
+     * @param {number} postId 
+     * @param {string} content 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    public createComment(postId: number, content: string, options?: RawAxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).createComment(postId, content, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 주어진 데이터와 선택적인 이미지를 사용하여 새 게시물을 생성합니다.
+     * @summary 새 게시물 생성
+     * @param {PostCreateRequest} data 
+     * @param {Array<File>} [images] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    public createPost(data: PostCreateRequest, images?: Array<File>, options?: RawAxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).createPost(data, images, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 모든 게시물의 목록을 조회합니다.
+     * @summary 모든 게시물 조회
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    public getAllPosts(options?: RawAxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).getAllPosts(options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 주어진 게시물 ID로 해당 게시물의 모든 댓글을 조회합니다.
+     * @summary 게시물의 모든 댓글 조회
+     * @param {number} postId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    public getCommentsByPost(postId: number, options?: RawAxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).getCommentsByPost(postId, options).then((request) => request(this.axios, this.basePath));
+    }
+}
+
+
+
+/**
  * ChatControllerApi - axios parameter creator
  * @export
  */
@@ -2300,364 +2679,14 @@ export class ChatControllerApi extends BaseAPI {
 
 
 /**
- * CommunityControllerApi - axios parameter creator
- * @export
- */
-export const CommunityControllerApiAxiosParamCreator = function (configuration?: Configuration) {
-    return {
-        /**
-         * 주어진 게시물 ID와 내용으로 새 댓글을 생성합니다.
-         * @summary 새 댓글 생성
-         * @param {number} postId 
-         * @param {string} content 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        createComment: async (postId: number, content: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'postId' is not null or undefined
-            assertParamExists('createComment', 'postId', postId)
-            // verify required parameter 'content' is not null or undefined
-            assertParamExists('createComment', 'content', content)
-            const localVarPath = `/api/v1/community/posts/{postId}/comments`
-                .replace(`{${"postId"}}`, encodeURIComponent(String(postId)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication bearerAuth required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-            if (content !== undefined) {
-                localVarQueryParameter['content'] = content;
-            }
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 주어진 데이터와 선택적인 이미지를 사용하여 새 게시물을 생성합니다.
-         * @summary 새 게시물 생성
-         * @param {PostCreateRequest} data 
-         * @param {Array<File>} [images] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        createPost: async (data: PostCreateRequest, images?: Array<File>, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'data' is not null or undefined
-            assertParamExists('createPost', 'data', data)
-            const localVarPath = `/api/v1/community/posts`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-            const localVarFormParams = new ((configuration && configuration.formDataCtor) || FormData)();
-
-            // authentication bearerAuth required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-
-            if (data !== undefined) { 
-                localVarFormParams.append('data', new Blob([JSON.stringify(data)], { type: "application/json", }));
-            }
-                if (images) {
-                images.forEach((element) => {
-                    localVarFormParams.append('images', element as any);
-                })
-            }
-
-    
-    
-            localVarHeaderParameter['Content-Type'] = 'multipart/form-data';
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = localVarFormParams;
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 모든 게시물의 목록을 조회합니다.
-         * @summary 모든 게시물 조회
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getAllPosts: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/api/v1/community/posts`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication bearerAuth required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 주어진 게시물 ID로 해당 게시물의 모든 댓글을 조회합니다.
-         * @summary 게시물의 모든 댓글 조회
-         * @param {number} postId 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getCommentsByPost: async (postId: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'postId' is not null or undefined
-            assertParamExists('getCommentsByPost', 'postId', postId)
-            const localVarPath = `/api/v1/community/posts/{postId}/comments`
-                .replace(`{${"postId"}}`, encodeURIComponent(String(postId)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication bearerAuth required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-    }
-};
-
-/**
- * CommunityControllerApi - functional programming interface
- * @export
- */
-export const CommunityControllerApiFp = function(configuration?: Configuration) {
-    const localVarAxiosParamCreator = CommunityControllerApiAxiosParamCreator(configuration)
-    return {
-        /**
-         * 주어진 게시물 ID와 내용으로 새 댓글을 생성합니다.
-         * @summary 새 댓글 생성
-         * @param {number} postId 
-         * @param {string} content 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async createComment(postId: number, content: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.createComment(postId, content, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['CommunityControllerApi.createComment']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * 주어진 데이터와 선택적인 이미지를 사용하여 새 게시물을 생성합니다.
-         * @summary 새 게시물 생성
-         * @param {PostCreateRequest} data 
-         * @param {Array<File>} [images] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async createPost(data: PostCreateRequest, images?: Array<File>, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.createPost(data, images, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['CommunityControllerApi.createPost']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * 모든 게시물의 목록을 조회합니다.
-         * @summary 모든 게시물 조회
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async getAllPosts(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<Post>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getAllPosts(options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['CommunityControllerApi.getAllPosts']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * 주어진 게시물 ID로 해당 게시물의 모든 댓글을 조회합니다.
-         * @summary 게시물의 모든 댓글 조회
-         * @param {number} postId 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async getCommentsByPost(postId: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CommentsOfPostResponse>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getCommentsByPost(postId, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['CommunityControllerApi.getCommentsByPost']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-    }
-};
-
-/**
- * CommunityControllerApi - factory interface
- * @export
- */
-export const CommunityControllerApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
-    const localVarFp = CommunityControllerApiFp(configuration)
-    return {
-        /**
-         * 주어진 게시물 ID와 내용으로 새 댓글을 생성합니다.
-         * @summary 새 댓글 생성
-         * @param {number} postId 
-         * @param {string} content 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        createComment(postId: number, content: string, options?: any): AxiosPromise<string> {
-            return localVarFp.createComment(postId, content, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 주어진 데이터와 선택적인 이미지를 사용하여 새 게시물을 생성합니다.
-         * @summary 새 게시물 생성
-         * @param {PostCreateRequest} data 
-         * @param {Array<File>} [images] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        createPost(data: PostCreateRequest, images?: Array<File>, options?: any): AxiosPromise<string> {
-            return localVarFp.createPost(data, images, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 모든 게시물의 목록을 조회합니다.
-         * @summary 모든 게시물 조회
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getAllPosts(options?: any): AxiosPromise<Array<Post>> {
-            return localVarFp.getAllPosts(options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 주어진 게시물 ID로 해당 게시물의 모든 댓글을 조회합니다.
-         * @summary 게시물의 모든 댓글 조회
-         * @param {number} postId 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getCommentsByPost(postId: number, options?: any): AxiosPromise<CommentsOfPostResponse> {
-            return localVarFp.getCommentsByPost(postId, options).then((request) => request(axios, basePath));
-        },
-    };
-};
-
-/**
- * CommunityControllerApi - object-oriented interface
- * @export
- * @class CommunityControllerApi
- * @extends {BaseAPI}
- */
-export class CommunityControllerApi extends BaseAPI {
-    /**
-     * 주어진 게시물 ID와 내용으로 새 댓글을 생성합니다.
-     * @summary 새 댓글 생성
-     * @param {number} postId 
-     * @param {string} content 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof CommunityControllerApi
-     */
-    public createComment(postId: number, content: string, options?: RawAxiosRequestConfig) {
-        return CommunityControllerApiFp(this.configuration).createComment(postId, content, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 주어진 데이터와 선택적인 이미지를 사용하여 새 게시물을 생성합니다.
-     * @summary 새 게시물 생성
-     * @param {PostCreateRequest} data 
-     * @param {Array<File>} [images] 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof CommunityControllerApi
-     */
-    public createPost(data: PostCreateRequest, images?: Array<File>, options?: RawAxiosRequestConfig) {
-        return CommunityControllerApiFp(this.configuration).createPost(data, images, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 모든 게시물의 목록을 조회합니다.
-     * @summary 모든 게시물 조회
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof CommunityControllerApi
-     */
-    public getAllPosts(options?: RawAxiosRequestConfig) {
-        return CommunityControllerApiFp(this.configuration).getAllPosts(options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 주어진 게시물 ID로 해당 게시물의 모든 댓글을 조회합니다.
-     * @summary 게시물의 모든 댓글 조회
-     * @param {number} postId 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof CommunityControllerApi
-     */
-    public getCommentsByPost(postId: number, options?: RawAxiosRequestConfig) {
-        return CommunityControllerApiFp(this.configuration).getCommentsByPost(postId, options).then((request) => request(this.axios, this.basePath));
-    }
-}
-
-
-
-/**
  * TrainerControllerApi - axios parameter creator
  * @export
  */
 export const TrainerControllerApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
-         * 
+         * 회원 아이디로 회원 이름을 확인합니다.
+         * @summary 회원 확인
          * @param {string} [userId] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -2695,7 +2724,8 @@ export const TrainerControllerApiAxiosParamCreator = function (configuration?: C
             };
         },
         /**
-         * 
+         * 식단 ID로 식단 계획을 조회합니다.
+         * @summary 식단 계획 조회
          * @param {number} id 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -2733,6 +2763,44 @@ export const TrainerControllerApiAxiosParamCreator = function (configuration?: C
         },
         /**
          * 
+         * @param {string} date 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getMembersMeal: async (date: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'date' is not null or undefined
+            assertParamExists('getMembersMeal', 'date', date)
+            const localVarPath = `/api/v1/trainer/members/meal/{date}`
+                .replace(`{${"date"}}`, encodeURIComponent(String(date)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 현재 로그인한 트레이너의 메인 페이지 정보를 조회합니다.
+         * @summary 트레이너 메인 페이지
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -2765,7 +2833,8 @@ export const TrainerControllerApiAxiosParamCreator = function (configuration?: C
             };
         },
         /**
-         * 
+         * 현재 로그인한 트레이너의 회원 상세 정보를 조회합니다.
+         * @summary 회원 상세 관리
          * @param {string} [userId] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -2803,7 +2872,8 @@ export const TrainerControllerApiAxiosParamCreator = function (configuration?: C
             };
         },
         /**
-         * 
+         * 현재 로그인한 트레이너의 회원 관리를 조회합니다.
+         * @summary 회원 관리
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -2836,7 +2906,8 @@ export const TrainerControllerApiAxiosParamCreator = function (configuration?: C
             };
         },
         /**
-         * 
+         * 현재 로그인한 트레이너의 마이 페이지 정보를 조회합니다.
+         * @summary 트레이너 마이 페이지
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -2869,7 +2940,8 @@ export const TrainerControllerApiAxiosParamCreator = function (configuration?: C
             };
         },
         /**
-         * 
+         * 트레이너가 새로운 티켓을 등록합니다.
+         * @summary 티켓 등록
          * @param {TicketRegisterRequest} ticketRegisterRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -2908,7 +2980,8 @@ export const TrainerControllerApiAxiosParamCreator = function (configuration?: C
             };
         },
         /**
-         * 
+         * 트레이너의 티켓 등록 페이지 정보를 조회합니다.
+         * @summary 티켓 등록 페이지
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -2941,7 +3014,8 @@ export const TrainerControllerApiAxiosParamCreator = function (configuration?: C
             };
         },
         /**
-         * 
+         * 트레이너 정보를 등록합니다.
+         * @summary 트레이너 등록
          * @param {TrainerRequest} data 
          * @param {File} qualificationImage 
          * @param {File} trainingProgramImage 
@@ -2999,7 +3073,8 @@ export const TrainerControllerApiAxiosParamCreator = function (configuration?: C
             };
         },
         /**
-         * 
+         * 트레이너가 회원의 식단을 리뷰합니다.
+         * @summary 식단 리뷰
          * @param {ReviewMealRequest} reviewMealRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -3038,7 +3113,8 @@ export const TrainerControllerApiAxiosParamCreator = function (configuration?: C
             };
         },
         /**
-         * 
+         * 트레이너를 검색합니다.
+         * @summary 트레이너 검색
          * @param {string} [keyWord] 
          * @param {SearchTrainersCategoryEnum} [category] 
          * @param {string} [location] 
@@ -3096,7 +3172,8 @@ export const TrainerControllerApiFp = function(configuration?: Configuration) {
     const localVarAxiosParamCreator = TrainerControllerApiAxiosParamCreator(configuration)
     return {
         /**
-         * 
+         * 회원 아이디로 회원 이름을 확인합니다.
+         * @summary 회원 확인
          * @param {string} [userId] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -3108,7 +3185,8 @@ export const TrainerControllerApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * 식단 ID로 식단 계획을 조회합니다.
+         * @summary 식단 계획 조회
          * @param {number} id 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -3121,6 +3199,19 @@ export const TrainerControllerApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @param {string} date 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getMembersMeal(date: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<TrainerMemberMealsResponse>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getMembersMeal(date, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['TrainerControllerApi.getMembersMeal']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 현재 로그인한 트레이너의 메인 페이지 정보를 조회합니다.
+         * @summary 트레이너 메인 페이지
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -3131,7 +3222,8 @@ export const TrainerControllerApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * 현재 로그인한 트레이너의 회원 상세 정보를 조회합니다.
+         * @summary 회원 상세 관리
          * @param {string} [userId] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -3143,7 +3235,8 @@ export const TrainerControllerApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * 현재 로그인한 트레이너의 회원 관리를 조회합니다.
+         * @summary 회원 관리
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -3154,7 +3247,8 @@ export const TrainerControllerApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * 현재 로그인한 트레이너의 마이 페이지 정보를 조회합니다.
+         * @summary 트레이너 마이 페이지
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -3165,7 +3259,8 @@ export const TrainerControllerApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * 트레이너가 새로운 티켓을 등록합니다.
+         * @summary 티켓 등록
          * @param {TicketRegisterRequest} ticketRegisterRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -3177,7 +3272,8 @@ export const TrainerControllerApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * 트레이너의 티켓 등록 페이지 정보를 조회합니다.
+         * @summary 티켓 등록 페이지
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -3188,7 +3284,8 @@ export const TrainerControllerApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * 트레이너 정보를 등록합니다.
+         * @summary 트레이너 등록
          * @param {TrainerRequest} data 
          * @param {File} qualificationImage 
          * @param {File} trainingProgramImage 
@@ -3202,7 +3299,8 @@ export const TrainerControllerApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * 트레이너가 회원의 식단을 리뷰합니다.
+         * @summary 식단 리뷰
          * @param {ReviewMealRequest} reviewMealRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -3214,7 +3312,8 @@ export const TrainerControllerApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * 트레이너를 검색합니다.
+         * @summary 트레이너 검색
          * @param {string} [keyWord] 
          * @param {SearchTrainersCategoryEnum} [category] 
          * @param {string} [location] 
@@ -3238,7 +3337,8 @@ export const TrainerControllerApiFactory = function (configuration?: Configurati
     const localVarFp = TrainerControllerApiFp(configuration)
     return {
         /**
-         * 
+         * 회원 아이디로 회원 이름을 확인합니다.
+         * @summary 회원 확인
          * @param {string} [userId] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -3247,7 +3347,8 @@ export const TrainerControllerApiFactory = function (configuration?: Configurati
             return localVarFp.checkMember(userId, options).then((request) => request(axios, basePath));
         },
         /**
-         * 
+         * 식단 ID로 식단 계획을 조회합니다.
+         * @summary 식단 계획 조회
          * @param {number} id 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -3257,6 +3358,16 @@ export const TrainerControllerApiFactory = function (configuration?: Configurati
         },
         /**
          * 
+         * @param {string} date 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getMembersMeal(date: string, options?: any): AxiosPromise<Array<TrainerMemberMealsResponse>> {
+            return localVarFp.getMembersMeal(date, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 현재 로그인한 트레이너의 메인 페이지 정보를 조회합니다.
+         * @summary 트레이너 메인 페이지
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -3264,7 +3375,8 @@ export const TrainerControllerApiFactory = function (configuration?: Configurati
             return localVarFp.mainTrainer(options).then((request) => request(axios, basePath));
         },
         /**
-         * 
+         * 현재 로그인한 트레이너의 회원 상세 정보를 조회합니다.
+         * @summary 회원 상세 관리
          * @param {string} [userId] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -3273,7 +3385,8 @@ export const TrainerControllerApiFactory = function (configuration?: Configurati
             return localVarFp.memberDetailManagementTrainer(userId, options).then((request) => request(axios, basePath));
         },
         /**
-         * 
+         * 현재 로그인한 트레이너의 회원 관리를 조회합니다.
+         * @summary 회원 관리
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -3281,7 +3394,8 @@ export const TrainerControllerApiFactory = function (configuration?: Configurati
             return localVarFp.memberManagementTrainer(options).then((request) => request(axios, basePath));
         },
         /**
-         * 
+         * 현재 로그인한 트레이너의 마이 페이지 정보를 조회합니다.
+         * @summary 트레이너 마이 페이지
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -3289,7 +3403,8 @@ export const TrainerControllerApiFactory = function (configuration?: Configurati
             return localVarFp.myPageTrainer(options).then((request) => request(axios, basePath));
         },
         /**
-         * 
+         * 트레이너가 새로운 티켓을 등록합니다.
+         * @summary 티켓 등록
          * @param {TicketRegisterRequest} ticketRegisterRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -3298,7 +3413,8 @@ export const TrainerControllerApiFactory = function (configuration?: Configurati
             return localVarFp.registerTicket(ticketRegisterRequest, options).then((request) => request(axios, basePath));
         },
         /**
-         * 
+         * 트레이너의 티켓 등록 페이지 정보를 조회합니다.
+         * @summary 티켓 등록 페이지
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -3306,7 +3422,8 @@ export const TrainerControllerApiFactory = function (configuration?: Configurati
             return localVarFp.registerTicketPage(options).then((request) => request(axios, basePath));
         },
         /**
-         * 
+         * 트레이너 정보를 등록합니다.
+         * @summary 트레이너 등록
          * @param {TrainerRequest} data 
          * @param {File} qualificationImage 
          * @param {File} trainingProgramImage 
@@ -3317,7 +3434,8 @@ export const TrainerControllerApiFactory = function (configuration?: Configurati
             return localVarFp.registerTrainer(data, qualificationImage, trainingProgramImage, options).then((request) => request(axios, basePath));
         },
         /**
-         * 
+         * 트레이너가 회원의 식단을 리뷰합니다.
+         * @summary 식단 리뷰
          * @param {ReviewMealRequest} reviewMealRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -3326,7 +3444,8 @@ export const TrainerControllerApiFactory = function (configuration?: Configurati
             return localVarFp.reviewMeal(reviewMealRequest, options).then((request) => request(axios, basePath));
         },
         /**
-         * 
+         * 트레이너를 검색합니다.
+         * @summary 트레이너 검색
          * @param {string} [keyWord] 
          * @param {SearchTrainersCategoryEnum} [category] 
          * @param {string} [location] 
@@ -3347,7 +3466,8 @@ export const TrainerControllerApiFactory = function (configuration?: Configurati
  */
 export class TrainerControllerApi extends BaseAPI {
     /**
-     * 
+     * 회원 아이디로 회원 이름을 확인합니다.
+     * @summary 회원 확인
      * @param {string} [userId] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -3358,7 +3478,8 @@ export class TrainerControllerApi extends BaseAPI {
     }
 
     /**
-     * 
+     * 식단 ID로 식단 계획을 조회합니다.
+     * @summary 식단 계획 조회
      * @param {number} id 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -3370,6 +3491,18 @@ export class TrainerControllerApi extends BaseAPI {
 
     /**
      * 
+     * @param {string} date 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof TrainerControllerApi
+     */
+    public getMembersMeal(date: string, options?: RawAxiosRequestConfig) {
+        return TrainerControllerApiFp(this.configuration).getMembersMeal(date, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 현재 로그인한 트레이너의 메인 페이지 정보를 조회합니다.
+     * @summary 트레이너 메인 페이지
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof TrainerControllerApi
@@ -3379,7 +3512,8 @@ export class TrainerControllerApi extends BaseAPI {
     }
 
     /**
-     * 
+     * 현재 로그인한 트레이너의 회원 상세 정보를 조회합니다.
+     * @summary 회원 상세 관리
      * @param {string} [userId] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -3390,7 +3524,8 @@ export class TrainerControllerApi extends BaseAPI {
     }
 
     /**
-     * 
+     * 현재 로그인한 트레이너의 회원 관리를 조회합니다.
+     * @summary 회원 관리
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof TrainerControllerApi
@@ -3400,7 +3535,8 @@ export class TrainerControllerApi extends BaseAPI {
     }
 
     /**
-     * 
+     * 현재 로그인한 트레이너의 마이 페이지 정보를 조회합니다.
+     * @summary 트레이너 마이 페이지
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof TrainerControllerApi
@@ -3410,7 +3546,8 @@ export class TrainerControllerApi extends BaseAPI {
     }
 
     /**
-     * 
+     * 트레이너가 새로운 티켓을 등록합니다.
+     * @summary 티켓 등록
      * @param {TicketRegisterRequest} ticketRegisterRequest 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -3421,7 +3558,8 @@ export class TrainerControllerApi extends BaseAPI {
     }
 
     /**
-     * 
+     * 트레이너의 티켓 등록 페이지 정보를 조회합니다.
+     * @summary 티켓 등록 페이지
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof TrainerControllerApi
@@ -3431,7 +3569,8 @@ export class TrainerControllerApi extends BaseAPI {
     }
 
     /**
-     * 
+     * 트레이너 정보를 등록합니다.
+     * @summary 트레이너 등록
      * @param {TrainerRequest} data 
      * @param {File} qualificationImage 
      * @param {File} trainingProgramImage 
@@ -3444,7 +3583,8 @@ export class TrainerControllerApi extends BaseAPI {
     }
 
     /**
-     * 
+     * 트레이너가 회원의 식단을 리뷰합니다.
+     * @summary 식단 리뷰
      * @param {ReviewMealRequest} reviewMealRequest 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -3455,7 +3595,8 @@ export class TrainerControllerApi extends BaseAPI {
     }
 
     /**
-     * 
+     * 트레이너를 검색합니다.
+     * @summary 트레이너 검색
      * @param {string} [keyWord] 
      * @param {SearchTrainersCategoryEnum} [category] 
      * @param {string} [location] 
@@ -3492,6 +3633,44 @@ export type SearchTrainersCategoryEnum = typeof SearchTrainersCategoryEnum[keyof
  */
 export const UserControllerApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
+        /**
+         * 식단 ID 를 통해 식단 로그를 제거
+         * @summary 식단 기록 삭제
+         * @param {number} id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        deleteMeal: async (id: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('deleteMeal', 'id', id)
+            const localVarPath = `/api/v1/users/meal/{id}`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
         /**
          * 주어진 날짜의 일일 식단 로그를 조회합니다.
          * @summary 일일 식단 로그 조회
@@ -3536,6 +3715,44 @@ export const UserControllerApiAxiosParamCreator = function (configuration?: Conf
             };
         },
         /**
+         * 식단 조회
+         * @summary 식단 조회
+         * @param {number} id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getMeal: async (id: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('getMeal', 'id', id)
+            const localVarPath = `/api/v1/users/meal/{id}`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
          * 현재 로그인한 회원의 정보를 조회합니다.
          * @summary 회원 정보 조회
          * @param {*} [options] Override http request option.
@@ -3563,6 +3780,46 @@ export const UserControllerApiAxiosParamCreator = function (configuration?: Conf
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 식단 재전송을 통해 식단 내용 변경
+         * @summary 식단 내용 변경
+         * @param {MealDto} mealDto 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        modifyMeal: async (mealDto: MealDto, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'mealDto' is not null or undefined
+            assertParamExists('modifyMeal', 'mealDto', mealDto)
+            const localVarPath = `/api/v1/users/meal`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(mealDto, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -3678,6 +3935,19 @@ export const UserControllerApiFp = function(configuration?: Configuration) {
     const localVarAxiosParamCreator = UserControllerApiAxiosParamCreator(configuration)
     return {
         /**
+         * 식단 ID 를 통해 식단 로그를 제거
+         * @summary 식단 기록 삭제
+         * @param {number} id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async deleteMeal(id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.deleteMeal(id, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['UserControllerApi.deleteMeal']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
          * 주어진 날짜의 일일 식단 로그를 조회합니다.
          * @summary 일일 식단 로그 조회
          * @param {string} date 
@@ -3691,6 +3961,19 @@ export const UserControllerApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
+         * 식단 조회
+         * @summary 식단 조회
+         * @param {number} id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getMeal(id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<MealDto>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getMeal(id, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['UserControllerApi.getMeal']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
          * 현재 로그인한 회원의 정보를 조회합니다.
          * @summary 회원 정보 조회
          * @param {*} [options] Override http request option.
@@ -3700,6 +3983,19 @@ export const UserControllerApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getUser(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['UserControllerApi.getUser']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 식단 재전송을 통해 식단 내용 변경
+         * @summary 식단 내용 변경
+         * @param {MealDto} mealDto 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async modifyMeal(mealDto: MealDto, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.modifyMeal(mealDto, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['UserControllerApi.modifyMeal']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -3742,6 +4038,16 @@ export const UserControllerApiFactory = function (configuration?: Configuration,
     const localVarFp = UserControllerApiFp(configuration)
     return {
         /**
+         * 식단 ID 를 통해 식단 로그를 제거
+         * @summary 식단 기록 삭제
+         * @param {number} id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        deleteMeal(id: number, options?: any): AxiosPromise<string> {
+            return localVarFp.deleteMeal(id, options).then((request) => request(axios, basePath));
+        },
+        /**
          * 주어진 날짜의 일일 식단 로그를 조회합니다.
          * @summary 일일 식단 로그 조회
          * @param {string} date 
@@ -3752,6 +4058,16 @@ export const UserControllerApiFactory = function (configuration?: Configuration,
             return localVarFp.getDailyMealLog(date, options).then((request) => request(axios, basePath));
         },
         /**
+         * 식단 조회
+         * @summary 식단 조회
+         * @param {number} id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getMeal(id: number, options?: any): AxiosPromise<MealDto> {
+            return localVarFp.getMeal(id, options).then((request) => request(axios, basePath));
+        },
+        /**
          * 현재 로그인한 회원의 정보를 조회합니다.
          * @summary 회원 정보 조회
          * @param {*} [options] Override http request option.
@@ -3759,6 +4075,16 @@ export const UserControllerApiFactory = function (configuration?: Configuration,
          */
         getUser(options?: any): AxiosPromise<UserResponse> {
             return localVarFp.getUser(options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 식단 재전송을 통해 식단 내용 변경
+         * @summary 식단 내용 변경
+         * @param {MealDto} mealDto 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        modifyMeal(mealDto: MealDto, options?: any): AxiosPromise<string> {
+            return localVarFp.modifyMeal(mealDto, options).then((request) => request(axios, basePath));
         },
         /**
          * 새 회원을 등록합니다.
@@ -3794,6 +4120,18 @@ export const UserControllerApiFactory = function (configuration?: Configuration,
  */
 export class UserControllerApi extends BaseAPI {
     /**
+     * 식단 ID 를 통해 식단 로그를 제거
+     * @summary 식단 기록 삭제
+     * @param {number} id 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof UserControllerApi
+     */
+    public deleteMeal(id: number, options?: RawAxiosRequestConfig) {
+        return UserControllerApiFp(this.configuration).deleteMeal(id, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
      * 주어진 날짜의 일일 식단 로그를 조회합니다.
      * @summary 일일 식단 로그 조회
      * @param {string} date 
@@ -3806,6 +4144,18 @@ export class UserControllerApi extends BaseAPI {
     }
 
     /**
+     * 식단 조회
+     * @summary 식단 조회
+     * @param {number} id 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof UserControllerApi
+     */
+    public getMeal(id: number, options?: RawAxiosRequestConfig) {
+        return UserControllerApiFp(this.configuration).getMeal(id, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
      * 현재 로그인한 회원의 정보를 조회합니다.
      * @summary 회원 정보 조회
      * @param {*} [options] Override http request option.
@@ -3814,6 +4164,18 @@ export class UserControllerApi extends BaseAPI {
      */
     public getUser(options?: RawAxiosRequestConfig) {
         return UserControllerApiFp(this.configuration).getUser(options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 식단 재전송을 통해 식단 내용 변경
+     * @summary 식단 내용 변경
+     * @param {MealDto} mealDto 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof UserControllerApi
+     */
+    public modifyMeal(mealDto: MealDto, options?: RawAxiosRequestConfig) {
+        return UserControllerApiFp(this.configuration).modifyMeal(mealDto, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

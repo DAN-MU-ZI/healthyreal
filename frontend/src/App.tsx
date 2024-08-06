@@ -7,9 +7,11 @@ import {useAuth} from "./providers/AuthContext";
 import Login from "./pages/Login";
 import Tutorial from "./pages/Tutorial";
 import Onboarding from "./pages/Onboarding";
-import Food from "./pages/Food";
+import MainFood from "./components/molecules/MainFood";
 import MypageFood from "./components/molecules/MypageFood";
 import PostFood from "./components/molecules/PostFood";
+import LectureProgramRegistration from "./components/molecules/LectureProgramRegistration/LectureProgramRegistration";
+import { ProgramProvider } from './pages/PostContext';
 import Scheduler from "./pages/Scheduler";
 import FindTrainer from "./pages/FindTrainer";
 import PageLayout from "./components/templates/PageLayout";
@@ -25,6 +27,7 @@ import Chat from "./pages/Chat";
 import MessageMain from "./components/molecules/MessageMain/MessageMain";
 import MessageNoMain from "./components/molecules/MessageNoMain/MessageNoMain";
 import MessagePost from "./components/molecules/MessagePost/MessagePost";
+import TrainerMealManagement from "./pages/TrainerMealManagement";
 import TrainerMain from "./pages/TrainerMain/TrainerMain";
 
 function App() {
@@ -47,7 +50,7 @@ function App() {
               <Route path="/trainerMain" element={<TrainerMain/>}/>
               <Route path="intro/*" element={<Intro />} />
               <Route path="login/user" element={<LoginUser />} />
-              <Route path="food" element={<Food />} />
+              <Route path="food" element={<MainFood />} />
               <Route path="mypage-food" element={<MypageFood />} />
               <Route path="post-food" element={<PostFood />} />
 
@@ -56,6 +59,7 @@ function App() {
 
               <Route path="/chat" element={<ChatRooms />} />
               <Route path="/chat/:chatRoomId" element={<Chat />} />
+              <Route path="/trainer/meal" element={<TrainerMealManagement/>}/>
             </>
           ) : (
             <>
@@ -65,10 +69,26 @@ function App() {
               <Route path="intro/login" element={<Login />} />
               <Route path="intro/tutorial" element={<Tutorial />} />
               <Route path="intro/onboarding" element={<Onboarding />} />
+              <Route path="MessageMain" element={<MessageMain/>}/>
+              <Route path="MessageNoMain" element={<MessageNoMain/>}/>
+              <Route path="MessagePost" element={<MessagePost/>}/>
+              <Route path="MainFood" element={<MainFood />} />
+              <Route path="MypageFood" element={<MypageFood />} />
+              <Route path="PostFood" element={<PostFood />} />
+            </>
+          )}
+        </Routes>
+      </Router>
+
+
+      <ProgramProvider>
+      <Router>
+        <Routes>
               <Route path="scheduler/*" element={<Scheduler />} />
               <Route path="TrainerOn1" element={<TrainerOnboardingStep1 />} />
               <Route path="TrainerOn2" element={<TrainerOnboardingStep2 />} />
               <Route path="TrainerOn3" element={<TrainerOnboardingStep3 />} />
+              <Route path="LectureProgramRegistration" element={<LectureProgramRegistration />} />
               <Route
                 path="TrainerOn4"
                 element={
@@ -85,12 +105,15 @@ function App() {
               <Route path="MessageMain" element={<MessageMain />} />
               <Route path="MessageNoMain" element={<MessageNoMain />} />
               <Route path="MessagePost" element={<MessagePost />} />
-            </>
-          )}
+              <Route path="/trainer/meal" element={<TrainerMealManagement/>}/>
         </Routes>
       </Router>
+    </ProgramProvider>
     </div>
   );
+
+
+  
 }
 
 export default App;

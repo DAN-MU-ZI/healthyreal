@@ -8,6 +8,7 @@ import logoURL from '../../assets/images/healthyrealLogo.png';
 import { TrainerControllerApi, TrainerMainPageResponse, ScheduleDTO, MealDTO, MemberDTO, LocalTime, UserResponse } from '../../typescript-axios';
 import { createTrainerApi, createUserApi } from '../../apis/custom';
 import MainButton from './MainButton';
+import { useNavigate } from 'react-router-dom';
 
 const slideUp = keyframes`
   from {
@@ -72,6 +73,7 @@ const TrainerMain: React.FC = () => {
   const [mainResponse, setMainResponse] = useState<TrainerMainPageResponse | null>(null);
   const [userURL, setUserURL] = useState<string>();
   const [user, setUser] = useState<UserResponse>();
+  const navigate = useNavigate()
 
   useEffect(() => {
     const userApi = createUserApi();
@@ -142,7 +144,9 @@ const TrainerMain: React.FC = () => {
 
       <MainButtonsContainer>
         <MainButton label="회원 관리" />
+        <div onClick={()=> {navigate("/trainer/meal")}}>
         <MainButton label="식단 관리" />
+        </div>
         <MainButton label="일정 관리" />
       </MainButtonsContainer>
     </div>

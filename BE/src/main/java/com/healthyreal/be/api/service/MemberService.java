@@ -8,6 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.healthyreal.be.api.controller.trainer.dto.MealPlanResponse;
 import com.healthyreal.be.api.controller.trainer.dto.ReviewMealRequest;
+import com.healthyreal.be.api.controller.user.MealDto;
 import com.healthyreal.be.api.controller.user.dto.MealUploadRequest;
 import com.healthyreal.be.api.entity.DailyMealDto;
 import com.healthyreal.be.api.entity.Meal;
@@ -62,7 +63,7 @@ public class MemberService {
 	public Member getMemberById(String userId) {
 		return userRepository.findByUserId(userId);
 	}
-	
+
 	public void reviewMeal(Member trainer, ReviewMealRequest request) {
 		Meal meal = mealRepository.findById(request.mealID())
 			.orElseThrow(RuntimeException::new);
@@ -75,5 +76,32 @@ public class MemberService {
 		Meal meal = mealRepository.findById(mealId).orElseThrow(RuntimeException::new);
 
 		return MealPlanResponse.of(meal);
+	}
+
+	public void deleteMeal(Member member, Long mealId) {
+		Meal meal = mealRepository.findById(mealId)
+			.orElseThrow(RuntimeException::new);
+		if (!member.getUserId().equals(meal.getMember().getUserId()))
+			throw new RuntimeException("식단 멤버 불일치");
+		mealRepository.delete(meal);
+	}
+
+	public void modifyMeal(Member member, MealDto mealDto) {
+		Meal meal = mealRepository.findById(mealDto.id())
+			.orElseThrow(RuntimeException::new);
+		if (!member.getUserId().equals(meal.getMember().getUserId()))
+			throw new RuntimeException("식단 멤버 불일치");
+		meal.setTitle(mealDto.title());
+		meal.setContent(mealDto.content());
+		mealRepository.delete(meal);
+	}
+
+	public MealDto getMealById(Member member, Long mealId) {
+		Meal meal = mealRepository.findById(mealId)
+			.orElseThrow(RuntimeException::new);
+		if (!member.getUserId().equals(meal.getMember().getUserId()))
+			throw new RuntimeException("식단 멤버 불일치");
+
+		return MealDto.of(meal);
 	}
 }
