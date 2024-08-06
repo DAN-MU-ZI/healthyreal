@@ -845,6 +845,12 @@ export interface MemberDTO {
      * @type {string}
      * @memberof MemberDTO
      */
+    'memberId'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof MemberDTO
+     */
     'name'?: string;
     /**
      * 

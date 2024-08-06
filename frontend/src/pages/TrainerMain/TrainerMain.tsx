@@ -100,7 +100,7 @@ const TrainerMain: React.FC = () => {
     <div>
       <Header>
         <Logo src={logoURL} alt="HealthyReal Logo" />
-        <UserImage src={userURL} alt="User Profile" />
+        <UserImage src={userURL} alt="User Profile" onClick={() => navigate("#")}/>
       </Header>
 
       <Section>
@@ -143,7 +143,9 @@ const TrainerMain: React.FC = () => {
       </Section>
 
       <MainButtonsContainer>
+        <div onClick={() => {navigate("/trainer/members")}}>
         <MainButton label="회원 관리" />
+        </div>
         <div onClick={()=> {navigate("/trainer/meal")}}>
         <MainButton label="식단 관리" />
         </div>
