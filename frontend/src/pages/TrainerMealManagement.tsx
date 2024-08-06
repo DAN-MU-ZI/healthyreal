@@ -1,13 +1,15 @@
 import * as React from "react";
 import {useState, useEffect, useMemo} from "react";
 import Calendar from "react-calendar";
-import styled from "styled-components";
+import styled, {keyframes} from "styled-components";
 import moment from "moment";
 import {Routes, Route} from "react-router-dom";
 import Text from "../components/atoms/Text";
 import EventList from "../components/molecules/Schedulers/EventList";
 import SchedulerHome from "../components/molecules/Schedulers/SchedulerHome";
 import Scheduler from "./Scheduler";
+import { TrainerControllerApi, TrainerMemberMealsResponse } from "../typescript-axios";
+import { createTrainerApi } from "../apis/custom";
 
 interface EventItem {
     id: number;
@@ -40,9 +42,49 @@ const StyledDot = styled.div`
     border-radius: 50%;
     position: absolute;
 `;
+
+const slideUp = keyframes`
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+`;
+
+const ItemList = styled.div`
+  animation: ${slideUp} 0.5s ease-in-out;
+  background-color: #f9f9f9;
+  padding: 10px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+`;
+
+const Section = styled.div`
+  margin-bottom: 20px;
+`;
+
+const Item = styled.div`
+  background: #fff;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+`;
+
+const EmptyMessage = styled.div`
+  color: #777;
+  text-align: center;
+  padding: 20px;
+`;
+
 const TrainerMealManagement: React.FC = () => {
+    const trainerApi = createTrainerApi();
     const [selectedDate, setSelectedDate] = useState<Date | null>(null);
     const [eventList, seteventList] = useState<EventItem[]>([]);
+    const [result, setResult] = useState<TrainerMemberMealsResponse[]>([]);
     const states = {eventList};
 
     const bookedDay = useMemo(
@@ -70,8 +112,16 @@ const TrainerMealManagement: React.FC = () => {
         }
     };
 
+    const loadResult = async (date: Date) => {
+        const response = 
+            await trainerApi.getMembersMeal(moment(date).format("YYYY-MM-DD"));
+        setResult(response.data);
+    };
+
     const handleDateClick = (date: Date) => {
         setSelectedDate(date);
+        loadResult(date);
+        console.log(moment(date).format("YYYY-MM-DD"));
     };
     
     const displayDate = selectedDate
@@ -100,6 +150,21 @@ const TrainerMealManagement: React.FC = () => {
             <EventList states={states} selectedDate={selectedDate} />
           </div>
       </article>
+      <Section>
+        <ItemList>
+            {result.length ? (
+                result.map(meal => (
+                    <Item>
+                        <div>{meal.mealTitle} - {meal.mealType}</div>
+                        <div>{meal.memberName}</div>
+                        <div>{meal.isComment}</div>
+                    </Item>
+                ))
+            ) : (
+                <EmptyMessage>일정이 없습니다.</EmptyMessage>
+            )}
+        </ItemList>
+      </Section>
     </div>
     );
 }

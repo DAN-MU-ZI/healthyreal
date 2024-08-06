@@ -60,6 +60,7 @@ function App() {
 
               <Route path="/chat" element={<ChatRooms />} />
               <Route path="/chat/:chatRoomId" element={<Chat />} />
+              <Route path="/trainer/meal" element={<TrainerMealManagement/>}/>
             </>
 
           ) : (
