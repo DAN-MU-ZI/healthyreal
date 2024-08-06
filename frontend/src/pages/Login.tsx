@@ -79,15 +79,6 @@ export default function Login() {
         bottoms={
           <>
             <Button
-              backgroundColor="#2cb24a"
-              width="var(--btn-large)"
-              color="white"
-              onClick={() => clickLogin("naver")}
-            >
-              <img src={naverLogo} alt="naverIcon" width="25px" />
-              네이버로 시작하기
-            </Button>
-            <Button
               backgroundColor="#FECA00"
               width="var(--btn-large)"
               color="var(--main-blue)"
