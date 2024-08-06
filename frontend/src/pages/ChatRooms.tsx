@@ -3,13 +3,14 @@ import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { createChatApi } from '../apis/custom';
 import { ChatRoomInfo, ChatRoomsResponse } from '../typescript-axios';
+import noMessage from '../assets/images/NoMessage.png';
 
 const ChatRoomsContainer = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 100vh;
+    height: 80vh;
     background-color: #f0f4f8;
 `;
 
@@ -50,6 +51,11 @@ const NoChatRooms = styled.div`
     font-size: 20px;
 `;
 
+const NoMsgImg = styled.img`
+    width: 30%;
+    height: auto;
+`
+
 const ChatRooms: React.FC = () => {
     const chatApi = createChatApi();
     const [chatRooms, setChatRooms] = useState<ChatRoomInfo[]>([]);
@@ -76,7 +82,12 @@ const ChatRooms: React.FC = () => {
         <ChatRoomsContainer>
             <Title>Your Chat Rooms</Title>
             {chatRooms.length === 0 ? (
-                <NoChatRooms>현재 진행중인 채팅이 없어요. 채팅을 시작해보세요!</NoChatRooms>
+                <>
+                <NoMsgImg src={noMessage} alt="noMessage.png" />
+                <h6>현재 진행중인 채팅이 없어요</h6>
+                <h6>채팅을 시작해보세요!</h6>
+                </>
+                // <NoChatRooms>현재 진행중인 채팅이 없어요. 채팅을 시작해보세요!</NoChatRooms>
             ) : (
                 <ChatRoomList>
                     {chatRooms.map(room => (
