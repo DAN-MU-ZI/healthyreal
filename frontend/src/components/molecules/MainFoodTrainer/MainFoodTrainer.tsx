@@ -2,10 +2,10 @@ import React, { useState, useContext, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
-import './MainFood.css';
+import './MainFoodTrainer.css';
 import { PostContext } from '../../../pages/PostContext';
 
-const MainFood: React.FC = () => {
+const MainFoodTrainer: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const context = useContext(PostContext);
@@ -47,11 +47,10 @@ const MainFood: React.FC = () => {
   };
 
   return (
-    <div className="container">
+    <div className="containermft">
       <div className="headermf">
         <button onClick={() => navigate(-1)} className="back-button">←</button>
-        <h1>식단 관리</h1>
-        <button onClick={() => navigate('/MypageFood')} className="mypage-button">Mypage</button>
+        <h1>식단 관리 (트레이너)</h1>
       </div>
       <div className="calendar-container">
         <Calendar onChange={(date) => setSelectedDate(date as Date)} value={selectedDate} />
@@ -66,6 +65,7 @@ const MainFood: React.FC = () => {
             <span className={`meal-status ${mealStatus(mealTime) === '작성' ? 'complete' : 'incomplete'}`}>
               {mealStatus(mealTime)}
             </span>
+            <button onClick={() => navigate('/TrainerFeedback')} className="feedback-buttonft">피드백 작성하기</button>
           </div>
         ))}
       </div>
@@ -73,4 +73,4 @@ const MainFood: React.FC = () => {
   );
 };
 
-export default MainFood;
+export default MainFoodTrainer;

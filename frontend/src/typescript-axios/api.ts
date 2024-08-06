@@ -3201,6 +3201,7 @@ export const TrainerControllerApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getMealPlan(id, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['TrainerControllerApi.getMealPlan']?.[localVarOperationServerIndex]?.url;
+
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -3213,6 +3214,7 @@ export const TrainerControllerApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getMembersMeal(date, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['TrainerControllerApi.getMembersMeal']?.[localVarOperationServerIndex]?.url;
+
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -3504,6 +3506,7 @@ export class TrainerControllerApi extends BaseAPI {
      */
     public getMembersMeal(date: string, options?: RawAxiosRequestConfig) {
         return TrainerControllerApiFp(this.configuration).getMembersMeal(date, options).then((request) => request(this.axios, this.basePath));
+
     }
 
     /**

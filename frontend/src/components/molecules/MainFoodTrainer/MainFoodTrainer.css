@@ -1,0 +1,103 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 15px;
+    padding: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f4f4f4;
+    width: 100%;
+  }
+  
+  .containermft {
+    width: 100%; /* 너비를 320px로 설정 */
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+  }
+  
+  .headermft {
+    display: flex;
+    flex-direction: column; /* 제목과 버튼을 위아래로 정렬 */
+    align-items: center;
+    padding: 15px;
+    background-color: #f8f8f8;
+    border-bottom: 1px solid #eaeaea;
+  }
+  
+  .headermf h1 {
+    color: black;
+    margin: 0; /* 제목 주변 여백 제거 */
+    font-size: 25;
+    border: #333;
+  }
+  
+  .back-button {
+    background: none;
+    border: none;
+    font-size: 24px;
+    margin-top: 10px; /* 제목과 버튼 사이의 간격 설정 */
+    cursor: pointer;
+  }
+  
+  .calendar-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 15px; /* 패딩 설정 */
+    width: 350px;
+  }
+  
+  .selected-date {
+    margin-top: 4px;
+    font-size: 18px; /* 폰트 크기 조정 */
+    font-weight: bold;
+    color: #333; /* 글자 색상 조정 */
+  }
+  
+  .meal-list {
+    padding: 8px; /* 패딩 설정 */
+  }
+  
+  .meal-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 0; /* 패딩 설정 */
+    border-bottom: 1px solid #eee;
+    cursor: pointer;
+  }
+  
+  .meal-time {
+    font-size: 15px; /* 폰트 크기 조정 */
+    color: #333; /* 글자 색상 조정 */
+  }
+  
+  .meal-status {
+    font-size: 13px; /* 폰트 크기 조정 */
+    padding: 2px 4px; /* 패딩 설정 */
+    border-radius: 4px;
+  }
+  
+  .incomplete {
+    background-color: #ffcccc;
+    color: #cc0000;
+  }
+  
+  .complete {
+    background-color: #ccffcc;
+    color: #006600;
+  }
+  
+  .mypage-buttonmft {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
