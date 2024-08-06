@@ -33,12 +33,10 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @RequestMapping("/api/v1/trainer")
 @RequiredArgsConstructor
-@Slf4j
 @Tag(name = "트레이너 컨트롤러", description = "트레이너 관련 API를 제공하는 컨트롤러")
 public class TrainerController {
 	private final TrainerService trainerService;
