@@ -11,7 +11,6 @@ import MainFood from "./components/molecules/MainFood";
 import MypageFood from "./components/molecules/MypageFood";
 import PostFood from "./components/molecules/PostFood";
 import LectureProgramRegistration from "./components/molecules/LectureProgramRegistration/LectureProgramRegistration";
-import MessagePost from "./components/molecules/MessagePost/MessagePost";
 import { ProgramProvider } from './pages/PostContext';
 import Scheduler from "./pages/Scheduler";
 import FindTrainer from "./pages/FindTrainer";
@@ -48,10 +47,6 @@ function App() {
               <Route path="/" element={<Main />} />
               <Route path="intro/*" element={<Intro />} />
               <Route path="login/user" element={<LoginUser />} />
-              <Route path="food" element={<Food />} />
-              <Route path="mypage-food" element={<MypageFood />} />
-              <Route path="post-food" element={<PostFood />} />
-
               {/* <Route path="scheduler/*" element={<Scheduler />} /> */}
               {/* <Route path="findTrainer/*" element={<FindTrainer />} /> */}
 
@@ -72,6 +67,9 @@ function App() {
               <Route path="MainFood" element={<MainFood />} />
               <Route path="MypageFood" element={<MypageFood />} />
               <Route path="PostFood" element={<PostFood />} />
+              <Route path="Scheduler" element={<Scheduler />} />
+              <Route path="FindTrainer" element={<FindTrainer />} />
+              <Route path="PageLayout" element={<PageLayout />} />
             </>
           )}
         </Routes>
@@ -81,7 +79,7 @@ function App() {
       <ProgramProvider>
       <Router>
         <Routes>
-        <Route path="TrainerOn1" element={<TrainerOnboardingStep1 />} />
+              <Route path="TrainerOn1" element={<TrainerOnboardingStep1 />} />
               <Route path="TrainerOn2" element={<TrainerOnboardingStep2 />} />
               <Route path="LectureProgramRegistration" element={<LectureProgramRegistration />} />
               <Route path="TrainerOn3" element={<TrainerOnboardingStep3 />} />
@@ -98,8 +96,6 @@ function App() {
               <Route path="MessageMain" element={<MessageMain/>}/>
               <Route path="MessageNoMain" element={<MessageNoMain/>}/>
               <Route path="MessagePost" element={<MessagePost/>}/>
-            </>
-          )}
         </Routes>
       </Router>
     </ProgramProvider>
