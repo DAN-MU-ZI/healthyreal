@@ -1555,43 +1555,6 @@ export interface TrainerMemberManagementResponse {
 /**
  * 
  * @export
- * @interface TrainerMemberMealsResponse
- */
-export interface TrainerMemberMealsResponse {
-    /**
-     * 
-     * @type {number}
-     * @memberof TrainerMemberMealsResponse
-     */
-    'memberSeq'?: number;
-    /**
-     * 
-     * @type {string}
-     * @memberof TrainerMemberMealsResponse
-     */
-    'memberName'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof TrainerMemberMealsResponse
-     */
-    'mealTitle'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof TrainerMemberMealsResponse
-     */
-    'mealType'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof TrainerMemberMealsResponse
-     */
-    'isComment'?: string;
-}
-/**
- * 
- * @export
  * @interface TrainerMyPageResponse
  */
 export interface TrainerMyPageResponse {
@@ -2263,43 +2226,6 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
             };
         },
         /**
-         * 
-         * @param {string} date 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getMembersMeal: async (date: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'date' is not null or undefined
-            assertParamExists('getMembersMeal', 'date', date)
-            const localVarPath = `/api/v1/trainer/members/meal/{date}`
-                .replace(`{${"date"}}`, encodeURIComponent(String(date)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication bearerAuth required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
          * 현재 로그인한 트레이너의 메인 페이지 정보를 조회합니다.
          * @summary 트레이너 메인 페이지
          * @param {*} [options] Override http request option.
@@ -2752,18 +2678,6 @@ export const DefaultApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
-         * @param {string} date 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async getMembersMeal(date: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<TrainerMemberMealsResponse>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getMembersMeal(date, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['DefaultApi.getMembersMeal']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
          * 현재 로그인한 트레이너의 메인 페이지 정보를 조회합니다.
          * @summary 트레이너 메인 페이지
          * @param {*} [options] Override http request option.
@@ -2952,15 +2866,6 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
             return localVarFp.getMealPlan(id, options).then((request) => request(axios, basePath));
         },
         /**
-         * 
-         * @param {string} date 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getMembersMeal(date: string, options?: any): AxiosPromise<Array<TrainerMemberMealsResponse>> {
-            return localVarFp.getMembersMeal(date, options).then((request) => request(axios, basePath));
-        },
-        /**
          * 현재 로그인한 트레이너의 메인 페이지 정보를 조회합니다.
          * @summary 트레이너 메인 페이지
          * @param {*} [options] Override http request option.
@@ -3131,17 +3036,6 @@ export class DefaultApi extends BaseAPI {
      */
     public getMealPlan(id: number, options?: RawAxiosRequestConfig) {
         return DefaultApiFp(this.configuration).getMealPlan(id, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @param {string} date 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof DefaultApi
-     */
-    public getMembersMeal(date: string, options?: RawAxiosRequestConfig) {
-        return DefaultApiFp(this.configuration).getMembersMeal(date, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
