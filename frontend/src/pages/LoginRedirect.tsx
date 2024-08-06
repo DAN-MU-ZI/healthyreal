@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { defaultInstance } from "../apis/api";
+import React, {useEffect} from "react";
+import {useNavigate} from "react-router-dom";
+import {defaultInstance} from "../apis/api";
 
 const LoginRedirect: React.FC = () => {
   const navigate = useNavigate();
