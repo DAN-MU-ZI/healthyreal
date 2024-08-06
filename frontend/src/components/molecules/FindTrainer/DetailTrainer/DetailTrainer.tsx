@@ -1,24 +1,17 @@
 import * as React from "react";
-import {TrainerRequestGoalTypesEnum as CategoryEnum} from "../../../../typescript-axios";
+import {
+  SearchTrainersCategoryEnum as CategoryEnum,
+  FoundTrainer,
+} from "../../../../typescript-axios";
 import Text from "../../../atoms/Text";
 import Back from "../../../atoms/Back";
 import Button from "../../../atoms/Button";
 import "./styles.css";
 import {useNavigate, useParams} from "react-router-dom";
 
-interface TrainerItem {
-  thumbNailUrl: string;
-  trainerId: number;
-  name: string;
-  address: string;
-  phoneNumber: string;
-  describe: string;
-  categories: CategoryEnum[];
-}
-
 interface Props {
   states: {
-    trainerList: TrainerItem[];
+    trainerList: FoundTrainer[];
   };
 }
 
