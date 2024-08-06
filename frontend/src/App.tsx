@@ -14,7 +14,6 @@ import React, { useState } from 'react';
 import { TrainerOnboardingStep1 } from "./components/molecules/TrainerOnboardingStep1";
 import { TrainerOnboardingStep2 } from "./components/molecules/TrainerOnboardingStep2";
 import LectureProgramRegistration from "./components/molecules/LectureProgramRegistration/LectureProgramRegistration";
-import LectureProgramPreview from "./components/molecules/LectureProgramPreview/LectureProgramPreview";
 import { TrainerOnboardingStep3 } from "./components/molecules/TrainerOnboardingStep3";
 import TrainerOnboardingStep4 from './components/molecules/TrainerOnboardingStep4/TrainerOnboardingStep4';
 import TrainerOnboardingStep5 from "./components/molecules/TrainerOnboardingStep5/TrainerOnboardingStep5";
@@ -73,7 +72,6 @@ const App: React.FC = () => {
                 path="TrainerOn4" 
                 element={<TrainerOnboardingStep4 onboardingGender={onboardingGender} onDataChange={handleGenderChange} />} 
               />
-              <Route path = "LectureProgramPrevie" element={<LectureProgramPreview/>}/>
               <Route path="TrainerOn4/TrainerOn5" element={<TrainerOnboardingStep5 />} />
               <Route path="MessageMain" element={<MessageMain/>}/>
               <Route path="MessageNoMain" element={<MessageNoMain/>}/>

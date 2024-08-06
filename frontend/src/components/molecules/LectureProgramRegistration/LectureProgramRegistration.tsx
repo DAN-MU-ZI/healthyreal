@@ -64,7 +64,7 @@ const LectureProgramRegistration: React.FC = () => {
         <label>사진</label>
         <FileInput onFileChange={handleImageChange} />
       </div>
-      <button onClick={handleSubmit}>등록하기</button>
+      <button onClick={() => navigate('/TrainerOn3')} className="next-button">다음</button>
     </div>
   );
 };
