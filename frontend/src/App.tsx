@@ -25,6 +25,7 @@ import Chat from "./pages/Chat";
 import MessageMain from "./components/molecules/MessageMain/MessageMain";
 import MessageNoMain from "./components/molecules/MessageNoMain/MessageNoMain";
 import MessagePost from "./components/molecules/MessagePost/MessagePost";
+import TrainerMain from "./pages/TrainerMain/TrainerMain";
 
 
 function App() {
@@ -44,6 +45,7 @@ function App() {
           {isAuthenticated ? (
             <>
               <Route path="/" element={<Main />} />
+              <Route path="/trainerMain" element={<TrainerMain/>}/>
               <Route path="intro/*" element={<Intro />} />
               <Route path="login/user" element={<LoginUser />} />
               <Route path="food" element={<Food />} />
