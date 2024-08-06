@@ -37,7 +37,19 @@ const MainFoodTrainer: React.FC = () => {
   };
 
   const handleMealClick = (mealTime: string) => {
+    // Navigate to PostFood only if you want to edit a post
     navigate('/PostFood', {
+      state: {
+        mealTime,
+        selectedDate: formattedDate,
+        postToEdit: posts.find(post => post.date.startsWith(formattedDate) && post.mealTime === mealTime)
+      }
+    });
+  };
+
+  const handleFeedbackClick = (mealTime: string) => {
+    // Navigate to TrainerFeedback
+    navigate('/TrainerFeedback', {
       state: {
         mealTime,
         selectedDate: formattedDate,
@@ -60,12 +72,13 @@ const MainFoodTrainer: React.FC = () => {
       </div>
       <div className="meal-list">
         {['아침', '점심', '저녁'].map(mealTime => (
-          <div key={mealTime} className="meal-item" onClick={() => handleMealClick(mealTime)}>
+          <div key={mealTime} className="meal-item">
             <span className="meal-time">{mealTime}</span>
             <span className={`meal-status ${mealStatus(mealTime) === '작성' ? 'complete' : 'incomplete'}`}>
               {mealStatus(mealTime)}
             </span>
-            <button onClick={() => navigate('/TrainerFeedback')} className="feedback-buttonft">피드백 작성하기</button>
+            <button onClick={() => handleMealClick(mealTime)} className="edit-button">식사 기록 수정</button>
+            <button onClick={() => handleFeedbackClick(mealTime)} className="feedback-buttonft">피드백 작성하기</button>
           </div>
         ))}
       </div>

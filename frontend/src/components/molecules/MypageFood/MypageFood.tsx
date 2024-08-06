@@ -76,6 +76,16 @@ const MypageFood: React.FC = () => {
               <button onClick={() => handleEdit(post)} className="edit-button">수정</button>
               <button onClick={() => handleDelete(post.id)} className="delete-button">삭제</button>
             </div>
+            {post.feedback && post.feedback.length > 0 && (
+              <div className="feedback-section">
+                <h3>피드백</h3>
+                {post.feedback.map((fb: string, index: number) => (
+                  <div key={index} className="feedback-item">
+                    <p>{fb}</p>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         ))}
       </div>
