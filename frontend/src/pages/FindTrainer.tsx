@@ -1,11 +1,12 @@
 import * as React from "react";
-import {useState, useEffect} from "react";
-import {Routes, Route} from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Routes, Route } from "react-router-dom";
 import FindTrainerHome from "../components/molecules/FindTrainer/FindTrainerHome";
 import DetailTrainer from "../components/molecules/FindTrainer/DetailTrainer";
-import {TrainerRequestGoalTypesEnum as CategoryEnum} from "../typescript-axios";
+import { TrainerRequestGoalTypesEnum as CategoryEnum } from "../typescript-axios";
 import request from "../apis/api/request";
-import {trainerApi, userApi} from "../apis/custom";
+// import {trainerApi, userApi} from "../apis/custom";
+
 
 interface TrainerItem {
   thumbNailUrl: string;
@@ -42,11 +43,11 @@ const FindTrainer: React.FC = () => {
   ) => {
     console.log(keyword, category, location);
     callback();
-    const data = {keyword, category, location};
+    const data = { keyword, category, location };
   };
 
-  const callbacks = {filterTrainer};
-  const states = {trainerList};
+  const callbacks = { filterTrainer };
+  const states = { trainerList };
 
   return (
     <Routes>
