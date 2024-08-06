@@ -34,15 +34,11 @@ public class CommunityController {
 
 	@Operation(
 		summary = "새 게시물 생성",
-		description = "주어진 데이터와 선택적인 이미지를 사용하여 새 게시물을 생성합니다.",
-		parameters = {
-			@Parameter(name = "data", description = "게시물 생성을 위한 데이터", required = true),
-			@Parameter(name = "images", description = "선택적인 게시물 이미지", required = false)
-		}
+		description = "주어진 데이터와 선택적인 이미지를 사용하여 새 게시물을 생성합니다."
 	)
 	@PostMapping(value = "/posts", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 	public ResponseEntity<String> createPost(
-		@CurrentUser Member user,
+		@Parameter(hidden = true) @CurrentUser Member user,
 		@RequestPart(value = "data") PostCreateRequest request,
 		@RequestPart(value = "images", required = false) List<MultipartFile> images) {
 		communityService.createPost(user, request, images);
@@ -51,18 +47,15 @@ public class CommunityController {
 
 	@Operation(
 		summary = "새 댓글 생성",
-		description = "주어진 게시물 ID와 내용으로 새 댓글을 생성합니다.",
-		parameters = {
-			@Parameter(name = "postId", description = "댓글을 추가할 게시물의 ID", required = true),
-			@Parameter(name = "content", description = "댓글의 내용", required = true)
-		}
+
+		description = "주어진 게시물 ID와 내용으로 새 댓글을 생성합니다."
 	)
 	@PostMapping("/posts/{postId}/comments")
 	public ResponseEntity<String> createComment(
-		@CurrentUser Member user,
+		@Parameter(hidden = true) @CurrentUser Member user,
 		@PathVariable(value = "postId") Long postId,
-		@RequestParam String content
-	) {
+		@RequestParam String content) {
+
 		Post post = communityService.findPostById(postId);
 		communityService.createComment(user, post, content);
 		return ResponseEntity.ok("ok");
@@ -80,13 +73,11 @@ public class CommunityController {
 
 	@Operation(
 		summary = "게시물의 모든 댓글 조회",
-		description = "주어진 게시물 ID로 해당 게시물의 모든 댓글을 조회합니다.",
-		parameters = {
-			@Parameter(name = "postId", description = "댓글을 조회할 게시물의 ID", required = true)
-		}
+		description = "주어진 게시물 ID로 해당 게시물의 모든 댓글을 조회합니다."
 	)
 	@GetMapping("/posts/{postId}/comments")
-	public ResponseEntity<CommentsOfPostResponse> getCommentsByPost(@PathVariable(value = "postId") Long postId) {
+	public ResponseEntity<CommentsOfPostResponse> getCommentsByPost(
+		@PathVariable(value = "postId") Long postId) {
 		CommentsOfPostResponse response = CommentsOfPostResponse.of(communityService.getCommentsByPost(postId));
 		return ResponseEntity.ok(response);
 	}

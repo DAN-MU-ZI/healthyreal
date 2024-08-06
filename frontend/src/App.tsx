@@ -1,9 +1,9 @@
-import {BrowserRouter as Router, Route, Routes} from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Main from "./pages/Main";
 import LoginRedirect from "./pages/LoginRedirect";
 import LoginUser from "./pages/LoginUser";
 import Intro from "./pages/Intro";
-import {useAuth} from "./providers/AuthContext";
+import { useAuth } from "./providers/AuthContext";
 import Login from "./pages/Login";
 import Tutorial from "./pages/Tutorial";
 import Onboarding from "./pages/Onboarding";
@@ -26,6 +26,7 @@ import MessageMain from "./components/molecules/MessageMain/MessageMain";
 import MessageNoMain from "./components/molecules/MessageNoMain/MessageNoMain";
 import MessagePost from "./components/molecules/MessagePost/MessagePost";
 
+
 function App() {
   const {isAuthenticated} = useAuth();
   const [onboardingGender, setOnboardingGender] = useState<
@@ -41,24 +42,23 @@ function App() {
       <Router>
         <Routes>
           {isAuthenticated ? (
-            <Route path="/" element={<PageLayout />}>
-              <Route index element={<Main />} />
+            <>
+              <Route path="/" element={<Main />} />
               <Route path="intro/*" element={<Intro />} />
               <Route path="login/user" element={<LoginUser />} />
-              {/* <Route path="food" element={<Food />} /> */}
+              <Route path="food" element={<Food />} />
               <Route path="mypage-food" element={<MypageFood />} />
               <Route path="post-food" element={<PostFood />} />
+
               {/* <Route path="scheduler/*" element={<Scheduler />} /> */}
               {/* <Route path="findTrainer/*" element={<FindTrainer />} /> */}
 
               <Route path="/chat" element={<ChatRooms />} />
               <Route path="/chat/:chatRoomId" element={<Chat />} />
-            </Route>
+            </>
+
           ) : (
-            <Route path="/" element={<PageLayout />}>
-              <Route path="food" element={<Food />} />
-              <Route path="scheduler/*" element={<Scheduler />} />
-              <Route path="findTrainer/*" element={<FindTrainer />} />
+            <>
               <Route path="oauth/redirect" element={<LoginRedirect />} />
               <Route path="login/*" element={<Login />} />
               <Route path="intro/login" element={<Login />} />
@@ -84,7 +84,7 @@ function App() {
               <Route path="MessageMain" element={<MessageMain />} />
               <Route path="MessageNoMain" element={<MessageNoMain />} />
               <Route path="MessagePost" element={<MessagePost />} />
-            </Route>
+            </>
           )}
         </Routes>
       </Router>

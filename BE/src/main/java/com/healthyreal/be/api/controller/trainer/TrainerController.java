@@ -50,7 +50,7 @@ public class TrainerController {
 	)
 	@GetMapping
 	public ResponseEntity<TrainerMainPageResponse> mainTrainer(
-		@CurrentUser Member user
+		@Parameter(hidden = true) @CurrentUser Member user
 	) {
 		TrainerMainPageResponse mainPageByTrainer = trainerService.getMainPageByTrainer(user);
 		return ResponseEntity.ok(mainPageByTrainer);
@@ -58,16 +58,11 @@ public class TrainerController {
 
 	@Operation(
 		summary = "트레이너 등록",
-		description = "트레이너 정보를 등록합니다.",
-		parameters = {
-			@Parameter(name = "data", description = "트레이너 요청 데이터"),
-			@Parameter(name = "qualificationImage", description = "자격증 이미지"),
-			@Parameter(name = "trainingProgramImage", description = "훈련 프로그램 이미지")
-		}
+		description = "트레이너 정보를 등록합니다."
 	)
 	@PostMapping(value = "/register", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 	public ResponseEntity<String> registerTrainer(
-		@CurrentUser Member user,
+		@Parameter(hidden = true) @CurrentUser Member user,
 		@RequestPart(value = "data") TrainerRequest request,
 		@RequestPart(value = "qualificationImage") MultipartFile qualificationImage,
 		@RequestPart(value = "trainingProgramImage") MultipartFile trainingProgramImage
@@ -82,7 +77,7 @@ public class TrainerController {
 	)
 	@GetMapping("/mypage")
 	public ResponseEntity<TrainerMyPageResponse> myPageTrainer(
-		@CurrentUser Member user
+		@Parameter(hidden = true) @CurrentUser Member user
 	) {
 		TrainerMyPageResponse trainerMyPageResponse = trainerService.readTrainerMyPage(user);
 		return ResponseEntity.ok(trainerMyPageResponse);
@@ -90,12 +85,7 @@ public class TrainerController {
 
 	@Operation(
 		summary = "트레이너 검색",
-		description = "트레이너를 검색합니다.",
-		parameters = {
-			@Parameter(name = "keyWord", description = "검색 키워드"),
-			@Parameter(name = "category", description = "카테고리"),
-			@Parameter(name = "location", description = "위치")
-		}
+		description = "트레이너를 검색합니다."
 	)
 	@GetMapping("/search")
 	public ResponseEntity<SearchTrainerResponse> searchTrainers(
@@ -113,7 +103,7 @@ public class TrainerController {
 	)
 	@GetMapping("/members")
 	public ResponseEntity<TrainerMemberManagementResponse> memberManagementTrainer(
-		@CurrentUser Member user
+		@Parameter(hidden = true) @CurrentUser Member user
 	) {
 		TrainerMemberManagementResponse response = trainerService.readTrainerMembers(user);
 		return ResponseEntity.ok(response);
@@ -121,19 +111,15 @@ public class TrainerController {
 
 	@Operation(
 		summary = "회원 상세 관리",
-		description = "현재 로그인한 트레이너의 회원 상세 정보를 조회합니다.",
-		parameters = {
-			@Parameter(name = "userId", description = "회원 아이디")
-		}
+		description = "현재 로그인한 트레이너의 회원 상세 정보를 조회합니다."
 	)
 	@GetMapping("/members/detail")
 	public ResponseEntity<TrainerMemberDetailManagementResponse> memberDetailManagementTrainer(
-		@CurrentUser Member user,
+		@Parameter(hidden = true) @CurrentUser Member user,
 		@RequestParam(required = false) String userId
 	) {
 		try {
-			TrainerMemberDetailManagementResponse response = trainerService.readTrainerMembersDetail(
-				user, userId);
+			TrainerMemberDetailManagementResponse response = trainerService.readTrainerMembersDetail(user, userId);
 			return ResponseEntity.ok(response);
 		} catch (Exception e) {
 			return ResponseEntity.status(400).body(null);
@@ -142,10 +128,7 @@ public class TrainerController {
 
 	@Operation(
 		summary = "회원 확인",
-		description = "회원 아이디로 회원 이름을 확인합니다.",
-		parameters = {
-			@Parameter(name = "userId", description = "회원 아이디")
-		}
+		description = "회원 아이디로 회원 이름을 확인합니다."
 	)
 	@GetMapping("/checkmember")
 	public ResponseEntity<String> checkMember(
@@ -163,7 +146,7 @@ public class TrainerController {
 	)
 	@GetMapping("/ticket/register")
 	public ResponseEntity<ProgramListResponse> registerTicketPage(
-		@CurrentUser Member trainer
+		@Parameter(hidden = true) @CurrentUser Member trainer
 	) {
 		ProgramListResponse response = trainerService.getProgramList(trainer);
 		return ResponseEntity.ok(response);
@@ -171,14 +154,11 @@ public class TrainerController {
 
 	@Operation(
 		summary = "티켓 등록",
-		description = "트레이너가 새로운 티켓을 등록합니다.",
-		parameters = {
-			@Parameter(name = "request", description = "티켓 등록 요청 데이터")
-		}
+		description = "트레이너가 새로운 티켓을 등록합니다."
 	)
 	@PostMapping("/ticket/register")
 	public ResponseEntity<String> registerTicket(
-		@CurrentUser Member trainer,
+		@Parameter(hidden = true) @CurrentUser Member trainer,
 		@RequestBody TicketRegisterRequest request
 	) {
 		trainerService.registerTicket(trainer, request);
@@ -187,14 +167,11 @@ public class TrainerController {
 
 	@Operation(
 		summary = "식단 리뷰",
-		description = "트레이너가 회원의 식단을 리뷰합니다.",
-		parameters = {
-			@Parameter(name = "request", description = "식단 리뷰 요청 데이터")
-		}
+		description = "트레이너가 회원의 식단을 리뷰합니다."
 	)
 	@PostMapping("/meal/review")
 	public ResponseEntity<String> reviewMeal(
-		@CurrentUser Member trainer,
+		@Parameter(hidden = true) @CurrentUser Member trainer,
 		@RequestBody ReviewMealRequest request
 	) {
 		memberService.reviewMeal(trainer, request);
@@ -203,10 +180,7 @@ public class TrainerController {
 
 	@Operation(
 		summary = "식단 계획 조회",
-		description = "식단 ID로 식단 계획을 조회합니다.",
-		parameters = {
-			@Parameter(name = "mealId", description = "식단 ID")
-		}
+		description = "식단 ID로 식단 계획을 조회합니다."
 	)
 	@GetMapping("/meal/review/{id}")
 	public ResponseEntity<MealPlanResponse> getMealPlan(
