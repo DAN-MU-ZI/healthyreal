@@ -226,6 +226,31 @@ export interface CreateOrGetResponse {
 /**
  * 
  * @export
+ * @interface CurrentProgram
+ */
+export interface CurrentProgram {
+    /**
+     * 
+     * @type {string}
+     * @memberof CurrentProgram
+     */
+    'programName'?: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof CurrentProgram
+     */
+    'totalCnt'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof CurrentProgram
+     */
+    'remainingCnt'?: number;
+}
+/**
+ * 
+ * @export
  * @interface DailyMealDto
  */
 export interface DailyMealDto {
@@ -677,46 +702,6 @@ export type MealPlanResponseMealTypeEnum = typeof MealPlanResponseMealTypeEnum[k
 /**
  * 
  * @export
- * @interface MealUploadRequest
- */
-export interface MealUploadRequest {
-    /**
-     * 
-     * @type {string}
-     * @memberof MealUploadRequest
-     */
-    'createdAt'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof MealUploadRequest
-     */
-    'mealType'?: MealUploadRequestMealTypeEnum;
-    /**
-     * 
-     * @type {string}
-     * @memberof MealUploadRequest
-     */
-    'title'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof MealUploadRequest
-     */
-    'content'?: string;
-}
-
-export const MealUploadRequestMealTypeEnum = {
-    Breakfast: 'BREAKFAST',
-    Lunch: 'LUNCH',
-    Dinner: 'DINNER'
-} as const;
-
-export type MealUploadRequestMealTypeEnum = typeof MealUploadRequestMealTypeEnum[keyof typeof MealUploadRequestMealTypeEnum];
-
-/**
- * 
- * @export
  * @interface Member
  */
 export interface Member {
@@ -833,6 +818,25 @@ export const MemberGenderEnum = {
 
 export type MemberGenderEnum = typeof MemberGenderEnum[keyof typeof MemberGenderEnum];
 
+/**
+ * 
+ * @export
+ * @interface MemberBodyInfo
+ */
+export interface MemberBodyInfo {
+    /**
+     * 
+     * @type {number}
+     * @memberof MemberBodyInfo
+     */
+    'height'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof MemberBodyInfo
+     */
+    'weight'?: number;
+}
 /**
  * 
  * @export
@@ -1478,6 +1482,82 @@ export interface TrainerMainPageResponse {
      * 
      * @type {Array<MemberDTO>}
      * @memberof TrainerMainPageResponse
+     */
+    'members'?: Array<MemberDTO>;
+}
+/**
+ * 
+ * @export
+ * @interface TrainerMemberDetailManagementResponse
+ */
+export interface TrainerMemberDetailManagementResponse {
+    /**
+     * 
+     * @type {string}
+     * @memberof TrainerMemberDetailManagementResponse
+     */
+    'name'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof TrainerMemberDetailManagementResponse
+     */
+    'gender'?: TrainerMemberDetailManagementResponseGenderEnum;
+    /**
+     * 
+     * @type {string}
+     * @memberof TrainerMemberDetailManagementResponse
+     */
+    'birthDate'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof TrainerMemberDetailManagementResponse
+     */
+    'profileUrl'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof TrainerMemberDetailManagementResponse
+     */
+    'phone'?: string;
+    /**
+     * 
+     * @type {Array<MemberBodyInfo>}
+     * @memberof TrainerMemberDetailManagementResponse
+     */
+    'memberBodyInfoList'?: Array<MemberBodyInfo>;
+    /**
+     * 
+     * @type {Array<CurrentProgram>}
+     * @memberof TrainerMemberDetailManagementResponse
+     */
+    'currentProgramList'?: Array<CurrentProgram>;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof TrainerMemberDetailManagementResponse
+     */
+    'memos'?: Array<string>;
+}
+
+export const TrainerMemberDetailManagementResponseGenderEnum = {
+    Male: 'MALE',
+    Female: 'FEMALE'
+} as const;
+
+export type TrainerMemberDetailManagementResponseGenderEnum = typeof TrainerMemberDetailManagementResponseGenderEnum[keyof typeof TrainerMemberDetailManagementResponseGenderEnum];
+
+/**
+ * 
+ * @export
+ * @interface TrainerMemberManagementResponse
+ */
+export interface TrainerMemberManagementResponse {
+    /**
+     * 
+     * @type {Array<MemberDTO>}
+     * @memberof TrainerMemberManagementResponse
      */
     'members'?: Array<MemberDTO>;
 }
@@ -2226,7 +2306,8 @@ export class ChatControllerApi extends BaseAPI {
 export const CommunityControllerApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
-         * 
+         * 주어진 게시물 ID와 내용으로 새 댓글을 생성합니다.
+         * @summary 새 댓글 생성
          * @param {number} postId 
          * @param {string} content 
          * @param {*} [options] Override http request option.
@@ -2270,7 +2351,8 @@ export const CommunityControllerApiAxiosParamCreator = function (configuration?:
             };
         },
         /**
-         * 
+         * 주어진 데이터와 선택적인 이미지를 사용하여 새 게시물을 생성합니다.
+         * @summary 새 게시물 생성
          * @param {PostCreateRequest} data 
          * @param {Array<File>} [images] 
          * @param {*} [options] Override http request option.
@@ -2321,7 +2403,8 @@ export const CommunityControllerApiAxiosParamCreator = function (configuration?:
             };
         },
         /**
-         * 
+         * 모든 게시물의 목록을 조회합니다.
+         * @summary 모든 게시물 조회
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -2354,7 +2437,8 @@ export const CommunityControllerApiAxiosParamCreator = function (configuration?:
             };
         },
         /**
-         * 
+         * 주어진 게시물 ID로 해당 게시물의 모든 댓글을 조회합니다.
+         * @summary 게시물의 모든 댓글 조회
          * @param {number} postId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -2401,7 +2485,8 @@ export const CommunityControllerApiFp = function(configuration?: Configuration) 
     const localVarAxiosParamCreator = CommunityControllerApiAxiosParamCreator(configuration)
     return {
         /**
-         * 
+         * 주어진 게시물 ID와 내용으로 새 댓글을 생성합니다.
+         * @summary 새 댓글 생성
          * @param {number} postId 
          * @param {string} content 
          * @param {*} [options] Override http request option.
@@ -2414,7 +2499,8 @@ export const CommunityControllerApiFp = function(configuration?: Configuration) 
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * 주어진 데이터와 선택적인 이미지를 사용하여 새 게시물을 생성합니다.
+         * @summary 새 게시물 생성
          * @param {PostCreateRequest} data 
          * @param {Array<File>} [images] 
          * @param {*} [options] Override http request option.
@@ -2427,7 +2513,8 @@ export const CommunityControllerApiFp = function(configuration?: Configuration) 
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * 모든 게시물의 목록을 조회합니다.
+         * @summary 모든 게시물 조회
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -2438,7 +2525,8 @@ export const CommunityControllerApiFp = function(configuration?: Configuration) 
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * 주어진 게시물 ID로 해당 게시물의 모든 댓글을 조회합니다.
+         * @summary 게시물의 모든 댓글 조회
          * @param {number} postId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -2460,7 +2548,8 @@ export const CommunityControllerApiFactory = function (configuration?: Configura
     const localVarFp = CommunityControllerApiFp(configuration)
     return {
         /**
-         * 
+         * 주어진 게시물 ID와 내용으로 새 댓글을 생성합니다.
+         * @summary 새 댓글 생성
          * @param {number} postId 
          * @param {string} content 
          * @param {*} [options] Override http request option.
@@ -2470,7 +2559,8 @@ export const CommunityControllerApiFactory = function (configuration?: Configura
             return localVarFp.createComment(postId, content, options).then((request) => request(axios, basePath));
         },
         /**
-         * 
+         * 주어진 데이터와 선택적인 이미지를 사용하여 새 게시물을 생성합니다.
+         * @summary 새 게시물 생성
          * @param {PostCreateRequest} data 
          * @param {Array<File>} [images] 
          * @param {*} [options] Override http request option.
@@ -2480,7 +2570,8 @@ export const CommunityControllerApiFactory = function (configuration?: Configura
             return localVarFp.createPost(data, images, options).then((request) => request(axios, basePath));
         },
         /**
-         * 
+         * 모든 게시물의 목록을 조회합니다.
+         * @summary 모든 게시물 조회
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -2488,7 +2579,8 @@ export const CommunityControllerApiFactory = function (configuration?: Configura
             return localVarFp.getAllPosts(options).then((request) => request(axios, basePath));
         },
         /**
-         * 
+         * 주어진 게시물 ID로 해당 게시물의 모든 댓글을 조회합니다.
+         * @summary 게시물의 모든 댓글 조회
          * @param {number} postId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -2507,7 +2599,8 @@ export const CommunityControllerApiFactory = function (configuration?: Configura
  */
 export class CommunityControllerApi extends BaseAPI {
     /**
-     * 
+     * 주어진 게시물 ID와 내용으로 새 댓글을 생성합니다.
+     * @summary 새 댓글 생성
      * @param {number} postId 
      * @param {string} content 
      * @param {*} [options] Override http request option.
@@ -2519,7 +2612,8 @@ export class CommunityControllerApi extends BaseAPI {
     }
 
     /**
-     * 
+     * 주어진 데이터와 선택적인 이미지를 사용하여 새 게시물을 생성합니다.
+     * @summary 새 게시물 생성
      * @param {PostCreateRequest} data 
      * @param {Array<File>} [images] 
      * @param {*} [options] Override http request option.
@@ -2531,7 +2625,8 @@ export class CommunityControllerApi extends BaseAPI {
     }
 
     /**
-     * 
+     * 모든 게시물의 목록을 조회합니다.
+     * @summary 모든 게시물 조회
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof CommunityControllerApi
@@ -2541,7 +2636,8 @@ export class CommunityControllerApi extends BaseAPI {
     }
 
     /**
-     * 
+     * 주어진 게시물 ID로 해당 게시물의 모든 댓글을 조회합니다.
+     * @summary 게시물의 모든 댓글 조회
      * @param {number} postId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -3040,7 +3136,7 @@ export const TrainerControllerApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async memberDetailManagementTrainer(userId?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<object>> {
+        async memberDetailManagementTrainer(userId?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<TrainerMemberDetailManagementResponse>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.memberDetailManagementTrainer(userId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['TrainerControllerApi.memberDetailManagementTrainer']?.[localVarOperationServerIndex]?.url;
@@ -3051,7 +3147,7 @@ export const TrainerControllerApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async memberManagementTrainer(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<object>> {
+        async memberManagementTrainer(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<TrainerMemberManagementResponse>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.memberManagementTrainer(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['TrainerControllerApi.memberManagementTrainer']?.[localVarOperationServerIndex]?.url;
@@ -3173,7 +3269,7 @@ export const TrainerControllerApiFactory = function (configuration?: Configurati
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        memberDetailManagementTrainer(userId?: string, options?: any): AxiosPromise<object> {
+        memberDetailManagementTrainer(userId?: string, options?: any): AxiosPromise<TrainerMemberDetailManagementResponse> {
             return localVarFp.memberDetailManagementTrainer(userId, options).then((request) => request(axios, basePath));
         },
         /**
@@ -3181,7 +3277,7 @@ export const TrainerControllerApiFactory = function (configuration?: Configurati
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        memberManagementTrainer(options?: any): AxiosPromise<object> {
+        memberManagementTrainer(options?: any): AxiosPromise<TrainerMemberManagementResponse> {
             return localVarFp.memberManagementTrainer(options).then((request) => request(axios, basePath));
         },
         /**
@@ -3209,8 +3305,6 @@ export const TrainerControllerApiFactory = function (configuration?: Configurati
         registerTicketPage(options?: any): AxiosPromise<ProgramListResponse> {
             return localVarFp.registerTicketPage(options).then((request) => request(axios, basePath));
         },
-        
-        
         /**
          * 
          * @param {TrainerRequest} data 
@@ -3314,11 +3408,10 @@ export class TrainerControllerApi extends BaseAPI {
     public myPageTrainer(options?: RawAxiosRequestConfig) {
         return TrainerControllerApiFp(this.configuration).myPageTrainer(options).then((request) => request(this.axios, this.basePath));
     }
+
     /**
      * 
-     * @param {TrainerRequest} data 
-     * @param {Array<File>} qualificationImages 
-     * @param {Array<File>} trainingProgramImages 
+     * @param {TicketRegisterRequest} ticketRegisterRequest 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof TrainerControllerApi
@@ -3400,7 +3493,8 @@ export type SearchTrainersCategoryEnum = typeof SearchTrainersCategoryEnum[keyof
 export const UserControllerApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
-         * 
+         * 주어진 날짜의 일일 식단 로그를 조회합니다.
+         * @summary 일일 식단 로그 조회
          * @param {string} date 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -3442,7 +3536,8 @@ export const UserControllerApiAxiosParamCreator = function (configuration?: Conf
             };
         },
         /**
-         * 
+         * 현재 로그인한 회원의 정보를 조회합니다.
+         * @summary 회원 정보 조회
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -3475,7 +3570,8 @@ export const UserControllerApiAxiosParamCreator = function (configuration?: Conf
             };
         },
         /**
-         * 
+         * 새 회원을 등록합니다.
+         * @summary 회원 등록
          * @param {MemberRegisterRequest} memberRegisterRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -3514,17 +3610,16 @@ export const UserControllerApiAxiosParamCreator = function (configuration?: Conf
             };
         },
         /**
-         * 
-         * @param {MealUploadRequest} data 
-         * @param {File} image 
+         * 현재 로그인한 회원의 식단을 업로드합니다.
+         * @summary 식단 업로드
+         * @param {string} [createdAt] 
+         * @param {UploadMealMealTypeEnum} [mealType] 
+         * @param {string} [title] 
+         * @param {string} [content] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        uploadMeal: async (data: MealUploadRequest, image: File, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'data' is not null or undefined
-            assertParamExists('uploadMeal', 'data', data)
-            // verify required parameter 'image' is not null or undefined
-            assertParamExists('uploadMeal', 'image', image)
+        uploadMeal: async (createdAt?: string, mealType?: UploadMealMealTypeEnum, title?: string, content?: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/api/v1/users/meal`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -3543,12 +3638,20 @@ export const UserControllerApiAxiosParamCreator = function (configuration?: Conf
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
-            if (data !== undefined) { 
-                localVarFormParams.append('data', new Blob([JSON.stringify(data)], { type: "application/json", }));
+            if (createdAt !== undefined) { 
+                localVarFormParams.append('createdAt', createdAt as any);
             }
     
-            if (image !== undefined) { 
-                localVarFormParams.append('image', image as any);
+            if (mealType !== undefined) { 
+                localVarFormParams.append('mealType', mealType as any);
+            }
+    
+            if (title !== undefined) { 
+                localVarFormParams.append('title', title as any);
+            }
+    
+            if (content !== undefined) { 
+                localVarFormParams.append('content', content as any);
             }
     
     
@@ -3575,7 +3678,8 @@ export const UserControllerApiFp = function(configuration?: Configuration) {
     const localVarAxiosParamCreator = UserControllerApiAxiosParamCreator(configuration)
     return {
         /**
-         * 
+         * 주어진 날짜의 일일 식단 로그를 조회합니다.
+         * @summary 일일 식단 로그 조회
          * @param {string} date 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -3587,7 +3691,8 @@ export const UserControllerApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * 현재 로그인한 회원의 정보를 조회합니다.
+         * @summary 회원 정보 조회
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -3598,7 +3703,8 @@ export const UserControllerApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * 새 회원을 등록합니다.
+         * @summary 회원 등록
          * @param {MemberRegisterRequest} memberRegisterRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -3610,14 +3716,17 @@ export const UserControllerApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
-         * @param {MealUploadRequest} data 
-         * @param {File} image 
+         * 현재 로그인한 회원의 식단을 업로드합니다.
+         * @summary 식단 업로드
+         * @param {string} [createdAt] 
+         * @param {UploadMealMealTypeEnum} [mealType] 
+         * @param {string} [title] 
+         * @param {string} [content] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async uploadMeal(data: MealUploadRequest, image: File, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.uploadMeal(data, image, options);
+        async uploadMeal(createdAt?: string, mealType?: UploadMealMealTypeEnum, title?: string, content?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.uploadMeal(createdAt, mealType, title, content, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['UserControllerApi.uploadMeal']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -3633,7 +3742,8 @@ export const UserControllerApiFactory = function (configuration?: Configuration,
     const localVarFp = UserControllerApiFp(configuration)
     return {
         /**
-         * 
+         * 주어진 날짜의 일일 식단 로그를 조회합니다.
+         * @summary 일일 식단 로그 조회
          * @param {string} date 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -3642,7 +3752,8 @@ export const UserControllerApiFactory = function (configuration?: Configuration,
             return localVarFp.getDailyMealLog(date, options).then((request) => request(axios, basePath));
         },
         /**
-         * 
+         * 현재 로그인한 회원의 정보를 조회합니다.
+         * @summary 회원 정보 조회
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -3650,7 +3761,8 @@ export const UserControllerApiFactory = function (configuration?: Configuration,
             return localVarFp.getUser(options).then((request) => request(axios, basePath));
         },
         /**
-         * 
+         * 새 회원을 등록합니다.
+         * @summary 회원 등록
          * @param {MemberRegisterRequest} memberRegisterRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -3659,14 +3771,17 @@ export const UserControllerApiFactory = function (configuration?: Configuration,
             return localVarFp.registerMember(memberRegisterRequest, options).then((request) => request(axios, basePath));
         },
         /**
-         * 
-         * @param {MealUploadRequest} data 
-         * @param {File} image 
+         * 현재 로그인한 회원의 식단을 업로드합니다.
+         * @summary 식단 업로드
+         * @param {string} [createdAt] 
+         * @param {UploadMealMealTypeEnum} [mealType] 
+         * @param {string} [title] 
+         * @param {string} [content] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        uploadMeal(data: MealUploadRequest, image: File, options?: any): AxiosPromise<string> {
-            return localVarFp.uploadMeal(data, image, options).then((request) => request(axios, basePath));
+        uploadMeal(createdAt?: string, mealType?: UploadMealMealTypeEnum, title?: string, content?: string, options?: any): AxiosPromise<string> {
+            return localVarFp.uploadMeal(createdAt, mealType, title, content, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -3679,7 +3794,8 @@ export const UserControllerApiFactory = function (configuration?: Configuration,
  */
 export class UserControllerApi extends BaseAPI {
     /**
-     * 
+     * 주어진 날짜의 일일 식단 로그를 조회합니다.
+     * @summary 일일 식단 로그 조회
      * @param {string} date 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -3690,7 +3806,8 @@ export class UserControllerApi extends BaseAPI {
     }
 
     /**
-     * 
+     * 현재 로그인한 회원의 정보를 조회합니다.
+     * @summary 회원 정보 조회
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof UserControllerApi
@@ -3700,7 +3817,8 @@ export class UserControllerApi extends BaseAPI {
     }
 
     /**
-     * 
+     * 새 회원을 등록합니다.
+     * @summary 회원 등록
      * @param {MemberRegisterRequest} memberRegisterRequest 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -3711,17 +3829,29 @@ export class UserControllerApi extends BaseAPI {
     }
 
     /**
-     * 
-     * @param {MealUploadRequest} data 
-     * @param {File} image 
+     * 현재 로그인한 회원의 식단을 업로드합니다.
+     * @summary 식단 업로드
+     * @param {string} [createdAt] 
+     * @param {UploadMealMealTypeEnum} [mealType] 
+     * @param {string} [title] 
+     * @param {string} [content] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof UserControllerApi
      */
-    public uploadMeal(data: MealUploadRequest, image: File, options?: RawAxiosRequestConfig) {
-        return UserControllerApiFp(this.configuration).uploadMeal(data, image, options).then((request) => request(this.axios, this.basePath));
+    public uploadMeal(createdAt?: string, mealType?: UploadMealMealTypeEnum, title?: string, content?: string, options?: RawAxiosRequestConfig) {
+        return UserControllerApiFp(this.configuration).uploadMeal(createdAt, mealType, title, content, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
+/**
+ * @export
+ */
+export const UploadMealMealTypeEnum = {
+    Breakfast: 'BREAKFAST',
+    Lunch: 'LUNCH',
+    Dinner: 'DINNER'
+} as const;
+export type UploadMealMealTypeEnum = typeof UploadMealMealTypeEnum[keyof typeof UploadMealMealTypeEnum];
 
 

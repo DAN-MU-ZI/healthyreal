@@ -1,0 +1,76 @@
+.schedulerLayout {
+  margin-top: 45px;
+}
+
+.eventListArea {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.eventListContainer {
+  box-sizing: border-box;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.addEventCard {
+  display: flex;
+  justify-content: center;
+  box-sizing: border-box;
+  height: 30px;
+  width: 100%;
+  padding: 0 20px;
+  border-radius: 20px;
+  background-color: white;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* 달력 스타일 커스텀 */
+.react-calendar {
+  width: 100%;
+  border: none;
+  margin: 20px 0;
+  line-height: 1.5em;
+}
+.react-calendar__tile {
+  padding: 5px 0px 18px;
+}
+.react-calendar__month-view__weekdays abbr {
+  text-decoration: none;
+}
+.react-calendar__month-view__days__day {
+  font-size: 12px;
+  width: 100%;
+  color: #212121;
+}
+
+.react-calendar__tile:enabled:focus,
+.react-calendar__tile--active {
+  background-color: #fcdfc3;
+  color: #fca34d;
+  border-radius: 0.6rem;
+}
+
+.react-calendar__tile:enabled:hover {
+  background-color: #fceee1;
+  border-radius: 0.6rem;
+}
+
+.react-calendar__month-view__weekdays__weekday--weekend abbr[title="일요일"] {
+  color: rgb(209, 2, 2);
+}
+
+.react-calendar__month-view__weekdays__weekday--weekend abbr[title="토요일"] {
+  color: rgb(2, 78, 209);
+}
+
+.react-calendar__tile--now {
+  font-weight: 600;
+  color: #11687d;
+  background-color: transparent;
+}
+
+.react-calendar__tile--now > abbr {
+  border-bottom: 2px solid #11687d;
+}

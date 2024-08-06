@@ -20,9 +20,17 @@
 }
 
 .centerArea {
-  width: 60%;
+  overflow: hidden;
+  width: 160px;
 }
 
 .leftArea {
   align-items: center;
+}
+
+.eventTitle,
+.eventDetail {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
