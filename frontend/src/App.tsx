@@ -11,7 +11,6 @@ import MainFood from "./components/molecules/MainFood";
 import MypageFood from "./components/molecules/MypageFood";
 import PostFood from "./components/molecules/PostFood";
 import LectureProgramRegistration from "./components/molecules/LectureProgramRegistration/LectureProgramRegistration";
-import MessagePost from "./components/molecules/MessagePost/MessagePost";
 import { ProgramProvider } from './pages/PostContext';
 import Scheduler from "./pages/Scheduler";
 import FindTrainer from "./pages/FindTrainer";
@@ -28,6 +27,7 @@ import Chat from "./pages/Chat";
 import MessageMain from "./components/molecules/MessageMain/MessageMain";
 import MessageNoMain from "./components/molecules/MessageNoMain/MessageNoMain";
 import MessagePost from "./components/molecules/MessagePost/MessagePost";
+import TrainerMealManagement from "./pages/TrainerMealManagement";
 
 function App() {
   const {isAuthenticated} = useAuth();
@@ -48,7 +48,7 @@ function App() {
               <Route path="/" element={<Main />} />
               <Route path="intro/*" element={<Intro />} />
               <Route path="login/user" element={<LoginUser />} />
-              <Route path="food" element={<Food />} />
+              <Route path="food" element={<MainFood />} />
               <Route path="mypage-food" element={<MypageFood />} />
               <Route path="post-food" element={<PostFood />} />
 
@@ -94,12 +94,14 @@ function App() {
                   />
                 }
               />
-              <Route path="TrainerOn4/TrainerOn5" element={<TrainerOnboardingStep5 />} />
-              <Route path="MessageMain" element={<MessageMain/>}/>
-              <Route path="MessageNoMain" element={<MessageNoMain/>}/>
-              <Route path="MessagePost" element={<MessagePost/>}/>
-            </>
-          )}
+              <Route
+                path="TrainerOn4/TrainerOn5"
+                element={<TrainerOnboardingStep5 />}
+              />
+              <Route path="MessageMain" element={<MessageMain />} />
+              <Route path="MessageNoMain" element={<MessageNoMain />} />
+              <Route path="MessagePost" element={<MessagePost />} />
+              <Route path="/trainer/meal" element={<TrainerMealManagement/>}/>
         </Routes>
       </Router>
     </ProgramProvider>
