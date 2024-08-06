@@ -51,6 +51,11 @@ const NoChatRooms = styled.div`
     font-size: 20px;
 `;
 
+const NoMsgImg = styled.img`
+  width: 30%;
+  height: auto;
+`;
+
 const ChatRooms: React.FC = () => {
     const chatApi = createChatApi();
     const [chatRooms, setChatRooms] = useState<ChatRoomInfo[]>([]);
@@ -77,7 +82,11 @@ const ChatRooms: React.FC = () => {
         <ChatRoomsContainer>
             <Title>Your Chat Rooms</Title>
             {chatRooms.length === 0 ? (
-                <img src={emptyImg} alt="no chatRoom Image"/>
+                <>
+                <NoMsgImg src={emptyImg} alt="no chatRoom Image"/>
+                <h6>현재 진행중인 채팅이 없어요</h6>
+                <h6>채팅을 시작해보세요!</h6>
+                </>
                 // <NoChatRooms>현재 진행중인 채팅이 없어요. 채팅을 시작해보세요!</NoChatRooms>
             ) : (
                 <ChatRoomList>
