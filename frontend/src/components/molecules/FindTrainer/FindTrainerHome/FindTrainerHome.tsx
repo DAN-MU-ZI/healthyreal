@@ -1,32 +1,25 @@
 import * as React from "react";
+import {useState} from "react";
 import "./styles.css";
 import Text from "../../../atoms/Text";
 import SearchTrainer from "../SearchTrainer";
 import TrainerList from "../TrainerList";
-import {TrainerRequestGoalTypesEnum as CategoryEnum} from "../../../../typescript-axios";
-import {useState} from "react";
-
-interface TrainerItem {
-  thumbNailUrl: string;
-  trainerId: number;
-  name: string;
-  address: string;
-  phoneNumber: string;
-  describe: string;
-  categories: CategoryEnum[];
-}
+import {
+  SearchTrainersCategoryEnum as CategoryEnum,
+  FoundTrainer,
+} from "../../../../typescript-axios";
 
 interface Props {
   callbacks: {
     filterTrainer: (
       keyword: string,
-      category: CategoryEnum[],
+      category: CategoryEnum,
       location: string,
       callback: () => void
     ) => Promise<void>;
   };
   states: {
-    trainerList: TrainerItem[];
+    trainerList: FoundTrainer[];
   };
 }
 
@@ -45,6 +38,7 @@ const FindTrainerHome: React.FC<Props> = ({callbacks, states}) => {
     CategoryEnum.BodyProfile,
     CategoryEnum.Other,
   ];
+
   return (
     <div className="findTrainerContainer">
       <div className="noBackHeader">

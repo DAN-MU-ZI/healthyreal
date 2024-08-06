@@ -1,9 +1,9 @@
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import {BrowserRouter as Router, Route, Routes} from "react-router-dom";
 import Main from "./pages/Main";
 import LoginRedirect from "./pages/LoginRedirect";
 import LoginUser from "./pages/LoginUser";
 import Intro from "./pages/Intro";
-import { useAuth } from "./providers/AuthContext";
+import {useAuth} from "./providers/AuthContext";
 import Login from "./pages/Login";
 import Tutorial from "./pages/Tutorial";
 import Onboarding from "./pages/Onboarding";
@@ -25,7 +25,6 @@ import Chat from "./pages/Chat";
 import MessageMain from "./components/molecules/MessageMain/MessageMain";
 import MessageNoMain from "./components/molecules/MessageNoMain/MessageNoMain";
 import MessagePost from "./components/molecules/MessagePost/MessagePost";
-
 
 function App() {
   const {isAuthenticated} = useAuth();
@@ -56,15 +55,15 @@ function App() {
               <Route path="/chat" element={<ChatRooms />} />
               <Route path="/chat/:chatRoomId" element={<Chat />} />
             </>
-
           ) : (
             <>
+              <Route path="findTrainer/*" element={<FindTrainer />} />
               <Route path="oauth/redirect" element={<LoginRedirect />} />
               <Route path="login/*" element={<Login />} />
               <Route path="intro/login" element={<Login />} />
               <Route path="intro/tutorial" element={<Tutorial />} />
               <Route path="intro/onboarding" element={<Onboarding />} />
-
+              <Route path="scheduler/*" element={<Scheduler />} />
               <Route path="TrainerOn1" element={<TrainerOnboardingStep1 />} />
               <Route path="TrainerOn2" element={<TrainerOnboardingStep2 />} />
               <Route path="TrainerOn3" element={<TrainerOnboardingStep3 />} />
