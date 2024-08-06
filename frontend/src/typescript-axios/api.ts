@@ -174,6 +174,12 @@ export interface Gym {
      * @memberof Gym
      */
     'trainerInfo'?: TrainerInfo;
+    /**
+     * 
+     * @type {string}
+     * @memberof Gym
+     */
+    'gymPhone'?: string;
 }
 /**
  * 
@@ -225,6 +231,46 @@ export interface LocalTime {
      */
     'nano'?: number;
 }
+/**
+ * 
+ * @export
+ * @interface MealDTO
+ */
+export interface MealDTO {
+    /**
+     * 
+     * @type {number}
+     * @memberof MealDTO
+     */
+    'mealId'?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof MealDTO
+     */
+    'memberName'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof MealDTO
+     */
+    'date'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof MealDTO
+     */
+    'mealType'?: MealDTOMealTypeEnum;
+}
+
+export const MealDTOMealTypeEnum = {
+    Breakfast: 'BREAKFAST',
+    Lunch: 'LUNCH',
+    Dinner: 'DINNER'
+} as const;
+
+export type MealDTOMealTypeEnum = typeof MealDTOMealTypeEnum[keyof typeof MealDTOMealTypeEnum];
+
 /**
  * 
  * @export
@@ -290,6 +336,12 @@ export interface Member {
      * @type {string}
      * @memberof Member
      */
+    'gender'?: MemberGenderEnum;
+    /**
+     * 
+     * @type {string}
+     * @memberof Member
+     */
     'createdAt': string;
     /**
      * 
@@ -297,6 +349,12 @@ export interface Member {
      * @memberof Member
      */
     'modifiedAt': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Member
+     */
+    'phone': string;
     /**
      * 
      * @type {UserInfo}
@@ -309,12 +367,6 @@ export interface Member {
      * @memberof Member
      */
     'trainerInfo'?: TrainerInfo;
-    /**
-     * 
-     * @type {string}
-     * @memberof Member
-     */
-    'gender'?: MemberGenderEnum;
 }
 
 export const MemberProviderTypeEnum = {
@@ -337,6 +389,57 @@ export const MemberGenderEnum = {
 } as const;
 
 export type MemberGenderEnum = typeof MemberGenderEnum[keyof typeof MemberGenderEnum];
+
+/**
+ * 
+ * @export
+ * @interface MemberDTO
+ */
+export interface MemberDTO {
+    /**
+     * 
+     * @type {number}
+     * @memberof MemberDTO
+     */
+    'memberSeq'?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof MemberDTO
+     */
+    'name'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof MemberDTO
+     */
+    'gender'?: MemberDTOGenderEnum;
+    /**
+     * 
+     * @type {string}
+     * @memberof MemberDTO
+     */
+    'programName'?: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof MemberDTO
+     */
+    'totalCnt'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof MemberDTO
+     */
+    'remainingCnt'?: number;
+}
+
+export const MemberDTOGenderEnum = {
+    Male: 'MALE',
+    Female: 'FEMALE'
+} as const;
+
+export type MemberDTOGenderEnum = typeof MemberDTOGenderEnum[keyof typeof MemberDTOGenderEnum];
 
 /**
  * 
@@ -603,53 +706,40 @@ export interface S3Image {
 /**
  * 
  * @export
- * @interface Schedule
+ * @interface ScheduleDTO
  */
-export interface Schedule {
+export interface ScheduleDTO {
     /**
      * 
      * @type {number}
-     * @memberof Schedule
+     * @memberof ScheduleDTO
      */
-    'id'?: number;
+    'scheduleId'?: number;
     /**
      * 
      * @type {string}
-     * @memberof Schedule
+     * @memberof ScheduleDTO
      */
-    'dayOfWeek'?: ScheduleDayOfWeekEnum;
+    'title'?: string;
     /**
      * 
      * @type {LocalTime}
-     * @memberof Schedule
+     * @memberof ScheduleDTO
      */
     'startTime'?: LocalTime;
     /**
      * 
      * @type {LocalTime}
-     * @memberof Schedule
+     * @memberof ScheduleDTO
      */
     'endTime'?: LocalTime;
     /**
      * 
-     * @type {TrainerInfo}
-     * @memberof Schedule
+     * @type {string}
+     * @memberof ScheduleDTO
      */
-    'trainerInfo'?: TrainerInfo;
+    'memberName'?: string;
 }
-
-export const ScheduleDayOfWeekEnum = {
-    Monday: 'MONDAY',
-    Tuesday: 'TUESDAY',
-    Wednesday: 'WEDNESDAY',
-    Thursday: 'THURSDAY',
-    Friday: 'FRIDAY',
-    Saturday: 'SATURDAY',
-    Sunday: 'SUNDAY'
-} as const;
-
-export type ScheduleDayOfWeekEnum = typeof ScheduleDayOfWeekEnum[keyof typeof ScheduleDayOfWeekEnum];
-
 /**
  * 
  * @export
@@ -732,16 +822,140 @@ export interface TrainerInfo {
     'trainingProgramList'?: Array<TrainingProgram>;
     /**
      * 
-     * @type {Array<Schedule>}
+     * @type {Array<TrainerSchedule>}
      * @memberof TrainerInfo
      */
-    'scheduleList'?: Array<Schedule>;
+    'trainerScheduleList'?: Array<TrainerSchedule>;
     /**
      * 
      * @type {string}
      * @memberof TrainerInfo
      */
     'profileDescription'?: string;
+}
+/**
+ * 
+ * @export
+ * @interface TrainerMainPageResponse
+ */
+export interface TrainerMainPageResponse {
+    /**
+     * 
+     * @type {Array<ScheduleDTO>}
+     * @memberof TrainerMainPageResponse
+     */
+    'schedules'?: Array<ScheduleDTO>;
+    /**
+     * 
+     * @type {Array<MealDTO>}
+     * @memberof TrainerMainPageResponse
+     */
+    'meals'?: Array<MealDTO>;
+    /**
+     * 
+     * @type {Array<MemberDTO>}
+     * @memberof TrainerMainPageResponse
+     */
+    'members'?: Array<MemberDTO>;
+}
+/**
+ * 
+ * @export
+ * @interface TrainerMyPageResponse
+ */
+export interface TrainerMyPageResponse {
+    /**
+     * 
+     * @type {string}
+     * @memberof TrainerMyPageResponse
+     */
+    'trainerName'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof TrainerMyPageResponse
+     */
+    'trainerDescription'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof TrainerMyPageResponse
+     */
+    'trainerPhone'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof TrainerMyPageResponse
+     */
+    'gymName'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof TrainerMyPageResponse
+     */
+    'gymAddress'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof TrainerMyPageResponse
+     */
+    'gymPhone'?: string;
+    /**
+     * 
+     * @type {Array<TrainerProgram>}
+     * @memberof TrainerMyPageResponse
+     */
+    'trainingPrograms'?: Array<TrainerProgram>;
+    /**
+     * 
+     * @type {Array<TrainerQualification>}
+     * @memberof TrainerMyPageResponse
+     */
+    'trainerQualifications'?: Array<TrainerQualification>;
+    /**
+     * 
+     * @type {string}
+     * @memberof TrainerMyPageResponse
+     */
+    'profileImageUrl'?: string;
+}
+/**
+ * 
+ * @export
+ * @interface TrainerProgram
+ */
+export interface TrainerProgram {
+    /**
+     * 
+     * @type {string}
+     * @memberof TrainerProgram
+     */
+    'programTitle'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof TrainerProgram
+     */
+    'programDescription'?: string;
+}
+/**
+ * 
+ * @export
+ * @interface TrainerQualification
+ */
+export interface TrainerQualification {
+    /**
+     * 
+     * @type {string}
+     * @memberof TrainerQualification
+     */
+    'qualificationName'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof TrainerQualification
+     */
+    'startDate'?: string;
 }
 /**
  * 
@@ -801,6 +1015,56 @@ export const TrainerRequestGoalTypesEnum = {
 } as const;
 
 export type TrainerRequestGoalTypesEnum = typeof TrainerRequestGoalTypesEnum[keyof typeof TrainerRequestGoalTypesEnum];
+
+/**
+ * 
+ * @export
+ * @interface TrainerSchedule
+ */
+export interface TrainerSchedule {
+    /**
+     * 
+     * @type {number}
+     * @memberof TrainerSchedule
+     */
+    'id'?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof TrainerSchedule
+     */
+    'dayOfWeek'?: TrainerScheduleDayOfWeekEnum;
+    /**
+     * 
+     * @type {LocalTime}
+     * @memberof TrainerSchedule
+     */
+    'startTime'?: LocalTime;
+    /**
+     * 
+     * @type {LocalTime}
+     * @memberof TrainerSchedule
+     */
+    'endTime'?: LocalTime;
+    /**
+     * 
+     * @type {TrainerInfo}
+     * @memberof TrainerSchedule
+     */
+    'trainerInfo'?: TrainerInfo;
+}
+
+export const TrainerScheduleDayOfWeekEnum = {
+    Monday: 'MONDAY',
+    Tuesday: 'TUESDAY',
+    Wednesday: 'WEDNESDAY',
+    Thursday: 'THURSDAY',
+    Friday: 'FRIDAY',
+    Saturday: 'SATURDAY',
+    Sunday: 'SUNDAY'
+} as const;
+
+export type TrainerScheduleDayOfWeekEnum = typeof TrainerScheduleDayOfWeekEnum[keyof typeof TrainerScheduleDayOfWeekEnum];
 
 /**
  * 
@@ -966,6 +1230,72 @@ export const TrainerControllerApiAxiosParamCreator = function (configuration?: C
     return {
         /**
          * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        mainTrainer: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/v1/trainer`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        myPageTrainer: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/v1/trainer/mypage`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @param {RegisterTrainerRequest} [registerTrainerRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -1013,6 +1343,28 @@ export const TrainerControllerApiFp = function(configuration?: Configuration) {
     return {
         /**
          * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async mainTrainer(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<TrainerMainPageResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.mainTrainer(options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['TrainerControllerApi.mainTrainer']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async myPageTrainer(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<TrainerMyPageResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.myPageTrainer(options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['TrainerControllerApi.myPageTrainer']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
          * @param {RegisterTrainerRequest} [registerTrainerRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -1035,6 +1387,22 @@ export const TrainerControllerApiFactory = function (configuration?: Configurati
     return {
         /**
          * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        mainTrainer(options?: any): AxiosPromise<TrainerMainPageResponse> {
+            return localVarFp.mainTrainer(options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        myPageTrainer(options?: any): AxiosPromise<TrainerMyPageResponse> {
+            return localVarFp.myPageTrainer(options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @param {RegisterTrainerRequest} [registerTrainerRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -1052,6 +1420,26 @@ export const TrainerControllerApiFactory = function (configuration?: Configurati
  * @extends {BaseAPI}
  */
 export class TrainerControllerApi extends BaseAPI {
+    /**
+     * 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof TrainerControllerApi
+     */
+    public mainTrainer(options?: RawAxiosRequestConfig) {
+        return TrainerControllerApiFp(this.configuration).mainTrainer(options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof TrainerControllerApi
+     */
+    public myPageTrainer(options?: RawAxiosRequestConfig) {
+        return TrainerControllerApiFp(this.configuration).myPageTrainer(options).then((request) => request(this.axios, this.basePath));
+    }
+
     /**
      * 
      * @param {RegisterTrainerRequest} [registerTrainerRequest] 
