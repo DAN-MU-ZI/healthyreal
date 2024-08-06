@@ -2,7 +2,7 @@ import arrowImg from "../../../assets/images/arrow.png";
 import "./styles.css";
 
 interface Props {
-  onClick: () => void;
+  onClick?: () => void;
 }
 
 export default function Back(props: Props) {

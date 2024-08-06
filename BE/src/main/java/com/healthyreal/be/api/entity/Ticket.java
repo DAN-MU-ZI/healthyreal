@@ -2,6 +2,9 @@ package com.healthyreal.be.api.entity;
 
 import java.time.LocalDate;
 
+import javax.xml.stream.events.EndDocument;
+
+import com.healthyreal.be.api.entity.trainer.TrainerInfo;
 import com.healthyreal.be.api.entity.trainer.TrainingProgram;
 import com.healthyreal.be.api.entity.user.Member;
 
@@ -12,7 +15,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -38,7 +40,7 @@ public class Ticket {
 	@JoinColumn(name = "trainer_seq", nullable = false)
 	private Member trainer;
 
-	@OneToOne
+	@ManyToOne
 	@JoinColumn(name = "trainingProgram_id")
 	private TrainingProgram trainingProgram;
 
@@ -50,4 +52,17 @@ public class Ticket {
 
 	@Column(nullable = false)
 	private LocalDate endPoint;
+
+	@Column(nullable = false)
+	private String memo;
+
+	public Ticket(Member member, Member trainer, TrainingProgram trainingProgram, Long totalCnt, LocalDate endPoint, String memo) {
+		this.member = member;
+		this.trainer = trainer;
+		this.trainingProgram = trainingProgram;
+		this.totalCnt = totalCnt;
+		this.remainingCnt = totalCnt;
+		this.endPoint = endPoint;
+		this.memo = memo;
+	}
 }

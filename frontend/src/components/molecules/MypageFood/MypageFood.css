@@ -1,4 +1,4 @@
-body {
+/* body {
   font-family: Arial, sans-serif;
   margin: 15px;
   padding: 15px;
@@ -7,7 +7,7 @@ body {
   align-items: center;
   height: 100vh;
   background-color: #f4f4f4;
-}
+} */
 
 .mypage-container {
   display: flex;

@@ -1,0 +1,103 @@
+.trainerSearchBar > img,
+.filterIcon > img {
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+}
+
+.searchAndFilter {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.trainerSearchBar {
+  background-color: #ffffff;
+  box-shadow: 0 0 2px 2px rgba(215, 215, 215, 0.2);
+  border-radius: 10px;
+  padding: 10px 15px;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.filterArea {
+  margin-top: 5px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  background-color: #f9f9f9;
+  padding: 20px 5px;
+  border-radius: 10px;
+}
+
+.categoryFilter,
+.locationFilter {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.trainerSearchBar > input {
+  text-align: left;
+  width: 100%;
+  border: none;
+  background-color: transparent;
+  outline: none;
+}
+
+.checkbox-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.filter-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.filter-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 20px;
+  border-radius: 10px;
+  background-color: white;
+  cursor: pointer;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+  border: 1px solid #ddd;
+}
+
+.filter-btn input {
+  display: none;
+}
+
+.filter-btn span {
+  font-size: 14px;
+  color: rgb(0, 0, 0);
+  font-weight: 350;
+}
+
+.filter-btn input:checked + span {
+  background-color: #fca34d;
+  color: white;
+  border-radius: 10px;
+}
+
+.filter-btn.checked {
+  background-color: #fca34d;
+  color: white;
+  border-radius: 10px;
+}
+
+.filter-btn.checked span {
+  color: white;
+}
+
+.filterArea > .button {
+  align-self: center;
+}
