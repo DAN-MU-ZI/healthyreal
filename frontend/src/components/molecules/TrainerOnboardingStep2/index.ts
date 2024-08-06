@@ -1,0 +1,1 @@
+export { default as TrainerOnboardingStep2 } from './TrainerOnboardingStep2';

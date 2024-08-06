@@ -32,7 +32,7 @@ public record MemberRegisterRequest(
 							  Double height,
 							  Double weight) {
 		public BodyInfo toEntity() {
-			return new BodyInfo(birthDate, height, weight);
+			return new BodyInfo(height, weight);
 		}
 	}
 
