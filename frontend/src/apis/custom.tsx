@@ -1,19 +1,41 @@
 import {
     Configuration,
     UserControllerApi,
-    TrainerControllerApi
+    TrainerControllerApi,
+    ChatControllerApi
 } from "../typescript-axios";
 
-const BASE_URL = process.env.REACT_APP_BASE_URL || "http://localhost:8080";
+const BASE_URL = process.env.REACT_APP_BASE_URL;
 
-const storedToken: string | null = localStorage.getItem('token');
-const config = new Configuration({
-    basePath: BASE_URL,
-    accessToken: storedToken !== null ? storedToken : undefined,
-});
+if (!BASE_URL) {
+    throw new Error("REACT_APP_BASE_URL 환경 변수가 설정되지 않았습니다.");
+}
 
+const createUserApi = () => {
+    const token = localStorage.getItem('token');
+    const config = new Configuration({
+        basePath: BASE_URL,
+        accessToken: token ? token : undefined,
+    });
+    return new UserControllerApi(config);
+};
 
-const userApi = new UserControllerApi(config);
-const trainerApi = new TrainerControllerApi(config);
+const createTrainerApi = () => {
+    const token = localStorage.getItem('token');
+    const config = new Configuration({
+        basePath: BASE_URL,
+        accessToken: token ? token : undefined,
+    });
+    return new TrainerControllerApi(config);
+};
 
-export { userApi, trainerApi };
+const createChatApi = () => {
+    const token = localStorage.getItem('token');
+    const config = new Configuration({
+        basePath: BASE_URL,
+        accessToken: token ? token : undefined,
+    });
+    return new ChatControllerApi(config);
+};
+
+export { createUserApi, createTrainerApi, createChatApi };

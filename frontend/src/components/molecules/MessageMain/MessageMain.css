@@ -1,0 +1,49 @@
+.message-main {
+    padding: 20px;
+  }
+  
+  .message-main h1 {
+    font-size: 2em;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+  
+  .messages-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .message-item {
+    display: flex;
+    flex-direction: column;
+    padding: 15px;
+    background-color: #f8f8f8;
+    border-radius: 8px;
+    text-decoration: none;
+    color: inherit;
+  }
+  
+  .message-item:hover {
+    background-color: #e0e0e0;
+  }
+  
+  .message-sender {
+    font-weight: bold;
+  }
+  
+  .message-text {
+    margin: 5px 0;
+  }
+  
+  .message-time {
+    font-size: 0.8em;
+    color: #888;
+  }
+  
+  .message-unread-count {
+    font-size: 0.8em;
+    color: #ff0000;
+    margin-top: 5px;
+  }
+  
