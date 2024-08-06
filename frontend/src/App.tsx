@@ -27,6 +27,8 @@ import Chat from "./pages/Chat";
 import MessageMain from "./components/molecules/MessageMain/MessageMain";
 import MessageNoMain from "./components/molecules/MessageNoMain/MessageNoMain";
 import MessagePost from "./components/molecules/MessagePost/MessagePost";
+import MainFoodTrainer from "./components/molecules/MainFoodTrainer/MainFoodTrainer";
+import TrainerFeedback from "./components/molecules/TrainerFeedback/TrainerFeedback";
 
 function App() {
   const {isAuthenticated} = useAuth();
@@ -70,6 +72,8 @@ function App() {
               <Route path="Scheduler" element={<Scheduler />} />
               <Route path="FindTrainer" element={<FindTrainer />} />
               <Route path="PageLayout" element={<PageLayout />} />
+              <Route path="MainFoodTrainer" element={<MainFoodTrainer />} />
+              <Route path="TrainerFeedback" element={<TrainerFeedback />} />
             </>
           )}
         </Routes>

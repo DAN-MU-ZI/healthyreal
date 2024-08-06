@@ -9,6 +9,7 @@ interface Post {
   title: string;
   content: string;
   foodPic: string;
+  feedback?: string[]; // Add feedback field
 }
 
 interface PostContextType {
@@ -16,6 +17,7 @@ interface PostContextType {
   addPost: (post: Post) => void;
   editPost: (id: number, updatedPost: Post) => void;
   deletePost: (id: number) => void;
+  addFeedback: (postId: number, feedback: string) => void; // Add method for feedback
 }
 
 export const PostContext = createContext<PostContextType | undefined>(undefined);
@@ -35,8 +37,14 @@ export const PostProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     setPosts((prevPosts) => prevPosts.filter((post) => post.id !== id));
   };
 
+  const addFeedback = (postId: number, updatedPost: any) => {
+    setPosts((prevPosts) =>
+      prevPosts.map((post) => (post.id === postId ? updatedPost : post))
+    );
+  };
+
   return (
-    <PostContext.Provider value={{ posts, addPost, editPost, deletePost }}>
+    <PostContext.Provider value={{ posts, addPost, editPost, deletePost, addFeedback }}>
       {children}
     </PostContext.Provider>
   );

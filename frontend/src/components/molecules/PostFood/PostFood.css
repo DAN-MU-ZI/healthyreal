@@ -41,14 +41,14 @@
 }
 
 .back-button {
-  position: absolute;
-  left: 1rem;
-  top: 1rem;
   background: none;
-  border: none;
-  font-size: 1.5rem;
-  color: #007bff;
-  cursor: pointer;
+    border: none;
+    font-size: 24px;
+    margin-top: 10px; /* 제목과 버튼 사이의 간격 설정 */
+    cursor: pointer;
+    top: 30px; /* Distance from the top of the .headermf container */
+    left: 39%; /* Distance from the left of the .headermf container */
+    color: #007bff;
 }
 
 .form-container {

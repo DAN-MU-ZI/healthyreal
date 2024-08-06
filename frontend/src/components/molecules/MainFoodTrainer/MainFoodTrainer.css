@@ -25,6 +25,7 @@ body {
     padding: 15px;
     background-color: #f8f8f8;
     border-bottom: 1px solid #eaeaea;
+    text-emphasis-color: black;
   }
   
   .headermf h1 {
@@ -40,6 +41,8 @@ body {
     font-size: 24px;
     margin-top: 10px; /* 제목과 버튼 사이의 간격 설정 */
     cursor: pointer;
+    top: 30px; /* Distance from the top of the .headermf container */
+    left: 39%; /* Distance from the left of the .headermf container */
   }
   
   .calendar-container {
@@ -47,7 +50,7 @@ body {
     flex-direction: column;
     align-items: center;
     padding: 15px; /* 패딩 설정 */
-    width: 350px;
+    width: 300px;
   }
   
   .selected-date {
