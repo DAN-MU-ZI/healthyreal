@@ -7,12 +7,13 @@ import com.healthyreal.be.api.entity.Ticket;
 
 public record TrainerMemberManagementResponse(
 	List<MemberDTO> members
-	) {
+) {
 
 	public static TrainerMemberManagementResponse toResponse(List<Ticket> tickets) {
 		List<MemberDTO> members = tickets.stream()
 			.map(ticket -> new MemberDTO(
 				ticket.getMember().getUserSeq(),
+				ticket.getMember().getUserId(),
 				ticket.getMember().getUsername(),
 				ticket.getMember().getGender(),
 				ticket.getTrainingProgram().getTitle(),

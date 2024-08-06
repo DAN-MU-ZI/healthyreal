@@ -67,6 +67,7 @@ const Section = styled.div`
 `;
 
 const Item = styled.div`
+animation: ${slideUp} 0.5s ease-in-out;
   background: #fff;
   padding: 10px;
   margin-bottom: 10px;
@@ -75,6 +76,7 @@ const Item = styled.div`
 `;
 
 const EmptyMessage = styled.div`
+    animation: ${slideUp} 0.5s ease-in-out;
   color: #777;
   text-align: center;
   padding: 20px;
@@ -153,8 +155,8 @@ const TrainerMealManagement: React.FC = () => {
       <Section>
         <ItemList>
             {result.length ? (
-                result.map(meal => (
-                    <Item>
+                result.map((meal) => (
+                    <Item key={meal.memberSeq}>
                         <div>{meal.mealTitle} - {meal.mealType}</div>
                         <div>{meal.memberName}</div>
                         <div>{meal.isComment}</div>

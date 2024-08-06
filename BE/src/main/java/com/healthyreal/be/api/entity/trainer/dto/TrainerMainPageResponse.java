@@ -40,6 +40,7 @@ public record TrainerMainPageResponse(
 		List<MemberDTO> memberDTOs = tickets.stream()
 			.map(ticket -> new MemberDTO(
 				ticket.getMember().getUserSeq(),
+				ticket.getMember().getUserId(),
 				ticket.getMember().getUsername(),
 				ticket.getMember().getGender(),
 				ticket.getTrainingProgram().getTitle(),
@@ -71,6 +72,7 @@ record MealDTO(
 
 record MemberDTO(
 	Long memberSeq,
+	String memberId,
 	String name,
 	Gender gender,
 	String programName,

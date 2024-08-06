@@ -29,6 +29,8 @@ import MessageNoMain from "./components/molecules/MessageNoMain/MessageNoMain";
 import MessagePost from "./components/molecules/MessagePost/MessagePost";
 import TrainerMealManagement from "./pages/TrainerMealManagement";
 import TrainerMain from "./pages/TrainerMain/TrainerMain";
+import TrainerMemberManagement from "./pages/TrainerMemberManagement";
+import TrainerMemberDetail from "./pages/TrainerMemberDetail";
 
 function App() {
   const {isAuthenticated} = useAuth();
@@ -60,6 +62,8 @@ function App() {
               <Route path="/chat" element={<ChatRooms />} />
               <Route path="/chat/:chatRoomId" element={<Chat />} />
               <Route path="/trainer/meal" element={<TrainerMealManagement/>}/>
+              <Route path="/trainer/members" element={<TrainerMemberManagement/>}/>
+              <Route path="/trainer/members/detail/:id" element={<TrainerMemberDetail/>}/>
             </>
           ) : (
             <>
