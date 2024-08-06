@@ -17,7 +17,7 @@ body {
   overflow: hidden;
 }
 
-.header {
+.headermf {
   display: flex;
   align-items: center;
   padding: 15px;

@@ -48,7 +48,7 @@ const MainFood: React.FC = () => {
 
   return (
     <div className="container">
-      <div className="header">
+      <div className="headermf">
         <button onClick={() => navigate(-1)} className="back-button">←</button>
         <h1>식단 관리</h1>
         <button onClick={() => navigate('/MypageFood')} className="mypage-button">마이페이지로 이동</button>

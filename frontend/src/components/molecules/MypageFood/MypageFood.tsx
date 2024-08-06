@@ -50,7 +50,7 @@ const MypageFood: React.FC = () => {
 
   return (
     <div className="mypage-container">
-      <div className="header">
+      <div className="headermpf">
         <button onClick={handleBack} className="back-button">←</button>
         <h1>식단 관리</h1>
         <p>업로드가 완료되었습니다</p>
