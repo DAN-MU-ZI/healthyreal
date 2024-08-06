@@ -25,7 +25,7 @@ const TrainerOnboardingStep5: React.FC = () => {
 
   return (
     <div className="container">
-      <div className="header">
+      <div className="headertos5">
         <button onClick={() => window.history.back()} className="back-button">←</button>
         <h1>강의 일정을 등록해주세요</h1>
       </div>
